@@ -1,8 +1,3 @@
-re is the fully synced and working script.js file to match your current directory structure:
-
-js
-Copy
-Edit
 // script.js
 
 import prompts from './promptConfig.js';
@@ -141,8 +136,8 @@ resetButton.addEventListener("click", () => {
 exportButton.addEventListener("click", exportChat);
 
 window.onload = () => {
-  const params = new URLSearchParams(window.location.search);
-  const client = params.get("client") || "business_intuition";
-  applyBranding(client);
+  const subdomain = window.location.hostname.split('.')[0];
+  const clientKey = clients[subdomain] ? subdomain : "business_intuition";
+  applyBranding(clientKey);
   setupToolButtons();
 };
