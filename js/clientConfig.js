@@ -36,7 +36,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#6C7C90",
-  },  
+  },
   havenlight: {
     heading: "Havenlight's",
     background: "images/havenlight_image.jpg",
@@ -56,10 +56,10 @@ export const clients = {
     brandColor: "#A9B7C6",
   },
   remedyww: {
-    heading: "Remedy World Wide's",
+    heading: "Remedy Worldwide's",
     background: "images/remedyww_image.jpg",
     logo: "images/remedyww_logo.png",
-    altText: "Remedy World Wide Logo",
+    altText: "Remedy Worldwide Logo",
     preloadImage: true,
     basePath: "images/",
     brandColor: "#A9B7C6",
@@ -92,7 +92,7 @@ export const clients = {
     brandColor: "#9C27B0",
   },
 
-  // 🌐 Fallback configuration
+  // 🌐 Default fallback client
   default: {
     heading: "ClarityBots",
     background: "images/default_background.jpg",

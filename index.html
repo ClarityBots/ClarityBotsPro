@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,17 +10,14 @@
   <meta property="og:image" content="images/social_preview.jpg" />
   <meta property="og:url" content="https://claritybots.ai/" />
   <meta name="twitter:card" content="summary_large_image" />
-
   <title>ClarityBots® | Where AI, Ninety.io, and EOS® Converge</title>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Favicon & Styles -->
+  <!-- Styles & Icons -->
   <link rel="icon" href="images/favicon.ico" />
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- Font Awesome Icons -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -30,13 +26,11 @@
     referrerpolicy="no-referrer"
   />
 
-  <!-- Dynamic Preload Image Loader -->
+  <!-- Preload background image based on subdomain -->
   <script type="module">
     import { clients } from './js/clientConfig.js';
-
     const subdomain = window.location.hostname.split('.')[0];
     const client = clients[subdomain] || clients.business_intuition;
-
     if (client?.preloadImage && client?.background) {
       const preloadLink = document.createElement('link');
       preloadLink.rel = 'preload';
@@ -47,79 +41,54 @@
   </script>
 </head>
 
-<body>
-  <main>
-    <div class="overlay-panel">
-      <header>
-        <h1 id="dynamic-heading" class="animate-fadeInDown"></h1>
-        <h2>- ClarityBots® -</h2>
-        <h3>"Where AI, Skyline, and EOS® Converge"</h3>
-      </header>
+<body class="flex flex-col min-h-screen font-inter text-gray-800 bg-white">
 
-      <section class="button-container">
-        <a class="button" href="https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritybots-ids" target="_blank" rel="noopener" aria-label="Identify, Discuss, and Solve Issues">
-          <i class="fas fa-heart"></i> IDS ClarityBot™
-        </a> 
-        <a class="button" href="https://chatgpt.com/g/g-682fe631e3948191b83455cd16b6c8f5-claritybots-smart-rocks" target="_blank" rel="noopener" aria-label="Build SMART Rocks">
-          <i class="fas fa-mountain"></i> SMART Rocks ClarityBot™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritybots-smart-scorecard" target="_blank" rel="noopener" aria-label="Design a Scorecard">
-          <i class="fas fa-chart-line"></i> Scorecard ClarityBot™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-claritybots-core-values-clarifier" target="_blank" rel="noopener" aria-label="Discover Core Values">
-          <i class="fas fa-heart"></i> Core Values ClarityBot™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank" rel="noopener" aria-label="Traction by Gino Wickman">
-          <i class="fas fa-book-open"></i> Traction™ by Gino Wickman
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author" target="_blank" rel="noopener" aria-label="Meet The ClarityBots® Creator">
-          <i class="fas fa-flask"></i> Meet The ClarityBots® Creator
-        </a>
-      </section>
-    </div>
-  </main>
+  <!-- Header -->
+  <header class="flex items-center justify-between p-4 border-b shadow-sm bg-white">
+    <img id="logoImg" src="" alt="Client Logo" class="h-12 w-auto" />
+    <h1 id="pageHeading" class="text-2xl font-semibold text-right"></h1>
+  </header>
 
-  <div class="watermark-wrapper">
-    <img src="images/logo-default.svg" alt="ClarityBots Watermark" class="watermark" loading="lazy" />
+  <!-- Background Wrapper -->
+  <div id="backgroundImage" class="flex-grow bg-cover bg-center p-6">
+    <main class="max-w-3xl mx-auto space-y-4">
+
+      <!-- Tool Buttons -->
+      <div id="toolContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6"></div>
+
+      <!-- Chat Area -->
+      <div id="chat" class="flex flex-col gap-3 overflow-y-auto max-h-[50vh] border rounded-lg p-4 bg-white shadow-inner"></div>
+
+      <!-- Input Controls -->
+      <div class="flex items-center gap-2 mt-4">
+        <textarea id="userInput" rows="2" placeholder="Type your message..." class="flex-grow p-2 border rounded"></textarea>
+        <button id="sendButton" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Send</button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-2 mt-2">
+        <button id="resetButton" class="px-3 py-1 border rounded">Reset</button>
+        <button id="exportButton" class="px-3 py-1 border rounded">Export</button>
+      </div>
+
+      <!-- Loader -->
+      <div id="loader" class="hidden text-center mt-4">
+        <i class="fas fa-spinner fa-spin text-gray-500 text-xl"></i>
+        <p class="text-sm">Thinking...</p>
+      </div>
+
+    </main>
   </div>
 
-  <footer class="footer">
-    <div>&copy; 2025 Business Intuition Incorporated</div>
-    <div>Powered by ClarityBots.ai • Where AI, Skyline, and EOS® Converge</div>
+  <!-- Footer -->
+  <footer id="footer" class="p-4 text-center text-white bg-gray-800 mt-auto">
+    &copy; <span id="footerYear"></span> ClarityBots®
   </footer>
 
-  <!-- Dynamic Client Loader -->
-  <script type="module">
-    import { clients } from './clientConfig.js';
-
-    const subdomain = window.location.hostname.split('.')[0];
-    const client = clients[subdomain] || clients.business_intuition;
-
-    if (client?.background) {
-      document.body.style.backgroundImage = `url('${client.background}')`;
-    }
-
-    const heading = document.getElementById('dynamic-heading');
-    if (heading && client?.heading) {
-      heading.textContent = client.heading;
-    }
-
-    const logo = document.querySelector('.watermark');
-    if (logo && client?.logo) {
-      logo.src = client.logo;
-      logo.alt = client.altText;
-    }
+  <!-- Scripts -->
+  <script src="./js/script.js" type="module"></script>
+  <script>
+    document.getElementById("footerYear").textContent = new Date().getFullYear();
   </script>
-
-  <!-- Fallback for No Module Support -->
-  <script nomodule>
-    alert("This site requires a modern browser with JavaScript support.");
-  </script>
-
-  <noscript>
-    <div style="background-color: #f04e23; color: white; padding: 1rem; text-align: center;">
-      JavaScript is required to use this site. Please enable it in your browser settings.
-    </div>
-  </noscript>
 </body>
 </html>

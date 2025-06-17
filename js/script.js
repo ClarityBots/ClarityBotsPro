@@ -1,7 +1,7 @@
 // script.js
 
 import prompts from './promptConfig.js';
-import { clients } from './js/clientConfig.js';
+import { clients } from './clientConfig.js';
 
 const toolContainer = document.getElementById("toolContainer");
 const chat = document.getElementById("chat");
