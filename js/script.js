@@ -151,7 +151,12 @@ resetButton.addEventListener("click", () => {
 exportButton.addEventListener("click", exportChat);
 
 window.onload = () => {
-  const clientKey = "skyline"; // Hardcoded for now to ensure branding
+  const subdomain = window.location.hostname.split('.')[0];
+  console.log("📡 Detected subdomain:", subdomain);
+
+  const clientKey = clients[subdomain] ? subdomain : "business_intuition";
+  console.log("🎯 Using clientKey:", clientKey);
+
   applyBranding(clientKey);
   setupToolButtons();
 };
