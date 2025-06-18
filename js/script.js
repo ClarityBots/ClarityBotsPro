@@ -1,7 +1,9 @@
-// script.js
+// js/script.js
 
 import prompts from './promptConfig.js';
 import { clients } from './clientConfig.js';
+
+console.log('✅ script.js loaded. Applying Skyline branding.');
 
 const toolContainer = document.getElementById("toolContainer");
 const chat = document.getElementById("chat");
@@ -22,17 +24,25 @@ let conversationState = {};
 function applyBranding(clientKey) {
   const client = clients[clientKey];
   if (!client) {
-    console.warn(`Client "${clientKey}" not found. Using default branding.`);
+    console.warn(`Client "${clientKey}" not found. Using fallback.`);
     return;
   }
 
   if (logoImg) {
     logoImg.src = client.logo;
     logoImg.alt = client.altText;
+    console.log(`🔍 Logo set to: ${client.logo}`);
   }
-  if (headingEl) headingEl.textContent = `${client.heading} ClarityBot`;
-  if (backgroundDiv) backgroundDiv.style.backgroundImage = `url('${client.background}')`;
-  if (footerEl) footerEl.style.backgroundColor = client.brandColor;
+  if (headingEl) {
+    headingEl.textContent = `${client.heading} ClarityBot`;
+    console.log(`🔍 Heading set to: ${headingEl.textContent}`);
+  }
+  if (backgroundDiv) {
+    backgroundDiv.style.backgroundImage = `url('${client.background}')`;
+  }
+  if (footerEl) {
+    footerEl.style.backgroundColor = client.brandColor;
+  }
 }
 
 function addMessage(content, sender = "user") {
@@ -141,7 +151,7 @@ resetButton.addEventListener("click", () => {
 exportButton.addEventListener("click", exportChat);
 
 window.onload = () => {
-  const clientKey = "skyline"; // ✅ Hardcoded for now
+  const clientKey = "skyline"; // Hardcoded for now to ensure branding
   applyBranding(clientKey);
   setupToolButtons();
 };
