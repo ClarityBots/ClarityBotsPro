@@ -23,8 +23,10 @@ function applyBranding(clientKey) {
   const client = clients[clientKey];
   if (!client) return;
 
-  if (logoImg) logoImg.src = client.logo;
-  if (logoImg) logoImg.alt = client.altText;
+  if (logoImg) {
+    logoImg.src = client.logo;
+    logoImg.alt = client.altText;
+  }
   if (backgroundDiv) backgroundDiv.style.backgroundImage = `url('${client.background}')`;
   if (headingEl) headingEl.textContent = `${client.heading} ClarityBot`;
   if (footerEl) footerEl.style.backgroundColor = client.brandColor;
@@ -72,15 +74,9 @@ async function sendMessage() {
     });
 
     const data = await response.json();
-    if (data.reply) {
-      addMessage(data.reply, "bot");
-    }
-    if (data.nextStep !== undefined) {
-      stepIndex = data.nextStep;
-    }
-    if (data.updatedState) {
-      conversationState = data.updatedState;
-    }
+    if (data.reply) addMessage(data.reply, "bot");
+    if (data.nextStep !== undefined) stepIndex = data.nextStep;
+    if (data.updatedState) conversationState = data.updatedState;
   } catch (error) {
     console.error("GPT Error:", error);
     addMessage("Something went wrong while getting a response.", "bot");

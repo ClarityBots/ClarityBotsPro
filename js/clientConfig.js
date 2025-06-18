@@ -56,10 +56,10 @@ export const clients = {
     brandColor: "#A9B7C6",
   },
   remedyww: {
-    heading: "Remedy Worldwide's",
+    heading: "Remedy World Wide's",
     background: "images/remedyww_image.jpg",
     logo: "images/remedyww_logo.png",
-    altText: "Remedy Worldwide Logo",
+    altText: "Remedy World Wide Logo",
     preloadImage: true,
     basePath: "images/",
     brandColor: "#A9B7C6",
@@ -92,7 +92,7 @@ export const clients = {
     brandColor: "#9C27B0",
   },
 
-  // 🌐 Default fallback client
+  // 🌐 Fallback configuration
   default: {
     heading: "ClarityBots",
     background: "images/default_background.jpg",
