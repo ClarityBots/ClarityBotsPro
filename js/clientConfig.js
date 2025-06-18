@@ -1,4 +1,4 @@
-// clientConfig.js
+// js/clientConfig.js
 
 console.log("✅ clientConfig.js is loaded");
 

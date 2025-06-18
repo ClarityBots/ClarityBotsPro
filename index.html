@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,22 +56,22 @@
       </header>
 
       <section class="button-container">
-        <a class="button" href="https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritybots-ids" target="_blank" rel="noopener" aria-label="Identify, Discuss, and Solve Issues">
+        <a class="button" href="https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritybots-ids" target="_blank" rel="noopener">
           <i class="fas fa-heart"></i> IDS™
         </a> 
-        <a class="button" href="https://chatgpt.com/g/g-682fe631e3948191b83455cd16b6c8f5-claritybots-smart-rocks" target="_blank" rel="noopener" aria-label="Build SMART Rocks">
+        <a class="button" href="https://chatgpt.com/g/g-682fe631e3948191b83455cd16b6c8f5-claritybots-smart-rocks" target="_blank" rel="noopener">
           <i class="fas fa-mountain"></i> SMART Rocks
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritybots-smart-scorecard" target="_blank" rel="noopener" aria-label="Design a Scorecard">
+        <a class="button" href="https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritybots-smart-scorecard" target="_blank" rel="noopener">
           <i class="fas fa-chart-line"></i> Scorecard
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-claritybots-core-values-clarifier" target="_blank" rel="noopener" aria-label="Discover Core Values">
+        <a class="button" href="https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-claritybots-core-values-clarifier" target="_blank" rel="noopener">
           <i class="fas fa-heart"></i> Core Values
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank" rel="noopener" aria-label="Traction by Gino Wickman">
+        <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank" rel="noopener">
           <i class="fas fa-book-open"></i> Traction™ by Gino Wickman
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author" target="_blank" rel="noopener" aria-label="Meet The ClarityBots® Creator">
+        <a class="button" href="https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author" target="_blank" rel="noopener">
           <i class="fas fa-flask"></i> Meet The ClarityBots® Creator
         </a>
       </section>
@@ -80,7 +79,7 @@
   </main>
 
   <div class="watermark-wrapper">
-    <img src="images/default_logo.png" alt="ClarityBots Watermark" class="watermark" loading="lazy" />
+    <img src="images/logo-default.png" alt="ClarityBots Watermark" class="watermark" loading="lazy" />
   </div>
 
   <footer class="footer">
@@ -88,14 +87,15 @@
     <div>Powered by ClarityBots.ai • Informed by EOS®</div>
   </footer>
 
-  <!-- Dynamic Client Loader -->
+  <!-- Dynamic Branding Loader -->
   <script type="module">
     import { clients } from './js/clientConfig.js';
-    <script type="module" src="./js/clientConfig.js"></script>
-    <script type="module" src="./js/script.js"></script>
 
     const subdomain = window.location.hostname.split('.')[0];
     const client = clients[subdomain] || clients.business_intuition;
+
+    console.log("🌐 Subdomain detected:", subdomain);
+    console.log("🎯 Matched client:", client);
 
     if (client?.background) {
       document.body.style.backgroundImage = `url('${client.background}')`;
