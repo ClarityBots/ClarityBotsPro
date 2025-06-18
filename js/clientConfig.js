@@ -15,7 +15,7 @@ export const clients = {
   business_intuition: {
     heading: "Business Intuition's",
     background: "images/business_intuition_image.jpg",
-    logo: "images/business_intuition_logo.svg",
+    logo: "images/business_intuition_logo.png",
     altText: "Business Intuition Logo",
     preloadImage: true,
     basePath: "images/",
