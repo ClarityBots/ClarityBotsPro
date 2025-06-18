@@ -1,5 +1,7 @@
 // clientConfig.js
 
+console.log("✅ clientConfig.js is loaded");
+
 export const clients = {
   alder: {
     heading: "Alder Construction's",
