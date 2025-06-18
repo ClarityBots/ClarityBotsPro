@@ -90,7 +90,8 @@
 
   <!-- Dynamic Client Loader -->
   <script type="module">
-    import { clients } from './clientConfig.js';
+    <script type="module" src="./js/clientConfig.js"></script>
+    <script type="module" src="./js/script.js"></script>
 
     const subdomain = window.location.hostname.split('.')[0];
     const client = clients[subdomain] || clients.business_intuition;
