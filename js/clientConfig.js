@@ -95,7 +95,7 @@ export const clients = {
   // 🌐 Fallback configuration
   default: {
     heading: "ClarityBots",
-    background: "images/default_background.jpg",
+    background: "images/default_image.jpg",
     logo: "images/default_logo.png",
     altText: "ClarityBots Default Logo",
     preloadImage: false,
