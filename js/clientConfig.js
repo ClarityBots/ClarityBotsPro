@@ -12,7 +12,7 @@ export const clients = {
     basePath: "images/",
     brandColor: "#445777",
   },
-  business_intuition: {
+  bi: {
     heading: "Business Intuition's",
     background: "images/business_intuition_image.jpg",
     logo: "images/business_intuition_logo.png",
