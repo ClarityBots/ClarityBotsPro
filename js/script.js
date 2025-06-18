@@ -1,7 +1,7 @@
 // js/script.js
 
 import prompts from './promptConfig.js';
-import { clients } from './clientConfig.js';
+import { clients } from './js/clientConfig.js';
 
 console.log('✅ script.js loaded. Applying dynamic branding.');
 
