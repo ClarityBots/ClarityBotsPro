@@ -3,7 +3,7 @@
 import prompts from './promptConfig.js';
 import { clients } from './clientConfig.js';
 
-console.log('✅ script.js loaded. Applying Skyline branding.');
+console.log('✅ script.js loaded. Applying dynamic branding.');
 
 const toolContainer = document.getElementById("toolContainer");
 const chat = document.getElementById("chat");
@@ -151,11 +151,19 @@ resetButton.addEventListener("click", () => {
 exportButton.addEventListener("click", exportChat);
 
 window.onload = () => {
-  const subdomain = window.location.hostname.split('.')[0];
-  console.log("📡 Detected subdomain:", subdomain);
+  const hostname = window.location.hostname.toLowerCase();
+  let clientKey = "business_intuition"; // default fallback
 
-  const clientKey = clients[subdomain] ? subdomain : "business_intuition";
-  console.log("🎯 Using clientKey:", clientKey);
+  const knownClients = Object.keys(clients);
+  for (const key of knownClients) {
+    if (hostname.includes(key)) {
+      clientKey = key;
+      break;
+    }
+  }
+
+  console.log("🌐 Hostname:", hostname);
+  console.log("🔍 Matched clientKey:", clientKey);
 
   applyBranding(clientKey);
   setupToolButtons();
