@@ -21,14 +21,17 @@ let conversationState = {};
 
 function applyBranding(clientKey) {
   const client = clients[clientKey];
-  if (!client) return;
+  if (!client) {
+    console.warn(`Client "${clientKey}" not found. Using default branding.`);
+    return;
+  }
 
   if (logoImg) {
     logoImg.src = client.logo;
     logoImg.alt = client.altText;
   }
-  if (backgroundDiv) backgroundDiv.style.backgroundImage = `url('${client.background}')`;
   if (headingEl) headingEl.textContent = `${client.heading} ClarityBot`;
+  if (backgroundDiv) backgroundDiv.style.backgroundImage = `url('${client.background}')`;
   if (footerEl) footerEl.style.backgroundColor = client.brandColor;
 }
 
@@ -74,9 +77,15 @@ async function sendMessage() {
     });
 
     const data = await response.json();
-    if (data.reply) addMessage(data.reply, "bot");
-    if (data.nextStep !== undefined) stepIndex = data.nextStep;
-    if (data.updatedState) conversationState = data.updatedState;
+    if (data.reply) {
+      addMessage(data.reply, "bot");
+    }
+    if (data.nextStep !== undefined) {
+      stepIndex = data.nextStep;
+    }
+    if (data.updatedState) {
+      conversationState = data.updatedState;
+    }
   } catch (error) {
     console.error("GPT Error:", error);
     addMessage("Something went wrong while getting a response.", "bot");
@@ -132,8 +141,7 @@ resetButton.addEventListener("click", () => {
 exportButton.addEventListener("click", exportChat);
 
 window.onload = () => {
-  const subdomain = window.location.hostname.split('.')[0];
-  const clientKey = clients[subdomain] ? subdomain : "business_intuition";
+  const clientKey = "skyline"; // ✅ Hardcoded for now
   applyBranding(clientKey);
   setupToolButtons();
 };
