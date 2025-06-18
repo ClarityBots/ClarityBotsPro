@@ -15,7 +15,7 @@ export const clients = {
   bi: {
     heading: "Business Intuition's",
     background: "images/business_intuition_image.jpg",
-    logo: "images/business_intuition_logo.png",
+    logo: "images/alder_logo.png",
     altText: "Business Intuition Logo",
     preloadImage: true,
     basePath: "images/",
