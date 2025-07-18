@@ -39,6 +39,7 @@ function applyBranding(clientKey) {
   }
   if (backgroundDiv) {
     backgroundDiv.style.backgroundImage = `url('${client.background}')`;
+    console.log(`🖼️ Background set to: ${client.background}`);
   }
   if (footerEl) {
     footerEl.style.backgroundColor = client.brandColor;
@@ -151,20 +152,20 @@ resetButton.addEventListener("click", () => {
 exportButton.addEventListener("click", exportChat);
 
 window.onload = () => {
-  const hostname = window.location.hostname.toLowerCase();
+  const hostname = window.location.hostname.toLowerCase(); // e.g., lumos.claritybots.ai
+  const subdomain = hostname.split(".")[0]; // extract "lumos"
   const urlParams = new URLSearchParams(window.location.search);
-  let clientKey = urlParams.get("client") || "business_intuition"; // fallback default
 
-  const knownClients = Object.keys(clients);
-  for (const key of knownClients) {
-    if (hostname.includes(key)) {
-      clientKey = key;
-      break;
-    }
+  let clientKey = urlParams.get("client") || subdomain || "business_intuition";
+
+  if (!clients[clientKey]) {
+    console.warn(`⚠️ No client config found for '${clientKey}'. Using fallback.`);
+    clientKey = "business_intuition";
   }
 
   console.log("🌐 Hostname:", hostname);
-  console.log("🔍 Final selected client:", clientKey);
+  console.log("🏷️ Subdomain:", subdomain);
+  console.log("✅ Final selected clientKey:", clientKey);
 
   applyBranding(clientKey);
   setupToolButtons();
