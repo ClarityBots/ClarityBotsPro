@@ -76,7 +76,7 @@ lumos: {
     brandColor: "#A9B7C6",
   },
   skyline: {
-    heading: "Skyline Electric's",
+    heading: "Skyline Electric Company's",
     background: "images/skyline_image.png",
     logo: "images/skyline_logo.png",
     altText: "Skyline Electric Logo",
