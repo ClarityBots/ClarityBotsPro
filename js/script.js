@@ -24,7 +24,7 @@ let conversationState = {};
 function applyBranding(clientKey) {
   const client = clients[clientKey];
   if (!client) {
-    console.warn(`Client "${clientKey}" not found. Using fallback.`);
+    console.warn(`⚠️ Client "${clientKey}" not found. Using fallback.`);
     return;
   }
 
@@ -152,7 +152,8 @@ exportButton.addEventListener("click", exportChat);
 
 window.onload = () => {
   const hostname = window.location.hostname.toLowerCase();
-  let clientKey = "business_intuition"; // default fallback
+  const urlParams = new URLSearchParams(window.location.search);
+  let clientKey = urlParams.get("client") || "business_intuition"; // fallback default
 
   const knownClients = Object.keys(clients);
   for (const key of knownClients) {
@@ -163,7 +164,7 @@ window.onload = () => {
   }
 
   console.log("🌐 Hostname:", hostname);
-  console.log("🔍 Matched clientKey:", clientKey);
+  console.log("🔍 Final selected client:", clientKey);
 
   applyBranding(clientKey);
   setupToolButtons();
