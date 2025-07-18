@@ -49,7 +49,7 @@ export const clients = {
     brandColor: "#A9B7C6",
   },
   lumos: {
-    heading: "lumos's",
+    heading: "Lumos'",
     background: "images/lumos_image.webp",
     logo: "images/lumos_logo.png",
     altText: "lumos Logo",
