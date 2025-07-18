@@ -48,7 +48,7 @@ export const clients = {
     basePath: "images/",
     brandColor: "#A9B7C6",
   },
-lumos: {
+  lumos: {
     heading: "lumos's",
     background: "images/lumos_image.webp",
     logo: "images/lumos_logo.png",
