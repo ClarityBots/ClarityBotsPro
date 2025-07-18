@@ -50,7 +50,7 @@ export const clients = {
   },
 lumos: {
     heading: "lumos's",
-    background: "images/lumose_image.webp",
+    background: "images/lumos_image.webp",
     logo: "images/lumos_logo.png",
     altText: "lumos Logo",
     preloadImage: true,
