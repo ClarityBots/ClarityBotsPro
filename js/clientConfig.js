@@ -48,6 +48,15 @@ export const clients = {
     basePath: "images/",
     brandColor: "#A9B7C6",
   },
+lumos: {
+    heading: "lumos's",
+    background: "images/lumose_image.webp",
+    logo: "images/lumos_logo.png",
+    altText: "lumos Logo",
+    preloadImage: true,
+    basePath: "images/",
+    brandColor: "#A9B7C6",
+  },
   ninety: {
     heading: "Ninety's",
     background: "images/ninety_image.webp",
