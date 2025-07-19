@@ -93,6 +93,15 @@ export const clients = {
     basePath: "images/",
     brandColor: "#FBBF24",
   },
+  techplus: {
+      heading: "TechPlus's",
+      background: "images/techplus_image.png",
+      logo: "images/techplus_logo.png",
+      altText: "TechPlus Logo",
+      preloadImage: true,
+      basePath: "images/",
+      brandColor: "#FBBF24",
+    },
   vlcm: {
     heading: "VLCM's",
     background: "images/vlcm_image.jpg",
