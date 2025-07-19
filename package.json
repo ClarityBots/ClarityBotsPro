@@ -1,7 +1,7 @@
 {
   "name": "claritybots",
-  "version": "1.3.0",
-  "description": "ClarityBots® | AI-enhanced EOS® tools with subdomain branding",
+  "version": "2.1.0",
+  "description": "ClarityBots® | AI-enhanced tools with subdomain branding",
   "main": "index.html",
   "scripts": {
     "build:release": "bash ./build-release.sh"

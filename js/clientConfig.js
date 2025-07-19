@@ -66,6 +66,15 @@ export const clients = {
     basePath: "images/",
     brandColor: "#A9B7C6",
   },
+  overland: {
+      heading: "Overland Group's",
+      background: "images/overland_image.png",
+      logo: "images/overland_logo.png",
+      altText: "Overland Logo",
+      preloadImage: true,
+      basePath: "images/",
+      brandColor: "#A9B7C6",
+    },
   remedyww: {
     heading: "Remedy World Wide's",
     background: "images/remedyww_image.jpg",
