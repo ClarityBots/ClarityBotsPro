@@ -46,7 +46,7 @@
     referrerpolicy="no-referrer"
   />
 
-  <!-- Background fade sync style -->
+  <!-- Smooth background transition synced with overlay -->
   <style>
     .bg-fade {
       opacity: 0;
@@ -131,10 +131,7 @@
       img.src = client.background;
       img.onload = () => {
         document.body.style.backgroundImage = `url('${client.background}')`;
-        document.body.classList.add('bg-fade');
-        setTimeout(() => {
-          document.body.classList.add('loaded');
-        }, 1500); // Match content fade timing
+        document.body.classList.add('bg-fade', 'loaded');
       };
     }
   </script>
