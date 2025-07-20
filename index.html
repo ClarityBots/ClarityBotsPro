@@ -14,7 +14,7 @@
 
   <title>ClarityBots® | Where AI and EOS® Converge</title>
 
-  <!-- Early Preload Script for Background Image -->
+  <!-- Preload background early -->
   <script>
     const sub = location.hostname.split('.')[0];
     const preloadMap = {
@@ -45,6 +45,22 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
+
+  <style>
+    /* Fade-in overlay */
+    .bg-fade {
+      opacity: 0;
+      transition: opacity 0.75s ease-in-out;
+    }
+
+    .bg-fade.loaded {
+      opacity: 1;
+    }
+
+    body {
+      transition: background-image 0.5s ease-in-out;
+    }
+  </style>
 </head>
 
 <body style="background-image: url('images/bg-business-intuition.jpg'); background-size: cover; background-position: center;">
@@ -89,7 +105,7 @@
     <div>Powered by ClarityBots® • Informed by EOS®</div>
   </footer>
 
-  <!-- Dynamic Branding Loader -->
+  <!-- Dynamic Background Loader -->
   <script type="module">
     import { clients } from './js/clientConfig.js';
 
@@ -98,10 +114,6 @@
 
     console.log("🌐 Subdomain detected:", subdomain);
     console.log("🎯 Matched client:", client);
-
-    if (client?.background) {
-      document.body.style.backgroundImage = `url('${client.background}')`;
-    }
 
     const heading = document.getElementById('dynamic-heading');
     if (heading && client?.heading) {
@@ -112,6 +124,16 @@
     if (logo && client?.logo) {
       logo.src = client.logo;
       logo.alt = client.altText;
+    }
+
+    // Smooth background fade-in
+    if (client?.background) {
+      const img = new Image();
+      img.src = client.background;
+      img.onload = () => {
+        document.body.style.backgroundImage = `url('${client.background}')`;
+        document.body.classList.add('bg-fade', 'loaded');
+      };
     }
   </script>
 
