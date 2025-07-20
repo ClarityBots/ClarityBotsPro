@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,22 @@
   <meta name="twitter:card" content="summary_large_image" />
 
   <title>ClarityBots® | Where AI and EOS® Converge</title>
+
+  <!-- Early Preload Script for Dynamic Background -->
+  <script>
+    const sub = location.hostname.split('.')[0];
+    const preloadMap = {
+      claritybots: 'images/bg-claritybots.jpg',
+      business_intuition: 'images/bg-business-intuition.jpg'
+    };
+    const img = preloadMap[sub] || preloadMap.business_intuition;
+
+    const preload = document.createElement('link');
+    preload.rel = 'preload';
+    preload.as = 'image';
+    preload.href = img;
+    document.head.appendChild(preload);
+  </script>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -28,22 +45,6 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
-
-  <!-- Dynamic Preload Image Loader -->
-  <script type="module">
-    import { clients } from './js/clientConfig.js';
-
-    const subdomain = window.location.hostname.split('.')[0];
-    const client = clients[subdomain] || clients.business_intuition;
-
-    if (client?.preloadImage && client?.background) {
-      const preloadLink = document.createElement('link');
-      preloadLink.rel = 'preload';
-      preloadLink.as = 'image';
-      preloadLink.href = client.background;
-      document.head.appendChild(preloadLink);
-    }
-  </script>
 </head>
 
 <body>
