@@ -14,31 +14,20 @@
 
   <title>ClarityBots® | Where AI and EOS® Converge</title>
 
-  <!-- Preload & Set Background Image Based on Subdomain -->
+  <!-- Preload background early -->
   <script>
     const sub = location.hostname.split('.')[0];
-    const backgroundMap = {
+    const preloadMap = {
       claritybots: 'images/bg-claritybots.jpg',
       business_intuition: 'images/bg-business-intuition.jpg'
     };
-    const bg = backgroundMap[sub] || backgroundMap.business_intuition;
+    const img = preloadMap[sub] || preloadMap.business_intuition;
 
-    // Preload
     const preload = document.createElement('link');
     preload.rel = 'preload';
     preload.as = 'image';
-    preload.href = bg;
+    preload.href = img;
     document.head.appendChild(preload);
-
-    // Set background image immediately
-    window.addEventListener('DOMContentLoaded', () => {
-      document.body.style.backgroundImage = `url('${bg}')`;
-      document.body.style.backgroundSize = 'cover';
-      document.body.style.backgroundPosition = 'center';
-      document.body.style.backgroundRepeat = 'no-repeat';
-      document.body.style.backgroundAttachment = 'fixed';
-      document.body.classList.add('bg-fade', 'loaded');
-    });
   </script>
 
   <!-- Google Fonts -->
@@ -57,7 +46,7 @@
     referrerpolicy="no-referrer"
   />
 
-  <!-- Background Fade Style -->
+  <!-- Smooth background transition synced with overlay -->
   <style>
     .bg-fade {
       opacity: 0;
@@ -67,10 +56,15 @@
     .bg-fade.loaded {
       opacity: 1;
     }
+
+    body {
+      transition: background-image 1.5s ease-in-out;
+    }
   </style>
 </head>
 
-<body>
+<body style="background-image: url('images/bg-business-intuition.jpg'); background-size: cover; background-position: center;">
+
   <main>
     <div class="overlay-panel">
       <header>
@@ -111,7 +105,7 @@
     <div>Powered by ClarityBots® • Informed by EOS®</div>
   </footer>
 
-  <!-- Dynamic Content Loader -->
+  <!-- Dynamic Background Loader -->
   <script type="module">
     import { clients } from './js/clientConfig.js';
 
@@ -130,6 +124,15 @@
     if (logo && client?.logo) {
       logo.src = client.logo;
       logo.alt = client.altText;
+    }
+
+    if (client?.background) {
+      const img = new Image();
+      img.src = client.background;
+      img.onload = () => {
+        document.body.style.backgroundImage = `url('${client.background}')`;
+        document.body.classList.add('bg-fade', 'loaded');
+      };
     }
   </script>
 
