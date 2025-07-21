@@ -14,20 +14,29 @@
 
   <title>ClarityBots® | Where AI and EOS® Converge</title>
 
-  <!-- Preload background early -->
+  <!-- Background preload + immediate logic -->
   <script>
     const sub = location.hostname.split('.')[0];
-    const preloadMap = {
+    const backgroundMap = {
       claritybots: 'images/bg-claritybots.jpg',
       business_intuition: 'images/bg-business-intuition.jpg'
     };
-    const img = preloadMap[sub] || preloadMap.business_intuition;
+    const bg = backgroundMap[sub] || backgroundMap.business_intuition;
 
+    // Preload
     const preload = document.createElement('link');
     preload.rel = 'preload';
     preload.as = 'image';
-    preload.href = img;
+    preload.href = bg;
     document.head.appendChild(preload);
+
+    // Apply background on DOM ready
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.style.backgroundImage = `url('${bg}')`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.classList.add('bg-fade', 'loaded');
+    });
   </script>
 
   <!-- Google Fonts -->
@@ -56,15 +65,10 @@
     .bg-fade.loaded {
       opacity: 1;
     }
-
-    body {
-      transition: background-image 1.5s ease-in-out;
-    }
   </style>
 </head>
 
-<body style="background-image: url('images/bg-business-intuition.jpg'); background-size: cover; background-position: center;">
-
+<body>
   <main>
     <div class="overlay-panel">
       <header>
@@ -105,7 +109,7 @@
     <div>Powered by ClarityBots® • Informed by EOS®</div>
   </footer>
 
-  <!-- Dynamic Background Loader -->
+  <!-- Dynamic Content Loader -->
   <script type="module">
     import { clients } from './js/clientConfig.js';
 
@@ -124,15 +128,6 @@
     if (logo && client?.logo) {
       logo.src = client.logo;
       logo.alt = client.altText;
-    }
-
-    if (client?.background) {
-      const img = new Image();
-      img.src = client.background;
-      img.onload = () => {
-        document.body.style.backgroundImage = `url('${client.background}')`;
-        document.body.classList.add('bg-fade', 'loaded');
-      };
     }
   </script>
 
