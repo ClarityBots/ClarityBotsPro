@@ -14,7 +14,7 @@
 
   <title>ClarityBots® | Where AI and EOS® Converge</title>
 
-  <!-- Background preload + immediate logic -->
+  <!-- Preload & Set Background Image Based on Subdomain -->
   <script>
     const sub = location.hostname.split('.')[0];
     const backgroundMap = {
@@ -30,11 +30,13 @@
     preload.href = bg;
     document.head.appendChild(preload);
 
-    // Apply background on DOM ready
-    document.addEventListener("DOMContentLoaded", () => {
+    // Set background image immediately
+    window.addEventListener('DOMContentLoaded', () => {
       document.body.style.backgroundImage = `url('${bg}')`;
       document.body.style.backgroundSize = 'cover';
       document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundRepeat = 'no-repeat';
+      document.body.style.backgroundAttachment = 'fixed';
       document.body.classList.add('bg-fade', 'loaded');
     });
   </script>
@@ -55,7 +57,7 @@
     referrerpolicy="no-referrer"
   />
 
-  <!-- Smooth background transition synced with overlay -->
+  <!-- Background Fade Style -->
   <style>
     .bg-fade {
       opacity: 0;
