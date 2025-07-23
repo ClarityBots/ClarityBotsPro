@@ -14,30 +14,10 @@
 
   <title>ClarityBots® | Where AI and EOS® Converge</title>
 
-  <!-- Preload background early -->
-  <script>
-    const sub = location.hostname.split('.')[0];
-    const preloadMap = {
-      claritybots: 'images/bg-claritybots.jpg',
-      business_intuition: 'images/bg-business-intuition.jpg'
-    };
-    const img = preloadMap[sub] || preloadMap.business_intuition;
-
-    const preload = document.createElement('link');
-    preload.rel = 'preload';
-    preload.as = 'image';
-    preload.href = img;
-    document.head.appendChild(preload);
-  </script>
-
-  <!-- Google Fonts -->
+  <!-- Fonts, Icons, Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Favicon & Styles -->
   <link rel="icon" href="images/favicon.ico" />
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- Font Awesome Icons -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -46,7 +26,7 @@
     referrerpolicy="no-referrer"
   />
 
-  <!-- Smooth background transition synced with overlay -->
+  <!-- Fade Logic -->
   <style>
     .bg-fade {
       opacity: 0;
@@ -56,15 +36,10 @@
     .bg-fade.loaded {
       opacity: 1;
     }
-
-    body {
-      transition: background-image 1.5s ease-in-out;
-    }
   </style>
 </head>
 
-<body style="background-image: url('images/bg-business-intuition.jpg'); background-size: cover; background-position: center;">
-
+<body class="bg-fade">
   <main>
     <div class="overlay-panel">
       <header>
@@ -105,38 +80,42 @@
     <div>Powered by ClarityBots® • Informed by EOS®</div>
   </footer>
 
-  <!-- Dynamic Background Loader -->
+  <!-- Background + Branding Loader -->
   <script type="module">
     import { clients } from './js/clientConfig.js';
 
-    const subdomain = window.location.hostname.split('.')[0];
+    const subdomain = location.hostname.split('.')[0];
     const client = clients[subdomain] || clients.business_intuition;
 
-    console.log("🌐 Subdomain detected:", subdomain);
-    console.log("🎯 Matched client:", client);
+    console.log("🌐 Subdomain:", subdomain);
+    console.log("🎯 Client match:", client);
 
+    // Apply heading
     const heading = document.getElementById('dynamic-heading');
-    if (heading && client?.heading) {
-      heading.textContent = client.heading;
-    }
+    if (heading && client.heading) heading.textContent = client.heading;
 
+    // Apply logo
     const logo = document.querySelector('.watermark');
-    if (logo && client?.logo) {
+    if (logo && client.logo) {
       logo.src = client.logo;
-      logo.alt = client.altText;
+      logo.alt = client.altText || 'ClarityBots Logo';
     }
 
-    if (client?.background) {
-      const img = new Image();
-      img.src = client.background;
-      img.onload = () => {
+    // Apply background image
+    if (client.background) {
+      const bg = new Image();
+      bg.src = client.background;
+      bg.onload = () => {
         document.body.style.backgroundImage = `url('${client.background}')`;
-        document.body.classList.add('bg-fade', 'loaded');
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.backgroundAttachment = 'fixed';
+        document.body.classList.add('loaded'); // triggers fade-in
       };
     }
   </script>
 
-  <!-- Fallback for No Module Support -->
   <script nomodule>
     alert("This site requires a modern browser with JavaScript support.");
   </script>
