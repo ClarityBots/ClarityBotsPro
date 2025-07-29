@@ -33,7 +33,7 @@ export const clients = {
   eosww: {
     heading: "EOS Worldwide's",
     background: "images/eosww_image.png",
-    logo: "images/eosww_logo.webp",
+    logo: "images/eosww_logo.webp.p",
     altText: "EOS Worldwide Logo",
     preloadImage: true,
     basePath: "images/",
