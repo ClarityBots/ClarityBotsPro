@@ -21,7 +21,6 @@
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    integrity="sha512-wYO1R3ptFzWcYQ8nYQNOi7HcRZcOEvTYFyC8zzONFvN2Edc9sDHxdLaL5OpbwlSvzjT2N8j7PSZcMhcU+Me2KQ=="
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
@@ -32,11 +31,13 @@
       opacity: 0;
       transition: opacity 1.5s ease-in-out;
     }
-
     .bg-fade.loaded {
       opacity: 1;
     }
   </style>
+
+  <!-- Load full clientConfig -->
+  <script src="clientConfig.js"></script>
 </head>
 
 <body class="bg-fade">
@@ -64,17 +65,13 @@
         <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank" rel="noopener">
           <i class="fas fa-book-open"></i> ClarityTrax™
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author" target="_blank" rel="noopener">
-          <i class="fas fa-flask"></i> Meet The ClarityBots® Creator
+        <!-- Sixth button updated -->
+        <a id="meet-author-btn" class="button" href="javascript:void(0);">
+          <i class="fas fa-flask"></i> Loading...
         </a>
       </section>
     </div>
   </main>
-  <!-- Hide the watermark
-  <div class="watermark-wrapper">
-    <img src="images/logo-default.png" alt="ClarityBots Watermark" class="watermark" loading="lazy" />
-  </div>
-  -->
 
   <footer class="footer">
     <div>&copy; 2025 Business Intuition Incorporated</div>
@@ -86,21 +83,11 @@
     import { clients } from './js/clientConfig.js';
 
     const subdomain = location.hostname.split('.')[0];
-    const client = clients[subdomain] || clients.business_intuition;
-
-    console.log("🌐 Subdomain:", subdomain);
-    console.log("🎯 Client match:", client);
+    const client = clients[subdomain] || clients.default;
 
     // Apply heading
     const heading = document.getElementById('dynamic-heading');
     if (heading && client.heading) heading.textContent = client.heading;
-
-    // Apply logo
-    const logo = document.querySelector('.watermark');
-    if (logo && client.logo) {
-      logo.src = client.logo;
-      logo.alt = client.altText || 'ClarityBots Logo';
-    }
 
     // Apply background image
     if (client.background) {
@@ -112,8 +99,49 @@
         document.body.style.backgroundPosition = 'center';
         document.body.style.backgroundRepeat = 'no-repeat';
         document.body.style.backgroundAttachment = 'fixed';
-        document.body.classList.add('loaded'); // triggers fade-in
+        document.body.classList.add('loaded');
       };
+    }
+  </script>
+
+  <!-- Sixth Button Dynamic Behavior -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("meet-author-btn");
+      if (!btn || !window.clientConfig) return;
+
+      // Determine display name
+      let displayName = "the Author";
+      if (clientConfig.profile?.staticText) {
+        const firstSentence = clientConfig.profile.staticText.split(".")[0];
+        const match = firstSentence.match(/^[A-Z][a-z]+(\s[A-Z][a-z]+)?/);
+        if (match) displayName = match[0];
+      } else if (clientConfig.heading) {
+        displayName = clientConfig.heading.replace(/'s$/, "");
+      }
+
+      btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
+
+      // Click handler
+      btn.addEventListener("click", () => {
+        if (clientConfig.profile?.source === "static") {
+          sendProfileToChat(clientConfig.profile.staticText);
+        } else if (clientConfig.profile?.source === "linkedin") {
+          fetch(`/api/getLinkedInProfile?url=${encodeURIComponent(clientConfig.profile.linkedInUrl)}`)
+            .then(res => res.json())
+            .then(data => sendProfileToChat(data.profileText))
+            .catch(() => sendProfileToChat(clientConfig.profile.staticText));
+        }
+      });
+    });
+
+    function sendProfileToChat(profileText) {
+      const chatInput = document.getElementById("chat-input");
+      const sendButton = document.getElementById("send-button");
+      if (chatInput && sendButton) {
+        chatInput.value = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
+        sendButton.click();
+      }
     }
   </script>
 
