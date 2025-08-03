@@ -65,7 +65,7 @@
         <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank" rel="noopener">
           <i class="fas fa-book-open"></i> ClarityTrax™
         </a>
-        <!-- Sixth button updated -->
+        <!-- Sixth button -->
         <a id="meet-author-btn" class="button" href="javascript:void(0);">
           <i class="fas fa-flask"></i> Loading...
         </a>
@@ -106,7 +106,7 @@
 
   <!-- Sixth Button Dynamic Behavior -->
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener("load", () => {
       const btn = document.getElementById("meet-author-btn");
       if (!btn || !window.clientConfig) return;
 
@@ -120,6 +120,7 @@
         displayName = clientConfig.heading.replace(/'s$/, "");
       }
 
+      // Update label
       btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
 
       // Click handler
