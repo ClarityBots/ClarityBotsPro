@@ -81,7 +81,6 @@
   <!-- Background + Branding Loader -->
   <script type="module">
     import { clients } from './js/clientConfig.js';
-
     const subdomain = location.hostname.split('.')[0];
     const client = clients[subdomain] || clients.default;
 
@@ -104,34 +103,49 @@
     }
   </script>
 
-  <!-- Sixth Button Dynamic Behavior -->
+  <!-- Sixth Button Dynamic Behavior with Fallback -->
   <script>
     window.addEventListener("load", () => {
       const btn = document.getElementById("meet-author-btn");
-      if (!btn || !window.clientConfig) return;
+      if (!btn) return;
 
-      // Determine display name
-      let displayName = "the Author";
-      if (clientConfig.profile?.staticText) {
-        const firstSentence = clientConfig.profile.staticText.split(".")[0];
-        const match = firstSentence.match(/^[A-Z][a-z]+(\s[A-Z][a-z]+)?/);
-        if (match) displayName = match[0];
-      } else if (clientConfig.heading) {
-        displayName = clientConfig.heading.replace(/'s$/, "");
+      const fallbackUrl = "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author";
+      let cfg = window.clientConfig || null;
+
+      // If no config, just link to fallback ChatGPT
+      if (!cfg || !cfg.profile) {
+        btn.innerHTML = `<i class="fas fa-flask"></i> Meet the Creator`;
+        btn.href = fallbackUrl;
+        btn.target = "_blank";
+        btn.rel = "noopener";
+        return;
       }
 
-      // Update label
+      // Determine display name
+      let displayName = "the Creator";
+      if (cfg.profile.staticText) {
+        const firstSentence = cfg.profile.staticText.split(".")[0];
+        const match = firstSentence.match(/^[A-Z][a-z]+(\s[A-Z][a-z]+)?/);
+        if (match) displayName = match[0];
+      } else if (cfg.heading) {
+        displayName = cfg.heading.replace(/'s$/, "");
+      }
+
+      // Update button label
       btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
 
       // Click handler
       btn.addEventListener("click", () => {
-        if (clientConfig.profile?.source === "static") {
-          sendProfileToChat(clientConfig.profile.staticText);
-        } else if (clientConfig.profile?.source === "linkedin") {
-          fetch(`/api/getLinkedInProfile?url=${encodeURIComponent(clientConfig.profile.linkedInUrl)}`)
+        if (cfg.profile.source === "static") {
+          sendProfileToChat(cfg.profile.staticText);
+        } else if (cfg.profile.source === "linkedin" && cfg.profile.linkedInUrl) {
+          fetch(`/api/getLinkedInProfile?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`)
             .then(res => res.json())
             .then(data => sendProfileToChat(data.profileText))
-            .catch(() => sendProfileToChat(clientConfig.profile.staticText));
+            .catch(() => sendProfileToChat(cfg.profile.staticText || ""));
+        } else {
+          // If no valid profile, fallback to ChatGPT link
+          window.open(fallbackUrl, "_blank", "noopener");
         }
       });
     });
