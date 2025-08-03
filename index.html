@@ -1,130 +1,189 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="ClarityBots® | AI-enhanced EOS® Tools to Build SMART Rocks, Clarify Vision, and Lead with Traction." />
-  <meta name="theme-color" content="#142233" />
-  <meta property="og:title" content="ClarityBots® | AI Meets EOS®" />
-  <meta property="og:description" content="Build SMART Rocks, Clarify Vision, and Lead with Traction using AI-enhanced EOS® tools." />
-  <meta property="og:image" content="images/social_preview.jpg" />
-  <meta property="og:url" content="https://claritybots.ai/" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ClarityBots</title>
 
-  <title>ClarityBots® | Where AI and EOS® Converge</title>
-
-  <!-- Fonts, Icons, Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="icon" href="images/favicon.ico" />
   <link rel="stylesheet" href="styles.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    integrity="sha512-wYO1R3ptFzWcYQ8nYQNOi7HcRZcOEvTYFyC8zzONFvN2Edc9sDHxdLaL5OpbwlSvzjT2N8j7PSZcMhcU+Me2KQ=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
 
-  <!-- Fade Logic -->
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
   <style>
-    .bg-fade {
-      opacity: 0;
-      transition: opacity 1.5s ease-in-out;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f9fb;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
     }
 
-    .bg-fade.loaded {
-      opacity: 1;
+    #chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+
+    #chat-output {
+      flex: 1;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 12px;
+      overflow-y: auto;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    #chat-input {
+      width: 100%;
+      min-height: 60px;
+      resize: vertical;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    #send-button {
+      background-color: #F04E23;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    #send-button:hover {
+      background-color: #d8441f;
+    }
+
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px;
+      background: #142233;
+      border-top: 4px solid #F04E23;
+    }
+
+    .button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #445777;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .button:hover {
+      background: #36465d;
     }
   </style>
+
+  <script src="clientConfig.js"></script>
 </head>
 
-<body class="bg-fade">
-  <main>
-    <div class="overlay-panel">
-      <header>
-        <h1 id="dynamic-heading" class="animate-fadeInDown"></h1>
-        <h2>- ClarityBots® -</h2>
-        <h3>"Where AI and EOS® Converge"</h3>
-      </header>
-
-      <section class="button-container">
-        <a class="button" href="https://chatgpt.com/g/g-687bd0db062c8191912d6ad51220058c-ai-implementer-tm" target="_blank" rel="noopener">
-          <i class="fas fa-mountain"></i> ClarityRocks™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritybots-ids" target="_blank" rel="noopener">
-          <i class="fas fa-heart"></i> ClaritySolved™
-        </a> 
-        <a class="button" href="https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritybots-smart-scorecard" target="_blank" rel="noopener">
-          <i class="fas fa-chart-line"></i> ClarityScore™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-claritybots-core-values-clarifier" target="_blank" rel="noopener">
-          <i class="fas fa-heart"></i> ClarityValues™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank" rel="noopener">
-          <i class="fas fa-book-open"></i> ClarityTrax™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author" target="_blank" rel="noopener">
-          <i class="fas fa-flask"></i> Meet The ClarityBots® Creator
-        </a>
-      </section>
+<body>
+  <div id="chat-container">
+    <div id="chat-output">
+      <!-- Chat messages will appear here -->
     </div>
-  </main>
-  <!-- Hide the watermark
-  <div class="watermark-wrapper">
-    <img src="images/logo-default.png" alt="ClarityBots Watermark" class="watermark" loading="lazy" />
+
+    <textarea id="chat-input" placeholder="Type your message..."></textarea>
+    <button id="send-button">Send</button>
   </div>
-  -->
 
-  <footer class="footer">
-    <div>&copy; 2025 Business Intuition Incorporated</div>
-    <div>Powered by ClarityBots® • Informed by EOS®</div>
-  </footer>
+  <!-- Button bar -->
+  <section class="button-container">
+    <a class="button" href="https://chatgpt.com/g/g-687bd0db062c8191912d6ad51220058c-ai-implementer-tm" target="_blank" rel="noopener">
+      <i class="fas fa-mountain"></i> ClarityRocks™
+    </a>
+    <a class="button" href="https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritybots-ids" target="_blank" rel="noopener">
+      <i class="fas fa-heart"></i> ClaritySolved™
+    </a>
+    <a class="button" href="https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritybots-smart-scorecard" target="_blank" rel="noopener">
+      <i class="fas fa-chart-line"></i> ClarityScore™
+    </a>
+    <a class="button" href="https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-claritybots-core-values-clarifier" target="_blank" rel="noopener">
+      <i class="fas fa-heart"></i> ClarityValues™
+    </a>
+    <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank" rel="noopener">
+      <i class="fas fa-book-open"></i> ClarityTrax™
+    </a>
+    <!-- Sixth button now runs LinkedIn/profile logic -->
+    <a id="meet-author-btn" class="button" href="javascript:void(0);">
+      <i class="fas fa-flask"></i> Loading...
+    </a>
+  </section>
 
-  <!-- Background + Branding Loader -->
-  <script type="module">
-    import { clients } from './js/clientConfig.js';
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const meetAuthorBtn = document.getElementById("meet-author-btn");
 
-    const subdomain = location.hostname.split('.')[0];
-    const client = clients[subdomain] || clients.business_intuition;
+      // Dynamically set button label based on client profile
+      if (meetAuthorBtn && clientConfig && clientConfig.profile) {
+        // Try to extract a name from the staticText or LinkedIn URL
+        let displayName = "the Author";
+        if (clientConfig.profile.staticText) {
+          const firstSentence = clientConfig.profile.staticText.split(".")[0];
+          const nameMatch = firstSentence.match(/^[A-Z][a-z]+(\s[A-Z][a-z]+)?/);
+          if (nameMatch) displayName = nameMatch[0];
+        } else if (clientConfig.profile.linkedInUrl) {
+          const urlParts = clientConfig.profile.linkedInUrl.split("/");
+          const nameSlug = urlParts[urlParts.length - 2] || "";
+          if (nameSlug) {
+            displayName = nameSlug.replace(/-/g, " ");
+            displayName = displayName.replace(/\b\w/g, c => c.toUpperCase());
+          }
+        }
+        meetAuthorBtn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
+      }
 
-    console.log("🌐 Subdomain:", subdomain);
-    console.log("🎯 Client match:", client);
+      // Attach click event
+      if (meetAuthorBtn) {
+        meetAuthorBtn.addEventListener("click", handleReadProfile);
+      }
+    });
 
-    // Apply heading
-    const heading = document.getElementById('dynamic-heading');
-    if (heading && client.heading) heading.textContent = client.heading;
+    function handleReadProfile() {
+      if (clientConfig.profile.source === "static") {
+        sendProfileToChat(clientConfig.profile.staticText);
+      }
 
-    // Apply logo
-    const logo = document.querySelector('.watermark');
-    if (logo && client.logo) {
-      logo.src = client.logo;
-      logo.alt = client.altText || 'ClarityBots Logo';
+      if (clientConfig.profile.source === "linkedin") {
+        fetch(`/api/getLinkedInProfile?url=${encodeURIComponent(clientConfig.profile.linkedInUrl)}`)
+          .then(res => res.json())
+          .then(data => {
+            sendProfileToChat(data.profileText);
+          })
+          .catch(err => {
+            console.error("LinkedIn fetch failed:", err);
+            sendProfileToChat(clientConfig.profile.staticText);
+          });
+      }
     }
 
-    // Apply background image
-    if (client.background) {
-      const bg = new Image();
-      bg.src = client.background;
-      bg.onload = () => {
-        document.body.style.backgroundImage = `url('${client.background}')`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundRepeat = 'no-repeat';
-        document.body.style.backgroundAttachment = 'fixed';
-        document.body.classList.add('loaded'); // triggers fade-in
-      };
+    function sendProfileToChat(profileText) {
+      const chatInput = document.getElementById("chat-input");
+      const sendButton = document.getElementById("send-button");
+
+      if (chatInput && sendButton) {
+        chatInput.value = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
+        sendButton.click();
+      }
     }
   </script>
-
-  <script nomodule>
-    alert("This site requires a modern browser with JavaScript support.");
-  </script>
-
-  <noscript>
-    <div style="background-color: #f04e23; color: white; padding: 1rem; text-align: center;">
-      JavaScript is required to use this site. Please enable it in your browser settings.
-    </div>
-  </noscript>
 </body>
 </html>
