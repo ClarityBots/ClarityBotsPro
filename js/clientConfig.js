@@ -27,7 +27,7 @@ export const clients = {
     brandColor: "#F04E23",
     profile: {
       source: "linkedin",
-      linkedInUrl: "https://www.linkedin.com/in/kyle-fowles/",
+      linkedInUrl: "https://www.linkedin.com/in/kylefowles/",
       staticText: `Kyle Fowles is a Certified EOS Implementer®, Kolbe Certified Consultant, and Certified Outgrow Advisor. He has facilitated over 250 EOS Session Days, with a 9.5/10 client rating. Kyle helps entrepreneurial leadership teams gain clarity, accountability, and traction so they can grow with confidence.`
     }
   },
