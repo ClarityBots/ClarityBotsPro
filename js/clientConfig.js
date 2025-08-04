@@ -199,8 +199,6 @@ export const clients = {
       staticText: `Winward Electric offers professional electrical contracting services for residential, commercial, and industrial clients.`
     }
   },
-
-  // 🌐 Fallback configuration
   default: {
     heading: "ClarityBots",
     background: "images/default_image.jpg",
@@ -220,17 +218,31 @@ export const clients = {
 // -------------------------------
 // Improved subdomain detection
 // -------------------------------
-let hostParts = location.hostname.split(".");
+(function () {
+  let hostname = location.hostname.toLowerCase();
 
-// Remove "www" if present
-if (hostParts[0].toLowerCase() === "www") {
-  hostParts.shift();
-}
+  // Localhost or 127.x.x.x handling
+  if (hostname === "localhost" || hostname.startsWith("127.")) {
+    console.log("🛠 Local environment detected, using 'bi' profile for testing");
+    window.clientConfig = clients["bi"];
+    return;
+  }
 
-// First part is assumed to be subdomain
-let subdomain = hostParts[0]?.toLowerCase() || "";
+  // Get first part of hostname before dot
+  let subdomain = hostname.split(".")[0];
 
-console.log("🌐 Detected subdomain:", subdomain);
+  // Handle Netlify previews: bi--claritybots.netlify.app → "bi"
+  if (subdomain.includes("--")) {
+    subdomain = subdomain.split("--")[0];
+  }
 
-// Attach correct config to window
-window.clientConfig = clients[subdomain] || clients.default;
+  // Ensure lowercase
+  subdomain = subdomain.toLowerCase();
+
+  console.log("🌐 Detected subdomain:", subdomain);
+
+  // Assign correct client config or fallback
+  window.clientConfig = clients[subdomain] || clients.default;
+
+  console.log("📦 Loaded client config:", window.clientConfig.heading);
+})();
