@@ -108,9 +108,9 @@
       if (!btn) return;
 
       const cfg = window.clientConfig || null;
-      const baseChatGptUrl = "https://chatgpt.com/?q="; // universal GPT link
+      const baseChatGptUrl = "https://chatgpt.com/?q=";
 
-      // Label button
+      // Label button based on profile
       let displayName = "the Creator";
       if (cfg?.profile?.staticText) {
         const firstSentence = cfg.profile.staticText.split(".")[0];
@@ -121,27 +121,30 @@
       }
       btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
 
-      // Click handler
+      // Click handler: Always try LinkedIn first
       btn.addEventListener("click", async () => {
-        let profileText = cfg?.profile?.staticText || "Profile information not available.";
+        let profileText = "";
 
         if (cfg?.profile?.source === "linkedin" && cfg?.profile?.linkedInUrl) {
           try {
-            const res = await fetch(`/api/getLinkedInProfile?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`);
+            console.log("🔍 Fetching LinkedIn profile data...");
+            const res = await fetch(`/.netlify/functions/getLinkedInProfile?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`);
             if (res.ok) {
               const data = await res.json();
-              if (data?.profileText) {
+              if (data?.profileText && data.profileText.trim().length > 0) {
                 profileText = data.profileText;
-                console.log("✅ LinkedIn data fetched successfully");
-              } else {
-                console.warn("⚠️ LinkedIn data fetch returned no profile text");
+                console.log("✅ Using LinkedIn data");
               }
-            } else {
-              console.warn("⚠️ LinkedIn fetch failed, status:", res.status);
             }
           } catch (err) {
-            console.error("❌ LinkedIn fetch error:", err);
+            console.error("❌ Error fetching LinkedIn data:", err);
           }
+        }
+
+        // If LinkedIn data failed, use static text as fallback
+        if (!profileText) {
+          console.warn("⚠️ Falling back to static profile text");
+          profileText = cfg?.profile?.staticText || "Profile information not available.";
         }
 
         const prompt = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
