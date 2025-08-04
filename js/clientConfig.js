@@ -2,10 +2,12 @@
 
 console.log("✅ clientConfig.js is loaded");
 
+// -------------------------------
 // Full client definitions
+// -------------------------------
 export const clients = {
   alder: {
-    heading: "Alder Construction's",
+    heading: "Alder Construction",
     background: "images/alder_image.jpg",
     logo: "images/alder_logo.png",
     altText: "Alder Construction Logo",
@@ -19,7 +21,7 @@ export const clients = {
     }
   },
   bi: {
-    heading: "Business Intuition's",
+    heading: "Business Intuition",
     background: "images/business_intuition_image.jpg",
     logo: "images/business_intuition_logo.png",
     altText: "Business Intuition Logo",
@@ -33,7 +35,7 @@ export const clients = {
     }
   },
   cop: {
-    heading: "COP Construction's",
+    heading: "COP Construction",
     background: "images/cop_image.jpg",
     logo: "images/cop_logo.png",
     altText: "COP Construction Logo",
@@ -47,7 +49,7 @@ export const clients = {
     }
   },
   eosww: {
-    heading: "EOS Worldwide's",
+    heading: "EOS Worldwide",
     background: "images/eosww_image.png",
     logo: "images/eosww_logo.webp",
     altText: "EOS Worldwide Logo",
@@ -61,7 +63,7 @@ export const clients = {
     }
   },
   havenlight: {
-    heading: "Havenlight's",
+    heading: "Havenlight",
     background: "images/havenlight_image.jpg",
     logo: "images/havenlight_logo.png",
     altText: "Havenlight Logo",
@@ -75,7 +77,7 @@ export const clients = {
     }
   },
   lumos: {
-    heading: "Lumos'",
+    heading: "Lumos Painting Company",
     background: "images/lumos_image.webp",
     logo: "images/lumos_logo.png",
     altText: "Lumos Logo",
@@ -89,7 +91,7 @@ export const clients = {
     }
   },
   mark: {
-    heading: "Mark O'Donnell's",
+    heading: "Mark O'Donnell",
     background: "images/mark_image.png",
     logo: "images/mark_logo.png",
     altText: "Mark Logo",
@@ -103,7 +105,7 @@ export const clients = {
     }
   },
   ninety: {
-    heading: "Ninety's",
+    heading: "Ninety.io",
     background: "images/ninety_image.webp",
     logo: "images/ninety_logo.png",
     altText: "Ninety Logo",
@@ -117,7 +119,7 @@ export const clients = {
     }
   },
   overland: {
-    heading: "Overland Group's",
+    heading: "Overland Group",
     background: "images/overland_image.png",
     logo: "images/overland_logo.png",
     altText: "Overland Logo",
@@ -131,7 +133,7 @@ export const clients = {
     }
   },
   remedyww: {
-    heading: "Remedy World Wide's",
+    heading: "Remedy World Wide",
     background: "images/remedyww_image.jpg",
     logo: "images/remedyww_logo.png",
     altText: "Remedy World Wide Logo",
@@ -145,7 +147,7 @@ export const clients = {
     }
   },
   skyline: {
-    heading: "Skyline Electric Company's",
+    heading: "Skyline Electric Company",
     background: "images/skyline_image.png",
     logo: "images/skyline_logo.png",
     altText: "Skyline Electric Logo",
@@ -159,7 +161,7 @@ export const clients = {
     }
   },
   techplus: {
-    heading: "TechPlus's",
+    heading: "TechPlus",
     background: "images/techplus_image.png",
     logo: "images/techplus_logo.png",
     altText: "TechPlus Logo",
@@ -173,7 +175,7 @@ export const clients = {
     }
   },
   vlcm: {
-    heading: "VLCM's",
+    heading: "VLCM",
     background: "images/vlcm_image.jpg",
     logo: "images/vlcm_logo.svg",
     altText: "VLCM Logo",
@@ -187,7 +189,7 @@ export const clients = {
     }
   },
   winward: {
-    heading: "Winward Electric's",
+    heading: "Winward Electric",
     background: "images/winward_image.jpg",
     logo: "images/winward_logo.png",
     altText: "Winward Electric Logo",
@@ -216,6 +218,20 @@ export const clients = {
   }
 };
 
-// Attach active client to window so non-module scripts can see it
-const subdomain = location.hostname.split('.')[0];
+// -------------------------------
+// Improved subdomain detection
+// -------------------------------
+let hostParts = location.hostname.split(".");
+
+// Remove "www" if present
+if (hostParts[0].toLowerCase() === "www") {
+  hostParts.shift();
+}
+
+// First part is assumed to be subdomain
+let subdomain = hostParts[0]?.toLowerCase() || "";
+
+console.log("🌐 Detected subdomain:", subdomain);
+
+// Attach correct config to window
 window.clientConfig = clients[subdomain] || clients.default;
