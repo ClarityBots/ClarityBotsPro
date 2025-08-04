@@ -7,6 +7,7 @@ exports.handler = async (event) => {
     const { url } = event.queryStringParameters || {};
 
     if (!url) {
+      console.error("❌ Missing ?url parameter");
       return {
         statusCode: 400,
         body: JSON.stringify({ error: "Missing ?url parameter" }),
@@ -17,6 +18,7 @@ exports.handler = async (event) => {
     const agentId = process.env.PHANTOMBUSTER_AGENT_ID;
 
     if (!apiKey || !agentId) {
+      console.error("❌ Missing PhantomBuster credentials");
       return {
         statusCode: 500,
         body: JSON.stringify({ error: "Missing PhantomBuster credentials" }),
@@ -25,7 +27,7 @@ exports.handler = async (event) => {
 
     console.log("🚀 Launching PhantomBuster scrape for:", url);
 
-    // Launch PhantomBuster agent with LinkedIn URL
+    // Launch the Phantom
     const launchResponse = await fetch(
       "https://api.phantombuster.com/api/v2/agents/launch",
       {
@@ -37,7 +39,7 @@ exports.handler = async (event) => {
         body: JSON.stringify({
           id: agentId,
           argument: {
-            profileUrls: [url], // Send the LinkedIn URL dynamically
+            profileUrls: [url],
             numberOfProfiles: 1,
           },
         }),
@@ -45,20 +47,22 @@ exports.handler = async (event) => {
     );
 
     const launchData = await launchResponse.json();
-    console.log("📦 Launch response:", launchData);
+    console.log("📦 Launch response status:", launchResponse.status);
+    console.log("📦 Launch response body:", JSON.stringify(launchData, null, 2));
 
     if (!launchResponse.ok) {
+      console.error("❌ Launch failed:", launchData);
       throw new Error(`Phantom launch failed: ${launchData.error || "Unknown error"}`);
     }
 
-    // Polling logic
+    // Poll results
     let attempts = 0;
-    const maxAttempts = 6; // ~1 min total
-    const waitTime = 10000; // 10 sec between tries
+    const maxAttempts = 6;
+    const waitTime = 10000; // 10 seconds
     let profileText = "";
 
     while (attempts < maxAttempts) {
-      console.log(`⏳ Checking Phantom output (attempt ${attempts + 1}/${maxAttempts})...`);
+      console.log(`⏳ Checking Phantom output (attempt ${attempts + 1}/${maxAttempts})`);
 
       const resultResponse = await fetch(
         `https://api.phantombuster.com/api/v2/agents/fetch-output?id=${agentId}`,
@@ -71,20 +75,28 @@ exports.handler = async (event) => {
       );
 
       const resultData = await resultResponse.json();
+      console.log(`📦 Fetch-output status: ${resultResponse.status}`);
+      console.log(`📦 Fetch-output body: ${JSON.stringify(resultData, null, 2)}`);
 
       if (!resultResponse.ok) {
         console.error("⚠️ Error fetching Phantom output:", resultData);
       } else if (resultData?.output && resultData.output.length > 0) {
         const profileInfo = resultData.output[0];
+        console.log("✅ Raw profileInfo object:", JSON.stringify(profileInfo, null, 2));
+
         if (profileInfo?.profile?.summary) {
           profileText = profileInfo.profile.summary;
-          console.log("✅ Profile summary found!");
+          console.log("✅ Found profile.summary");
           break;
         } else if (profileInfo?.summary) {
           profileText = profileInfo.summary;
-          console.log("✅ Profile summary found!");
+          console.log("✅ Found summary");
           break;
+        } else {
+          console.warn("⚠️ No summary field found in this attempt.");
         }
+      } else {
+        console.warn("⚠️ Output empty this attempt.");
       }
 
       // Wait before next attempt
@@ -97,12 +109,14 @@ exports.handler = async (event) => {
       profileText = "Profile information not available.";
     }
 
+    console.log("🏁 Final profile text length:", profileText.length);
+
     return {
       statusCode: 200,
       body: JSON.stringify({ profileText }),
     };
   } catch (error) {
-    console.error("❌ Error in getLinkedInProfile:", error);
+    console.error("💥 Error in getLinkedInProfile:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
