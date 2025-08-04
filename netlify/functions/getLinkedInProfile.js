@@ -3,76 +3,105 @@ import fetch from "node-fetch";
 
 export async function handler(event) {
   try {
-    const apiKey = process.env.PHANTOMBUSTER_API_KEY;
-    const agentId = process.env.PHANTOMBUSTER_AGENT_ID;
+    const { url } = event.queryStringParameters;
 
-    if (!apiKey || !agentId) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          error: "Missing PHANTOMBUSTER_API_KEY or PHANTOMBUSTER_AGENT_ID in environment variables"
-        })
-      };
-    }
-
-    // Read LinkedIn URL from query string
-    const linkedInUrl = event.queryStringParameters.url;
-    if (!linkedInUrl) {
+    if (!url) {
       return {
         statusCode: 400,
         body: JSON.stringify({ error: "Missing LinkedIn URL" })
       };
     }
 
-    console.log(`🚀 Launching Phantom for LinkedIn URL: ${linkedInUrl}`);
+    // PhantomBuster credentials from Netlify env vars
+    const apiKey = process.env.PHANTOMBUSTER_API_KEY;
+    const agentId = process.env.PHANTOMBUSTER_AGENT_ID;
 
-    // Launch the PhantomBuster LinkedIn Profile Scraper with the provided URL
-    const launchUrl = `https://api.phantombuster.com/api/v2/agents/launch?id=${agentId}&argument=${encodeURIComponent(JSON.stringify({ profileUrl: linkedInUrl }))}`;
-    const launchResp = await fetch(launchUrl, {
-      method: "POST",
-      headers: { "X-Phantombuster-Key-1": apiKey }
-    });
-
-    if (!launchResp.ok) {
-      throw new Error(`Failed to launch Phantom: ${launchResp.statusText}`);
+    if (!apiKey || !agentId) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Missing PhantomBuster credentials" })
+      };
     }
 
-    const launchData = await launchResp.json();
-    console.log("✅ Phantom launch response:", launchData);
+    console.log(`🚀 Launching Phantom for LinkedIn URL: ${url}`);
 
-    // Wait briefly for PhantomBuster to finish
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    // Launch PhantomBuster Phantom with LinkedIn URL as input
+    const launchResponse = await fetch(
+      `https://api.phantombuster.com/api/v2/agents/launch?id=${agentId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Phantombuster-Key-1": apiKey
+        },
+        body: JSON.stringify({
+          argument: {
+            profileUrls: [url], // pass LinkedIn profile URL
+            numberOfProfiles: 1
+          }
+        })
+      }
+    );
 
-    // Fetch the output
-    const resultUrl = `https://api.phantombuster.com/api/v2/agents/fetch-output?id=${agentId}`;
-    const resultResp = await fetch(resultUrl, {
-      headers: { "X-Phantombuster-Key-1": apiKey }
-    });
+    const launchData = await launchResponse.json();
 
-    if (!resultResp.ok) {
-      throw new Error(`Failed to fetch Phantom results: ${resultResp.statusText}`);
+    if (!launchResponse.ok) {
+      console.error("❌ Phantom launch failed:", launchData);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Failed to launch Phantom" })
+      };
     }
 
-    const resultData = await resultResp.json();
-    console.log("📄 Phantom results:", resultData);
+    console.log("✅ Phantom launched successfully, getting output...");
 
-    // Extract name, headline, and summary if available
+    // Give Phantom a moment to process
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
+    // Fetch Phantom output
+    const outputResponse = await fetch(
+      `https://api.phantombuster.com/api/v2/agents/fetch-output?id=${agentId}`,
+      {
+        method: "GET",
+        headers: {
+          "X-Phantombuster-Key-1": apiKey
+        }
+      }
+    );
+
+    const outputData = await outputResponse.json();
+
+    if (!outputResponse.ok || !outputData?.output) {
+      console.error("⚠️ No output from Phantom:", outputData);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "No profile data found" })
+      };
+    }
+
+    // Extract profile text from Phantom output
     let profileText = "";
-    if (resultData?.output?.[0]?.name) profileText += `${resultData.output[0].name}. `;
-    if (resultData?.output?.[0]?.headline) profileText += `${resultData.output[0].headline}. `;
-    if (resultData?.output?.[0]?.summary) profileText += resultData.output[0].summary;
+    try {
+      const firstProfile = outputData.output[0];
+      if (firstProfile?.profile?.description) {
+        profileText = firstProfile.profile.description;
+      } else {
+        profileText = JSON.stringify(firstProfile, null, 2);
+      }
+    } catch (err) {
+      console.error("⚠️ Failed to parse Phantom output:", err);
+      profileText = "Profile data could not be parsed.";
+    }
 
-    // If nothing found, return empty to let front-end fall back
     return {
       statusCode: 200,
-      body: JSON.stringify({ profileText: profileText.trim() })
+      body: JSON.stringify({ profileText })
     };
-
-  } catch (err) {
-    console.error("❌ Error fetching LinkedIn profile:", err);
+  } catch (error) {
+    console.error("💥 Server error:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message })
+      body: JSON.stringify({ error: "Internal server error" })
     };
   }
 }
