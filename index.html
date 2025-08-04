@@ -36,7 +36,7 @@
     }
   </style>
 
-  <!-- Load full clientConfig -->
+  <!-- Load client configuration -->
   <script src="clientConfig.js"></script>
 </head>
 
@@ -84,11 +84,9 @@
     const subdomain = location.hostname.split('.')[0];
     const client = clients[subdomain] || clients.default;
 
-    // Apply heading
     const heading = document.getElementById('dynamic-heading');
     if (heading && client.heading) heading.textContent = client.heading;
 
-    // Apply background image
     if (client.background) {
       const bg = new Image();
       bg.src = client.background;
@@ -103,16 +101,16 @@
     }
   </script>
 
-  <!-- Sixth Button Dynamic Behavior -->
+  <!-- Sixth Button Logic -->
   <script>
     window.addEventListener("load", () => {
       const btn = document.getElementById("meet-author-btn");
       if (!btn) return;
 
-      const fallbackBase = "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author";
       const cfg = window.clientConfig || null;
+      const baseChatGptUrl = "https://chatgpt.com/?q="; // one universal GPT link
 
-      // Determine label
+      // Label button
       let displayName = "the Creator";
       if (cfg?.profile?.staticText) {
         const firstSentence = cfg.profile.staticText.split(".")[0];
@@ -123,21 +121,21 @@
       }
       btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
 
-      // Click handler: always does something
+      // Click handler
       btn.addEventListener("click", () => {
         const chatInput = document.getElementById("chat-input");
         const sendButton = document.getElementById("send-button");
+        const profileText = cfg?.profile?.staticText || "Profile information not available.";
 
-        if (chatInput && sendButton && cfg?.profile?.staticText) {
-          // Inside chat UI → send directly
-          chatInput.value = `Here is my profile:\n${cfg.profile.staticText}\n\nPlease introduce me to the user in a warm, concise way.`;
+        const prompt = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
+
+        if (chatInput && sendButton) {
+          // Inside chat UI
+          chatInput.value = prompt;
           sendButton.click();
         } else {
-          // Landing page → open ChatGPT with pre-filled profile
-          const profileText = cfg?.profile?.staticText || "";
-          const prefillPrompt = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
-          const chatUrl = `${fallbackBase}?q=${encodeURIComponent(prefillPrompt)}`;
-          window.open(chatUrl, "_blank", "noopener");
+          // Landing page → open ChatGPT with pre-filled message
+          window.open(baseChatGptUrl + encodeURIComponent(prompt), "_blank", "noopener");
         }
       });
     });
