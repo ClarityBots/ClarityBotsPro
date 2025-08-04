@@ -4,8 +4,8 @@ const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
-    // Require ?url= query parameter
     const { url } = event.queryStringParameters || {};
+
     if (!url) {
       return {
         statusCode: 400,
@@ -13,21 +13,31 @@ exports.handler = async (event) => {
       };
     }
 
+    const apiKey = process.env.PHANTOMBUSTER_API_KEY;
+    const agentId = process.env.PHANTOMBUSTER_AGENT_ID;
+
+    if (!apiKey || !agentId) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Missing PhantomBuster credentials" }),
+      };
+    }
+
     console.log("🚀 Launching PhantomBuster scrape for:", url);
 
-    // Launch the Phantom with the provided LinkedIn URL
+    // Launch PhantomBuster agent with LinkedIn URL
     const launchResponse = await fetch(
       "https://api.phantombuster.com/api/v2/agents/launch",
       {
         method: "POST",
         headers: {
-          "X-Phantombuster-Key-1": process.env.PHANTOMBUSTER_API_KEY,
+          "X-Phantombuster-Key-1": apiKey,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: process.env.PHANTOMBUSTER_AGENT_ID,
+          id: agentId,
           argument: {
-            profileUrls: [url], // 👈 Passes the LinkedIn URL dynamically
+            profileUrls: [url], // Send the LinkedIn URL dynamically
             numberOfProfiles: 1,
           },
         }),
@@ -35,46 +45,56 @@ exports.handler = async (event) => {
     );
 
     const launchData = await launchResponse.json();
-    console.log("Phantom launch response:", launchData);
+    console.log("📦 Launch response:", launchData);
 
     if (!launchResponse.ok) {
       throw new Error(`Phantom launch failed: ${launchData.error || "Unknown error"}`);
     }
 
-    // Wait a short period for Phantom to complete (tune as needed)
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    // Polling logic
+    let attempts = 0;
+    const maxAttempts = 6; // ~1 min total
+    const waitTime = 10000; // 10 sec between tries
+    let profileText = "";
 
-    // Fetch the most recent results from the Phantom
-    const resultResponse = await fetch(
-      `https://api.phantombuster.com/api/v2/agents/fetch-output?id=${process.env.PHANTOMBUSTER_AGENT_ID}`,
-      {
-        method: "GET",
-        headers: {
-          "X-Phantombuster-Key-1": process.env.PHANTOMBUSTER_API_KEY,
-        },
+    while (attempts < maxAttempts) {
+      console.log(`⏳ Checking Phantom output (attempt ${attempts + 1}/${maxAttempts})...`);
+
+      const resultResponse = await fetch(
+        `https://api.phantombuster.com/api/v2/agents/fetch-output?id=${agentId}`,
+        {
+          method: "GET",
+          headers: {
+            "X-Phantombuster-Key-1": apiKey,
+          },
+        }
+      );
+
+      const resultData = await resultResponse.json();
+
+      if (!resultResponse.ok) {
+        console.error("⚠️ Error fetching Phantom output:", resultData);
+      } else if (resultData?.output && resultData.output.length > 0) {
+        const profileInfo = resultData.output[0];
+        if (profileInfo?.profile?.summary) {
+          profileText = profileInfo.profile.summary;
+          console.log("✅ Profile summary found!");
+          break;
+        } else if (profileInfo?.summary) {
+          profileText = profileInfo.summary;
+          console.log("✅ Profile summary found!");
+          break;
+        }
       }
-    );
 
-    const resultData = await resultResponse.json();
-    console.log("Phantom result data:", resultData);
-
-    if (!resultResponse.ok) {
-      throw new Error(`Failed to fetch Phantom output: ${resultData.error || "Unknown error"}`);
+      // Wait before next attempt
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
+      attempts++;
     }
 
-    // Extract profile text from Phantom results
-    let profileText = "";
-    if (resultData && resultData.output && resultData.output.length > 0) {
-      const profileInfo = resultData.output[0];
-      if (profileInfo && profileInfo.profile && profileInfo.profile.summary) {
-        profileText = profileInfo.profile.summary;
-      } else if (profileInfo.summary) {
-        profileText = profileInfo.summary;
-      } else {
-        profileText = JSON.stringify(profileInfo, null, 2);
-      }
-    } else {
-      profileText = "No profile data found.";
+    if (!profileText) {
+      console.warn("⚠️ No LinkedIn profile text found after retries. Falling back.");
+      profileText = "Profile information not available.";
     }
 
     return {
