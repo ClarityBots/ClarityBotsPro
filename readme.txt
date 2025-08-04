@@ -1,4 +1,4 @@
-# ClarityBots Gold Standard Backup – v2.6.0
+# ClarityBots Gold Standard Backup – February 2025
 
 ## Contents
 1. index.html – Working production version with:
