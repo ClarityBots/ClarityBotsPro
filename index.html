@@ -103,61 +103,44 @@
     }
   </script>
 
-  <!-- Sixth Button Dynamic Behavior with Fallback -->
+  <!-- Sixth Button Dynamic Behavior -->
   <script>
     window.addEventListener("load", () => {
       const btn = document.getElementById("meet-author-btn");
       if (!btn) return;
 
-      const fallbackUrl = "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author";
-      let cfg = window.clientConfig || null;
+      const fallbackBase = "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author";
+      const cfg = window.clientConfig || null;
 
-      // If no config, just link to fallback ChatGPT
-      if (!cfg || !cfg.profile) {
-        btn.innerHTML = `<i class="fas fa-flask"></i> Meet the Creator`;
-        btn.href = fallbackUrl;
-        btn.target = "_blank";
-        btn.rel = "noopener";
-        return;
-      }
-
-      // Determine display name
+      // Determine label
       let displayName = "the Creator";
-      if (cfg.profile.staticText) {
+      if (cfg?.profile?.staticText) {
         const firstSentence = cfg.profile.staticText.split(".")[0];
         const match = firstSentence.match(/^[A-Z][a-z]+(\s[A-Z][a-z]+)?/);
         if (match) displayName = match[0];
-      } else if (cfg.heading) {
+      } else if (cfg?.heading) {
         displayName = cfg.heading.replace(/'s$/, "");
       }
-
-      // Update button label
       btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
 
-      // Click handler
+      // Click handler: always does something
       btn.addEventListener("click", () => {
-        if (cfg.profile.source === "static") {
-          sendProfileToChat(cfg.profile.staticText);
-        } else if (cfg.profile.source === "linkedin" && cfg.profile.linkedInUrl) {
-          fetch(`/api/getLinkedInProfile?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`)
-            .then(res => res.json())
-            .then(data => sendProfileToChat(data.profileText))
-            .catch(() => sendProfileToChat(cfg.profile.staticText || ""));
+        const chatInput = document.getElementById("chat-input");
+        const sendButton = document.getElementById("send-button");
+
+        if (chatInput && sendButton && cfg?.profile?.staticText) {
+          // Inside chat UI → send directly
+          chatInput.value = `Here is my profile:\n${cfg.profile.staticText}\n\nPlease introduce me to the user in a warm, concise way.`;
+          sendButton.click();
         } else {
-          // If no valid profile, fallback to ChatGPT link
-          window.open(fallbackUrl, "_blank", "noopener");
+          // Landing page → open ChatGPT with pre-filled profile
+          const profileText = cfg?.profile?.staticText || "";
+          const prefillPrompt = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
+          const chatUrl = `${fallbackBase}?q=${encodeURIComponent(prefillPrompt)}`;
+          window.open(chatUrl, "_blank", "noopener");
         }
       });
     });
-
-    function sendProfileToChat(profileText) {
-      const chatInput = document.getElementById("chat-input");
-      const sendButton = document.getElementById("send-button");
-      if (chatInput && sendButton) {
-        chatInput.value = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
-        sendButton.click();
-      }
-    }
   </script>
 
   <script nomodule>
