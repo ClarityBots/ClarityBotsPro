@@ -107,10 +107,7 @@
       const btn = document.getElementById("meet-author-btn");
       if (!btn) return;
 
-      const cfg = window.clientConfig || null;
-      const baseChatGptUrl = "https://chatgpt.com/?q=";
-
-      // Label button based on profile
+      const cfg = window.clientConfig || {};
       let displayName = "the Creator";
       if (cfg?.profile?.staticText) {
         const firstSentence = cfg.profile.staticText.split(".")[0];
@@ -121,34 +118,29 @@
       }
       btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
 
-      // Click handler: Always try LinkedIn first
       btn.addEventListener("click", async () => {
-        let profileText = "";
+        let profileText = cfg?.profile?.staticText || "Profile information not available.";
 
         if (cfg?.profile?.source === "linkedin" && cfg?.profile?.linkedInUrl) {
           try {
-            console.log("🔍 Fetching LinkedIn profile data...");
+            // Use correct Netlify function path
             const res = await fetch(`/.netlify/functions/getLinkedInProfile?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`);
             if (res.ok) {
               const data = await res.json();
-              if (data?.profileText && data.profileText.trim().length > 0) {
+              if (data?.profileText && !/Profile information not available/i.test(data.profileText)) {
                 profileText = data.profileText;
-                console.log("✅ Using LinkedIn data");
+              } else {
+                console.warn("⚠️ LinkedIn data unavailable, falling back to static text.");
               }
+            } else {
+              console.warn("⚠️ LinkedIn fetch failed:", res.status);
             }
           } catch (err) {
-            console.error("❌ Error fetching LinkedIn data:", err);
+            console.error("❌ LinkedIn fetch error:", err);
           }
         }
 
-        // If LinkedIn data failed, use static text as fallback
-        if (!profileText) {
-          console.warn("⚠️ Falling back to static profile text");
-          profileText = cfg?.profile?.staticText || "Profile information not available.";
-        }
-
         const prompt = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
-
         const chatInput = document.getElementById("chat-input");
         const sendButton = document.getElementById("send-button");
 
@@ -156,7 +148,7 @@
           chatInput.value = prompt;
           sendButton.click();
         } else {
-          window.open(baseChatGptUrl + encodeURIComponent(prompt), "_blank", "noopener");
+          window.open("https://chatgpt.com/?q=" + encodeURIComponent(prompt), "_blank", "noopener");
         }
       });
     });
