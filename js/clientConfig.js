@@ -2,9 +2,6 @@
 
 console.log("✅ clientConfig.js is loaded");
 
-// -------------------------------
-// Full client definitions
-// -------------------------------
 export const clients = {
   alder: {
     heading: "Alder Construction",
@@ -29,7 +26,7 @@ export const clients = {
     basePath: "images/",
     brandColor: "#F04E23",
     profile: {
-      source: "static",
+      source: "linkedin",
       linkedInUrl: "https://www.linkedin.com/in/kyle-fowles/",
       staticText: `Kyle Fowles is a Certified EOS Implementer®, Kolbe Certified Consultant, and Certified Outgrow Advisor. He has facilitated over 250 EOS Session Days, with a 9.5/10 client rating. Kyle helps entrepreneurial leadership teams gain clarity, accountability, and traction so they can grow with confidence.`
     }
@@ -77,7 +74,7 @@ export const clients = {
     }
   },
   lumos: {
-    heading: "Lumos Painting Company",
+    heading: "Lumos",
     background: "images/lumos_image.webp",
     logo: "images/lumos_logo.png",
     altText: "Lumos Logo",
@@ -85,8 +82,8 @@ export const clients = {
     basePath: "images/",
     brandColor: "#A9B7C6",
     profile: {
-      source: "static",
-      linkedInUrl: "https://www.linkedin.com/in/dan-example/",
+      source: "linkedin",
+      linkedInUrl: "https://www.linkedin.com/in/kylefowles/",
       staticText: `Dan Smith is the founder of Lumos Consulting, specializing in leadership alignment, growth strategy, and operational excellence. He works with executive teams to break through plateaus, align their vision, and reach their highest potential.`
     }
   },
@@ -202,6 +199,8 @@ export const clients = {
       staticText: `Winward Electric offers professional electrical contracting services for residential, commercial, and industrial clients.`
     }
   },
+
+  // 🌐 Fallback configuration
   default: {
     heading: "ClarityBots",
     background: "images/default_image.jpg",

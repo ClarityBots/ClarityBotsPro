@@ -108,7 +108,7 @@
       if (!btn) return;
 
       const cfg = window.clientConfig || null;
-      const baseChatGptUrl = "https://chatgpt.com/?q="; // one universal GPT link
+      const baseChatGptUrl = "https://chatgpt.com/?q="; // universal GPT link
 
       // Label button
       let displayName = "the Creator";
@@ -122,19 +122,37 @@
       btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
 
       // Click handler
-      btn.addEventListener("click", () => {
-        const chatInput = document.getElementById("chat-input");
-        const sendButton = document.getElementById("send-button");
-        const profileText = cfg?.profile?.staticText || "Profile information not available.";
+      btn.addEventListener("click", async () => {
+        let profileText = cfg?.profile?.staticText || "Profile information not available.";
+
+        if (cfg?.profile?.source === "linkedin" && cfg?.profile?.linkedInUrl) {
+          try {
+            const res = await fetch(`/api/getLinkedInProfile?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`);
+            if (res.ok) {
+              const data = await res.json();
+              if (data?.profileText) {
+                profileText = data.profileText;
+                console.log("✅ LinkedIn data fetched successfully");
+              } else {
+                console.warn("⚠️ LinkedIn data fetch returned no profile text");
+              }
+            } else {
+              console.warn("⚠️ LinkedIn fetch failed, status:", res.status);
+            }
+          } catch (err) {
+            console.error("❌ LinkedIn fetch error:", err);
+          }
+        }
 
         const prompt = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
 
+        const chatInput = document.getElementById("chat-input");
+        const sendButton = document.getElementById("send-button");
+
         if (chatInput && sendButton) {
-          // Inside chat UI
           chatInput.value = prompt;
           sendButton.click();
         } else {
-          // Landing page → open ChatGPT with pre-filled message
           window.open(baseChatGptUrl + encodeURIComponent(prompt), "_blank", "noopener");
         }
       });
