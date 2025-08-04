@@ -1,107 +1,91 @@
 // netlify/functions/getLinkedInProfile.js
-import fetch from "node-fetch";
 
-export async function handler(event) {
+const fetch = require("node-fetch");
+
+exports.handler = async (event) => {
   try {
-    const { url } = event.queryStringParameters;
-
+    // Require ?url= query parameter
+    const { url } = event.queryStringParameters || {};
     if (!url) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: "Missing LinkedIn URL" })
+        body: JSON.stringify({ error: "Missing ?url parameter" }),
       };
     }
 
-    // PhantomBuster credentials from Netlify env vars
-    const apiKey = process.env.PHANTOMBUSTER_API_KEY;
-    const agentId = process.env.PHANTOMBUSTER_AGENT_ID;
+    console.log("🚀 Launching PhantomBuster scrape for:", url);
 
-    if (!apiKey || !agentId) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "Missing PhantomBuster credentials" })
-      };
-    }
-
-    console.log(`🚀 Launching Phantom for LinkedIn URL: ${url}`);
-
-    // Launch PhantomBuster Phantom with LinkedIn URL as input
+    // Launch the Phantom with the provided LinkedIn URL
     const launchResponse = await fetch(
-      `https://api.phantombuster.com/api/v2/agents/launch?id=${agentId}`,
+      "https://api.phantombuster.com/api/v2/agents/launch",
       {
         method: "POST",
         headers: {
+          "X-Phantombuster-Key-1": process.env.PHANTOMBUSTER_API_KEY,
           "Content-Type": "application/json",
-          "X-Phantombuster-Key-1": apiKey
         },
         body: JSON.stringify({
+          id: process.env.PHANTOMBUSTER_AGENT_ID,
           argument: {
-            profileUrls: [url], // pass LinkedIn profile URL
-            numberOfProfiles: 1
-          }
-        })
+            profileUrls: [url], // 👈 Passes the LinkedIn URL dynamically
+            numberOfProfiles: 1,
+          },
+        }),
       }
     );
 
     const launchData = await launchResponse.json();
+    console.log("Phantom launch response:", launchData);
 
     if (!launchResponse.ok) {
-      console.error("❌ Phantom launch failed:", launchData);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "Failed to launch Phantom" })
-      };
+      throw new Error(`Phantom launch failed: ${launchData.error || "Unknown error"}`);
     }
 
-    console.log("✅ Phantom launched successfully, getting output...");
+    // Wait a short period for Phantom to complete (tune as needed)
+    await new Promise((resolve) => setTimeout(resolve, 10000));
 
-    // Give Phantom a moment to process
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-
-    // Fetch Phantom output
-    const outputResponse = await fetch(
-      `https://api.phantombuster.com/api/v2/agents/fetch-output?id=${agentId}`,
+    // Fetch the most recent results from the Phantom
+    const resultResponse = await fetch(
+      `https://api.phantombuster.com/api/v2/agents/fetch-output?id=${process.env.PHANTOMBUSTER_AGENT_ID}`,
       {
         method: "GET",
         headers: {
-          "X-Phantombuster-Key-1": apiKey
-        }
+          "X-Phantombuster-Key-1": process.env.PHANTOMBUSTER_API_KEY,
+        },
       }
     );
 
-    const outputData = await outputResponse.json();
+    const resultData = await resultResponse.json();
+    console.log("Phantom result data:", resultData);
 
-    if (!outputResponse.ok || !outputData?.output) {
-      console.error("⚠️ No output from Phantom:", outputData);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "No profile data found" })
-      };
+    if (!resultResponse.ok) {
+      throw new Error(`Failed to fetch Phantom output: ${resultData.error || "Unknown error"}`);
     }
 
-    // Extract profile text from Phantom output
+    // Extract profile text from Phantom results
     let profileText = "";
-    try {
-      const firstProfile = outputData.output[0];
-      if (firstProfile?.profile?.description) {
-        profileText = firstProfile.profile.description;
+    if (resultData && resultData.output && resultData.output.length > 0) {
+      const profileInfo = resultData.output[0];
+      if (profileInfo && profileInfo.profile && profileInfo.profile.summary) {
+        profileText = profileInfo.profile.summary;
+      } else if (profileInfo.summary) {
+        profileText = profileInfo.summary;
       } else {
-        profileText = JSON.stringify(firstProfile, null, 2);
+        profileText = JSON.stringify(profileInfo, null, 2);
       }
-    } catch (err) {
-      console.error("⚠️ Failed to parse Phantom output:", err);
-      profileText = "Profile data could not be parsed.";
+    } else {
+      profileText = "No profile data found.";
     }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ profileText })
+      body: JSON.stringify({ profileText }),
     };
   } catch (error) {
-    console.error("💥 Server error:", error);
+    console.error("❌ Error in getLinkedInProfile:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Internal server error" })
+      body: JSON.stringify({ error: error.message }),
     };
   }
-}
+};
