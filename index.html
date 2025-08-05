@@ -34,14 +34,26 @@
     .bg-fade.loaded {
       opacity: 1;
     }
+
+    /* Navy countdown box styling */
     #loading-message {
       display: none;
       padding: 1rem;
       text-align: center;
-      background: #f0f0f0;
+      background: rgba(20, 34, 51, 0.95); /* brand navy */
+      color: #FFFFFF;
       border-radius: 8px;
       margin-top: 1rem;
       font-weight: 600;
+      font-size: 1rem;
+      animation: pulseFade 1.5s infinite ease-in-out;
+    }
+
+    /* Pulse animation */
+    @keyframes pulseFade {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(1.02); }
+      100% { opacity: 1; transform: scale(1); }
     }
   </style>
 
@@ -80,9 +92,8 @@
         </a>
       </section>
 
-      <div id="loading-message">
-        <i class="fas fa-spinner fa-spin"></i> Fetching LinkedIn profile… please wait…
-      </div>
+      <!-- Countdown / Loading message -->
+      <div id="loading-message">⏳ Fetching LinkedIn profile… please wait…</div>
     </div>
   </main>
 
@@ -118,7 +129,7 @@
   <script>
     window.addEventListener("load", () => {
       const btn = document.getElementById("meet-author-btn");
-      const loadingMsg = document.getElementById("loading-message");
+      const loadingMessage = document.getElementById("loading-message");
       if (!btn) return;
 
       const cfg = window.clientConfig || {};
@@ -133,11 +144,16 @@
       btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
 
       btn.addEventListener("click", async () => {
-        loadingMsg.style.display = "block";
         let profileText = cfg?.profile?.staticText || "Profile information not available.";
 
         if (cfg?.profile?.source === "linkedin" && cfg?.profile?.linkedInUrl) {
           try {
+            // Show loading countdown box
+            loadingMessage.style.display = "block";
+
+            // Wait before fetch to simulate scrape time
+            await new Promise(resolve => setTimeout(resolve, 30000));
+
             const res = await fetch(`/.netlify/functions/getLinkedInProfile?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`);
             if (res.ok) {
               const data = await res.json();
@@ -151,12 +167,21 @@
             }
           } catch (err) {
             console.error("❌ LinkedIn fetch error:", err);
+          } finally {
+            loadingMessage.style.display = "none";
           }
         }
 
-        loadingMsg.style.display = "none";
         const prompt = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
-        window.open("https://chatgpt.com/?q=" + encodeURIComponent(prompt), "_blank", "noopener");
+        const chatInput = document.getElementById("chat-input");
+        const sendButton = document.getElementById("send-button");
+
+        if (chatInput && sendButton) {
+          chatInput.value = prompt;
+          sendButton.click();
+        } else {
+          window.open("https://chatgpt.com/?q=" + encodeURIComponent(prompt), "_blank", "noopener");
+        }
       });
     });
   </script>
