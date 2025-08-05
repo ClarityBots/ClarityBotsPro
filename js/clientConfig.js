@@ -2,6 +2,9 @@
 
 console.log("✅ clientConfig.js is loaded");
 
+// -------------------------------
+// Full client definitions
+// -------------------------------
 export const clients = {
   alder: {
     heading: "Alder Construction",
@@ -11,6 +14,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#445777",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=alder",
     profile: {
       source: "static",
       linkedInUrl: "",
@@ -25,6 +29,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#F04E23",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=bi",
     profile: {
       source: "linkedin",
       linkedInUrl: "https://www.linkedin.com/in/kylefowles/",
@@ -39,6 +44,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#6C7C90",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=cop",
     profile: {
       source: "static",
       linkedInUrl: "",
@@ -53,6 +59,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#6C7C90",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=eosww",
     profile: {
       source: "static",
       linkedInUrl: "https://www.linkedin.com/company/eos-worldwide/",
@@ -67,6 +74,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#A9B7C6",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=havenlight",
     profile: {
       source: "static",
       linkedInUrl: "",
@@ -74,13 +82,14 @@ export const clients = {
     }
   },
   lumos: {
-    heading: "Lumos",
+    heading: "Lumos Painting",
     background: "images/lumos_image.webp",
     logo: "images/lumos_logo.png",
     altText: "Lumos Logo",
     preloadImage: true,
     basePath: "images/",
     brandColor: "#A9B7C6",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=lumos",
     profile: {
       source: "linkedin",
       linkedInUrl: "https://www.linkedin.com/in/kylefowles/",
@@ -95,6 +104,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#A9B7C6",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=mark",
     profile: {
       source: "static",
       linkedInUrl: "https://www.linkedin.com/in/markodonnell-eosworldwide/",
@@ -109,6 +119,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#A9B7C6",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=ninety",
     profile: {
       source: "static",
       linkedInUrl: "https://www.linkedin.com/company/ninety-io/",
@@ -123,6 +134,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#A9B7C6",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=overland",
     profile: {
       source: "static",
       linkedInUrl: "",
@@ -137,6 +149,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#A9B7C6",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=remedyww",
     profile: {
       source: "static",
       linkedInUrl: "",
@@ -151,6 +164,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#FBBF24",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=skyline",
     profile: {
       source: "static",
       linkedInUrl: "",
@@ -165,6 +179,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#FBBF24",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=techplus",
     profile: {
       source: "static",
       linkedInUrl: "",
@@ -179,6 +194,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#28A745",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=vlcm",
     profile: {
       source: "static",
       linkedInUrl: "",
@@ -193,6 +209,7 @@ export const clients = {
     preloadImage: true,
     basePath: "images/",
     brandColor: "#9C27B0",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=winward",
     profile: {
       source: "static",
       linkedInUrl: "",
@@ -207,6 +224,7 @@ export const clients = {
     preloadImage: false,
     basePath: "images/",
     brandColor: "#FF7900",
+    gptUrl: "https://chatgpt.com/g/g-YOUR-SINGLE-GPT-ID?q=default",
     profile: {
       source: "static",
       linkedInUrl: "",
@@ -221,28 +239,19 @@ export const clients = {
 (function () {
   let hostname = location.hostname.toLowerCase();
 
-  // Localhost or 127.x.x.x handling
   if (hostname === "localhost" || hostname.startsWith("127.")) {
     console.log("🛠 Local environment detected, using 'bi' profile for testing");
     window.clientConfig = clients["bi"];
     return;
   }
 
-  // Get first part of hostname before dot
   let subdomain = hostname.split(".")[0];
-
-  // Handle Netlify previews: bi--claritybots.netlify.app → "bi"
   if (subdomain.includes("--")) {
     subdomain = subdomain.split("--")[0];
   }
-
-  // Ensure lowercase
   subdomain = subdomain.toLowerCase();
 
   console.log("🌐 Detected subdomain:", subdomain);
-
-  // Assign correct client config or fallback
   window.clientConfig = clients[subdomain] || clients.default;
-
   console.log("📦 Loaded client config:", window.clientConfig.heading);
 })();
