@@ -38,6 +38,18 @@
 
   <!-- Load client configuration -->
   <script src="js/clientConfig.js"></script>
+
+  <!-- Fallback default config if clientConfig.js fails -->
+  <script>
+    if (!window.clientConfig) {
+      console.warn("⚠️ No clientConfig detected — using default fallback.");
+      window.clientConfig = {
+        heading: "ClarityBots",
+        background: "images/default_image.jpg",
+        gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author"
+      };
+    }
+  </script>
 </head>
 
 <body class="bg-fade">
@@ -78,34 +90,44 @@
     <div>Powered by ClarityBots® • Informed by EOS®</div>
   </footer>
 
-  <!-- Background + Branding Loader -->
+  <!-- Background + Sixth Button Loader -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const cfg = window.clientConfig || {};
-      const heading = document.getElementById('dynamic-heading');
+      try {
+        const cfg = window.clientConfig || {};
+        const heading = document.getElementById('dynamic-heading');
 
-      // Apply heading
-      if (heading && cfg.heading) heading.textContent = cfg.heading;
+        // Apply heading safely
+        if (heading && cfg.heading) heading.textContent = cfg.heading;
 
-      // Apply background image
-      if (cfg.background) {
-        const bg = new Image();
-        bg.src = cfg.background;
-        bg.onload = () => {
-          document.body.style.backgroundImage = `url('${cfg.background}')`;
-          document.body.style.backgroundSize = 'cover';
-          document.body.style.backgroundPosition = 'center';
-          document.body.style.backgroundRepeat = 'no-repeat';
-          document.body.style.backgroundAttachment = 'fixed';
-          document.body.classList.add('loaded');
-        };
-      }
+        // Apply background safely
+        if (cfg.background) {
+          const bg = new Image();
+          bg.src = cfg.background;
+          bg.onload = () => {
+            document.body.style.backgroundImage = `url('${cfg.background}')`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.style.backgroundAttachment = 'fixed';
+            document.body.classList.add('loaded');
+          };
+        } else {
+          document.body.classList.add('loaded'); // Avoid blank screen if no background
+        }
 
-      // Sixth button setup
-      const btn = document.getElementById("meet-author-btn");
-      if (btn && cfg.gptUrl) {
-        btn.href = cfg.gptUrl;
-        btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${cfg.heading.replace(/'s$/, "")}`;
+        // Sixth button logic
+        const btn = document.getElementById("meet-author-btn");
+        if (btn && cfg.gptUrl) {
+          btn.href = cfg.gptUrl;
+          btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${cfg.heading?.replace(/'s$/, "") || "the Creator"}`;
+        } else if (btn) {
+          btn.textContent = "Profile Unavailable";
+          btn.removeAttribute("href");
+        }
+      } catch (err) {
+        console.error("❌ Error loading dynamic content:", err);
+        document.body.classList.add('loaded'); // Always load page even if script fails
       }
     });
   </script>
