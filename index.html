@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
 
-  <script src="clientConfig.js"></script>
+  <script src="js/clientConfig.js"></script>
 </head>
 <body class="bg-fade">
   <main>
@@ -31,19 +31,19 @@
       </header>
 
       <section class="button-container">
-        <a class="button" href="https://chatgpt.com/g/g-687bd0db062c8191912d6ad51220058c-ai-implementer-tm" target="_blank">
+        <a class="button" href="https://chat.openai.com/?q=ClarityRocks" target="_blank" rel="noopener">
           <i class="fas fa-mountain"></i> ClarityRocks™
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritybots-ids" target="_blank">
+        <a class="button" href="https://chat.openai.com/?q=ClaritySolved" target="_blank" rel="noopener">
           <i class="fas fa-heart"></i> ClaritySolved™
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritybots-smart-scorecard" target="_blank">
+        <a class="button" href="https://chat.openai.com/?q=ClarityScore" target="_blank" rel="noopener">
           <i class="fas fa-chart-line"></i> ClarityScore™
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-claritybots-core-values-clarifier" target="_blank">
+        <a class="button" href="https://chat.openai.com/?q=ClarityValues" target="_blank" rel="noopener">
           <i class="fas fa-heart"></i> ClarityValues™
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank">
+        <a class="button" href="https://chat.openai.com/?q=ClarityTrax" target="_blank" rel="noopener">
           <i class="fas fa-book-open"></i> ClarityTrax™
         </a>
         <a id="meet-author-btn" class="button" href="javascript:void(0);">
@@ -60,7 +60,7 @@
 
   <script type="module">
     import { clients } from './js/clientConfig.js';
-    const subdomain = location.hostname.split('.')[0];
+    const subdomain = location.hostname.split('.')[0].toLowerCase();
     const client = clients[subdomain] || clients.default;
     document.getElementById('dynamic-heading').textContent = client.heading || '';
     if (client.background) {
@@ -76,48 +76,27 @@
   <script>
     window.addEventListener("load", () => {
       const btn = document.getElementById("meet-author-btn");
-      if (!btn) return;
-
       const cfg = window.clientConfig || {};
-      let displayName = cfg.heading || "the Creator";
-      btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
+      if (!btn || !cfg) return;
 
-      btn.addEventListener("click", async () => {
-        console.log("👆 Meet button clicked for", displayName);
+      const name = cfg.heading || "the Creator";
+      btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${name}`;
 
-        let profileText = cfg?.profile?.staticText || "Profile information not available.";
-
-        if (cfg?.profile?.source === "linkedin" && cfg?.profile?.linkedInUrl) {
-          try {
-            console.log("🔗 Fetching from Netlify function for LinkedIn URL:", cfg.profile.linkedInUrl);
-
-            const res = await fetch(
-              `/.netlify/functions/fetchLinkedInData?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`
-            );
-
-            if (res.ok) {
-              const data = await res.json();
-              console.log("📦 LinkedIn function response:", data);
-
-              if (data?.output && typeof data.output === "object") {
-                profileText = JSON.stringify(data.output, null, 2); // Full raw data for now
-              } else if (data?.profileText) {
-                profileText = data.profileText;
-              } else {
-                console.warn("⚠️ LinkedIn returned no usable profile text, using static fallback.");
-              }
-            } else {
-              console.warn("⚠️ LinkedIn fetch failed:", res.status);
-            }
-          } catch (err) {
-            console.error("❌ LinkedIn fetch error:", err);
-          }
+      btn.addEventListener("click", () => {
+        if (cfg.gptUrl) {
+          window.open(cfg.gptUrl, "_blank", "noopener");
+        } else {
+          const prompt = `Here is my profile:\n${cfg.profile.staticText}\n\nPlease introduce me to the user in a warm, concise way.`;
+          window.open(`https://chat.openai.com/?q=${encodeURIComponent(prompt)}`, "_blank", "noopener");
         }
-
-        const prompt = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
-        window.open(`https://chat.openai.com/?q=${encodeURIComponent(prompt)}`, "_blank");
       });
     });
   </script>
+
+  <noscript>
+    <div style="background-color: #f04e23; color: white; padding: 1rem; text-align: center;">
+      JavaScript is required to use this site. Please enable it.
+    </div>
+  </noscript>
 </body>
 </html>
