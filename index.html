@@ -14,13 +14,32 @@
 
   <title>ClarityBots® | Where AI and EOS® Converge</title>
 
+  <!-- Fonts, Icons, Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="images/favicon.ico" />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
 
+  <!-- Fade Logic -->
+  <style>
+    .bg-fade {
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+    .bg-fade.loaded {
+      opacity: 1;
+    }
+  </style>
+
+  <!-- Load client configuration -->
   <script src="js/clientConfig.js"></script>
 </head>
+
 <body class="bg-fade">
   <main>
     <div class="overlay-panel">
@@ -31,22 +50,23 @@
       </header>
 
       <section class="button-container">
-        <a class="button" href="https://chat.openai.com/?q=ClarityRocks" target="_blank" rel="noopener">
+        <a class="button" href="https://chatgpt.com/g/g-687bd0db062c8191912d6ad51220058c-ai-implementer-tm" target="_blank" rel="noopener">
           <i class="fas fa-mountain"></i> ClarityRocks™
         </a>
-        <a class="button" href="https://chat.openai.com/?q=ClaritySolved" target="_blank" rel="noopener">
+        <a class="button" href="https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritybots-ids" target="_blank" rel="noopener">
           <i class="fas fa-heart"></i> ClaritySolved™
         </a>
-        <a class="button" href="https://chat.openai.com/?q=ClarityScore" target="_blank" rel="noopener">
+        <a class="button" href="https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritybots-smart-scorecard" target="_blank" rel="noopener">
           <i class="fas fa-chart-line"></i> ClarityScore™
         </a>
-        <a class="button" href="https://chat.openai.com/?q=ClarityValues" target="_blank" rel="noopener">
+        <a class="button" href="https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-claritybots-core-values-clarifier" target="_blank" rel="noopener">
           <i class="fas fa-heart"></i> ClarityValues™
         </a>
-        <a class="button" href="https://chat.openai.com/?q=ClarityTrax" target="_blank" rel="noopener">
+        <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank" rel="noopener">
           <i class="fas fa-book-open"></i> ClarityTrax™
         </a>
-        <a id="meet-author-btn" class="button" href="javascript:void(0);">
+        <!-- Sixth button: now dynamically set -->
+        <a id="meet-author-btn" class="button" href="#" target="_blank" rel="noopener">
           <i class="fas fa-flask"></i> Loading...
         </a>
       </section>
@@ -58,44 +78,45 @@
     <div>Powered by ClarityBots® • Informed by EOS®</div>
   </footer>
 
-  <script type="module">
-    import { clients } from './js/clientConfig.js';
-    const subdomain = location.hostname.split('.')[0].toLowerCase();
-    const client = clients[subdomain] || clients.default;
-    document.getElementById('dynamic-heading').textContent = client.heading || '';
-    if (client.background) {
-      const bg = new Image();
-      bg.src = client.background;
-      bg.onload = () => {
-        document.body.style.backgroundImage = `url('${client.background}')`;
-        document.body.classList.add('loaded');
-      };
-    }
+  <!-- Background + Branding Loader -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const cfg = window.clientConfig || {};
+      const heading = document.getElementById('dynamic-heading');
+
+      // Apply heading
+      if (heading && cfg.heading) heading.textContent = cfg.heading;
+
+      // Apply background image
+      if (cfg.background) {
+        const bg = new Image();
+        bg.src = cfg.background;
+        bg.onload = () => {
+          document.body.style.backgroundImage = `url('${cfg.background}')`;
+          document.body.style.backgroundSize = 'cover';
+          document.body.style.backgroundPosition = 'center';
+          document.body.style.backgroundRepeat = 'no-repeat';
+          document.body.style.backgroundAttachment = 'fixed';
+          document.body.classList.add('loaded');
+        };
+      }
+
+      // Sixth button setup
+      const btn = document.getElementById("meet-author-btn");
+      if (btn && cfg.gptUrl) {
+        btn.href = cfg.gptUrl;
+        btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${cfg.heading.replace(/'s$/, "")}`;
+      }
+    });
   </script>
 
-  <script>
-    window.addEventListener("load", () => {
-      const btn = document.getElementById("meet-author-btn");
-      const cfg = window.clientConfig || {};
-      if (!btn || !cfg) return;
-
-      const name = cfg.heading || "the Creator";
-      btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${name}`;
-
-      btn.addEventListener("click", () => {
-        if (cfg.gptUrl) {
-          window.open(cfg.gptUrl, "_blank", "noopener");
-        } else {
-          const prompt = `Here is my profile:\n${cfg.profile.staticText}\n\nPlease introduce me to the user in a warm, concise way.`;
-          window.open(`https://chat.openai.com/?q=${encodeURIComponent(prompt)}`, "_blank", "noopener");
-        }
-      });
-    });
+  <script nomodule>
+    alert("This site requires a modern browser with JavaScript support.");
   </script>
 
   <noscript>
     <div style="background-color: #f04e23; color: white; padding: 1rem; text-align: center;">
-      JavaScript is required to use this site. Please enable it.
+      JavaScript is required to use this site. Please enable it in your browser settings.
     </div>
   </noscript>
 </body>
