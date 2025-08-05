@@ -1,10 +1,8 @@
+```javascript
 // js/clientConfig.js
 
 console.log("✅ clientConfig.js is loaded");
 
-// -------------------------------
-// Full client definitions
-// -------------------------------
 export const clients = {
   alder: {
     heading: "Alder Construction",
@@ -173,27 +171,23 @@ export const clients = {
   }
 };
 
-// -------------------------------
-// Improved subdomain detection
-// -------------------------------
 (function () {
   let hostname = location.hostname.toLowerCase();
+  console.log("🌍 Full hostname detected:", hostname);
 
-  // Localhost safety
+  let subdomain;
   if (hostname === "localhost" || hostname.startsWith("127.")) {
-    console.log("🛠 Local environment detected, using 'bi' profile for testing");
-    window.clientConfig = clients["bi"];
-    return;
+    subdomain = "bi";
+  } else if (hostname.includes("--")) {
+    subdomain = hostname.split("--")[0];
+  } else {
+    subdomain = hostname.split(".")[0];
   }
 
-  // Extract subdomain
-  let subdomain = hostname.split(".")[0];
-  if (subdomain.includes("--")) {
-    subdomain = subdomain.split("--")[0];
-  }
   subdomain = subdomain.toLowerCase();
+  console.log("🔍 Extracted subdomain:", subdomain);
 
-  console.log("🌐 Detected subdomain:", subdomain);
   window.clientConfig = clients[subdomain] || clients.default;
   console.log("📦 Loaded client config:", window.clientConfig.heading);
 })();
+```
