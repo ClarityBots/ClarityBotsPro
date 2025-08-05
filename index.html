@@ -83,25 +83,34 @@
       btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
 
       btn.addEventListener("click", async () => {
+        console.log("👆 Meet button clicked for", displayName);
+
         let profileText = cfg?.profile?.staticText || "Profile information not available.";
 
         if (cfg?.profile?.source === "linkedin" && cfg?.profile?.linkedInUrl) {
           try {
+            console.log("🔗 Fetching from Netlify function for LinkedIn URL:", cfg.profile.linkedInUrl);
+
             const res = await fetch(
               `/.netlify/functions/fetchLinkedInData?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`
             );
+
             if (res.ok) {
               const data = await res.json();
-              if (data?.profileText) {
+              console.log("📦 LinkedIn function response:", data);
+
+              if (data?.output && typeof data.output === "object") {
+                profileText = JSON.stringify(data.output, null, 2); // Full raw data for now
+              } else if (data?.profileText) {
                 profileText = data.profileText;
               } else {
-                console.warn("LinkedIn data unavailable, using static fallback.");
+                console.warn("⚠️ LinkedIn returned no usable profile text, using static fallback.");
               }
             } else {
-              console.warn("LinkedIn fetch failed:", res.status);
+              console.warn("⚠️ LinkedIn fetch failed:", res.status);
             }
           } catch (err) {
-            console.error("LinkedIn fetch error:", err);
+            console.error("❌ LinkedIn fetch error:", err);
           }
         }
 

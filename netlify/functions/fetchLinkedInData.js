@@ -1,89 +1,95 @@
 // netlify/functions/fetchLinkedInData.js
 
-import fetch from 'node-fetch';
+const fetch = require("node-fetch");
 
-export async function handler(event) {
-  console.log('📥 Incoming request to fetchLinkedInData');
+exports.handler = async (event) => {
+  console.log("📥 Incoming request to fetchLinkedInData");
 
-  const apiKey = process.env.PHANTOMBUSTER_API_KEY;
-  const agentId = process.env.PHANTOMBUSTER_AGENT_ID;
+  const API_KEY = process.env.PHANTOMBUSTER_API_KEY;
+  const AGENT_ID = process.env.PHANTOMBUSTER_AGENT_ID;
+  const WAIT_TIME = process.env.PB_WAIT_TIME_MS
+    ? parseInt(process.env.PB_WAIT_TIME_MS, 10)
+    : 30000; // default 30s
 
-  // Fail-fast check
-  if (!apiKey || !agentId) {
-    console.error('❌ Missing required environment variables.');
+  if (!API_KEY || !AGENT_ID) {
+    console.error("❌ Missing required environment variables.");
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: 'Missing PHANTOMBUSTER_API_KEY or PHANTOMBUSTER_AGENT_ID',
+        error: "Server misconfigured: Missing PhantomBuster API key or Agent ID.",
       }),
     };
   }
 
   try {
-    // Build request to PhantomBuster
-    const launchUrl = 'https://api.phantombuster.com/api/v2/agents/launch';
-    const body = { id: agentId };
+    // 1️⃣ Launch PhantomBuster Agent
+    console.log(`🚀 Launching PhantomBuster agent ${AGENT_ID}...`);
+    const launchRes = await fetch(
+      `https://api.phantombuster.com/api/v2/agents/launch`,
+      {
+        method: "POST",
+        headers: {
+          "X-Phantombuster-Key-1": API_KEY,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: AGENT_ID }),
+      }
+    );
 
-    console.log('🚀 Launching PhantomBuster scrape...');
-    console.log('   🔹 API URL:', launchUrl);
-    console.log('   🔹 Payload:', JSON.stringify(body));
-    console.log('   🔹 Using API key:', apiKey.substring(0, 6) + '********');
-
-    const res = await fetch(launchUrl, {
-      method: 'POST',
-      headers: {
-        'X-Phantombuster-Key-1': apiKey,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-
-    const launchData = await res.json();
-    console.log('📦 Launch response:', launchData);
-
-    if (!res.ok) {
-      throw new Error(
-        `PhantomBuster API error: ${res.status} - ${JSON.stringify(launchData)}`
-      );
+    if (!launchRes.ok) {
+      const errText = await launchRes.text();
+      throw new Error(`Launch failed: ${launchRes.status} ${errText}`);
     }
 
-    // Wait for PhantomBuster to finish scraping
-    console.log('⏳ Waiting 30 seconds for PhantomBuster to finish...');
-    await new Promise((resolve) => setTimeout(resolve, 30000));
+    const launchData = await launchRes.json();
+    console.log("📦 Launch response:", launchData);
 
-    // Fetch the agent's latest output
-    const outputUrl = `https://api.phantombuster.com/api/v2/agents/fetch-output?id=${agentId}`;
-    console.log('📥 Fetching scrape output from:', outputUrl);
+    const containerId = launchData.containerId;
+    if (!containerId) {
+      throw new Error("No containerId returned from PhantomBuster launch.");
+    }
 
-    const outputRes = await fetch(outputUrl, {
-      method: 'GET',
-      headers: {
-        'X-Phantombuster-Key-1': apiKey,
-      },
-    });
+    // 2️⃣ Wait for agent to complete
+    console.log(`⏳ Waiting ${WAIT_TIME / 1000} seconds for agent to finish...`);
+    await new Promise((resolve) => setTimeout(resolve, WAIT_TIME));
 
-    const outputData = await outputRes.json();
-    console.log('📦 Output data:', outputData);
+    // 3️⃣ Fetch output from container
+    console.log(`📡 Fetching results for containerId: ${containerId}`);
+    const outputRes = await fetch(
+      `https://api.phantombuster.com/api/v2/containers/fetch-output?id=${containerId}`,
+      {
+        method: "GET",
+        headers: {
+          "X-Phantombuster-Key-1": API_KEY,
+        },
+      }
+    );
 
     if (!outputRes.ok) {
+      const errText = await outputRes.text();
       throw new Error(
-        `PhantomBuster output fetch error: ${outputRes.status} - ${JSON.stringify(outputData)}`
+        `Fetch output failed: ${outputRes.status} ${errText}`
       );
     }
+
+    const outputData = await outputRes.json();
+    console.log("📄 Output data:", outputData);
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Scrape complete',
-        launch: launchData,
+        success: true,
+        containerId,
         output: outputData,
       }),
     };
-  } catch (error) {
-    console.error('❌ Error fetching LinkedIn data:', error);
+  } catch (err) {
+    console.error("❌ Error in fetchLinkedInData:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
+      body: JSON.stringify({
+        error: err.message || "Unknown error",
+      }),
     };
   }
-}
+};
