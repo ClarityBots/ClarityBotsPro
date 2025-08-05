@@ -34,6 +34,15 @@
     .bg-fade.loaded {
       opacity: 1;
     }
+    #loading-message {
+      display: none;
+      padding: 1rem;
+      text-align: center;
+      background: #f0f0f0;
+      border-radius: 8px;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
   </style>
 
   <!-- Load client configuration -->
@@ -70,6 +79,10 @@
           <i class="fas fa-flask"></i> Loading...
         </a>
       </section>
+
+      <div id="loading-message">
+        <i class="fas fa-spinner fa-spin"></i> Fetching LinkedIn profile… please wait…
+      </div>
     </div>
   </main>
 
@@ -105,6 +118,7 @@
   <script>
     window.addEventListener("load", () => {
       const btn = document.getElementById("meet-author-btn");
+      const loadingMsg = document.getElementById("loading-message");
       if (!btn) return;
 
       const cfg = window.clientConfig || {};
@@ -119,11 +133,11 @@
       btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
 
       btn.addEventListener("click", async () => {
+        loadingMsg.style.display = "block";
         let profileText = cfg?.profile?.staticText || "Profile information not available.";
 
         if (cfg?.profile?.source === "linkedin" && cfg?.profile?.linkedInUrl) {
           try {
-            // Use correct Netlify function path
             const res = await fetch(`/.netlify/functions/getLinkedInProfile?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`);
             if (res.ok) {
               const data = await res.json();
@@ -140,16 +154,9 @@
           }
         }
 
+        loadingMsg.style.display = "none";
         const prompt = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
-        const chatInput = document.getElementById("chat-input");
-        const sendButton = document.getElementById("send-button");
-
-        if (chatInput && sendButton) {
-          chatInput.value = prompt;
-          sendButton.click();
-        } else {
-          window.open("https://chatgpt.com/?q=" + encodeURIComponent(prompt), "_blank", "noopener");
-        }
+        window.open("https://chatgpt.com/?q=" + encodeURIComponent(prompt), "_blank", "noopener");
       });
     });
   </script>
