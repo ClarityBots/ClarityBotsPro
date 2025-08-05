@@ -1,16 +1,14 @@
 // netlify/functions/getLinkedInProfile.js
 
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   try {
-    const { url } = event.queryStringParameters || {};
-
-    if (!url) {
-      console.error("❌ Missing ?url parameter");
+    const linkedInUrl = event.queryStringParameters.url;
+    if (!linkedInUrl) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: "Missing ?url parameter" }),
+        body: JSON.stringify({ error: "Missing LinkedIn URL" }),
       };
     }
 
@@ -18,18 +16,17 @@ exports.handler = async (event) => {
     const agentId = process.env.PHANTOMBUSTER_AGENT_ID;
 
     if (!apiKey || !agentId) {
-      console.error("❌ Missing PhantomBuster credentials");
       return {
         statusCode: 500,
         body: JSON.stringify({ error: "Missing PhantomBuster credentials" }),
       };
     }
 
-    console.log("🚀 Launching PhantomBuster scrape for:", url);
+    console.log(`🚀 Launching PhantomBuster scrape for: ${linkedInUrl}`);
 
-    // Launch the Phantom
-    const launchResponse = await fetch(
-      "https://api.phantombuster.com/api/v2/agents/launch",
+    // 1️⃣ Launch the Phantom
+    const launchRes = await fetch(
+      `https://api.phantombuster.com/api/v2/agents/launch`,
       {
         method: "POST",
         headers: {
@@ -38,78 +35,57 @@ exports.handler = async (event) => {
         },
         body: JSON.stringify({
           id: agentId,
-          argument: {
-            profileUrls: [url],
-            numberOfProfiles: 1,
-          },
         }),
       }
     );
 
-    const launchData = await launchResponse.json();
-    console.log("📦 Launch response status:", launchResponse.status);
-    console.log("📦 Launch response body:", JSON.stringify(launchData, null, 2));
+    const launchData = await launchRes.json();
+    console.log("📦 Launch response:", launchData);
 
-    if (!launchResponse.ok) {
-      console.error("❌ Launch failed:", launchData);
-      throw new Error(`Phantom launch failed: ${launchData.error || "Unknown error"}`);
-    }
-
-    // Poll results
-    let attempts = 0;
-    const maxAttempts = 6;
-    const waitTime = 10000; // 10 seconds
-    let profileText = "";
-
-    while (attempts < maxAttempts) {
-      console.log(`⏳ Checking Phantom output (attempt ${attempts + 1}/${maxAttempts})`);
-
-      const resultResponse = await fetch(
-        `https://api.phantombuster.com/api/v2/agents/fetch-output?id=${agentId}`,
-        {
-          method: "GET",
-          headers: {
-            "X-Phantombuster-Key-1": apiKey,
-          },
-        }
+    if (!launchRes.ok || !launchData.containerId) {
+      throw new Error(
+        `Phantom launch failed: ${launchData.error || "Unknown error"}`
       );
+    }
 
-      const resultData = await resultResponse.json();
-      console.log(`📦 Fetch-output status: ${resultResponse.status}`);
-      console.log(`📦 Fetch-output body: ${JSON.stringify(resultData, null, 2)}`);
+    // 2️⃣ Wait for PhantomBuster to finish (30 seconds)
+    console.log("⏳ Waiting 30 seconds for PhantomBuster to finish...");
+    await new Promise((resolve) => setTimeout(resolve, 30000));
 
-      if (!resultResponse.ok) {
-        console.error("⚠️ Error fetching Phantom output:", resultData);
-      } else if (resultData?.output && resultData.output.length > 0) {
-        const profileInfo = resultData.output[0];
-        console.log("✅ Raw profileInfo object:", JSON.stringify(profileInfo, null, 2));
-
-        if (profileInfo?.profile?.summary) {
-          profileText = profileInfo.profile.summary;
-          console.log("✅ Found profile.summary");
-          break;
-        } else if (profileInfo?.summary) {
-          profileText = profileInfo.summary;
-          console.log("✅ Found summary");
-          break;
-        } else {
-          console.warn("⚠️ No summary field found in this attempt.");
-        }
-      } else {
-        console.warn("⚠️ Output empty this attempt.");
+    // 3️⃣ Fetch the output
+    const outputRes = await fetch(
+      `https://api.phantombuster.com/api/v2/agents/fetch-output?id=${agentId}`,
+      {
+        method: "GET",
+        headers: {
+          "X-Phantombuster-Key-1": apiKey,
+        },
       }
+    );
 
-      // Wait before next attempt
-      await new Promise((resolve) => setTimeout(resolve, waitTime));
-      attempts++;
+    const outputData = await outputRes.json();
+    console.log("📦 Output data:", outputData);
+
+    if (!outputRes.ok || !outputData || !outputData.output) {
+      throw new Error(
+        `Failed to fetch output: ${outputData.error || "No output returned"}`
+      );
     }
 
-    if (!profileText) {
-      console.warn("⚠️ No LinkedIn profile text found after retries. Falling back.");
-      profileText = "Profile information not available.";
+    // 4️⃣ Extract profile text (adjust depending on your Phantom’s data format)
+    let profileText = "Profile information not found.";
+    try {
+      const firstResult =
+        outputData.output?.[0] || outputData.output?.resultObject?.[0];
+      if (firstResult) {
+        profileText =
+          firstResult.description ||
+          firstResult.summary ||
+          JSON.stringify(firstResult);
+      }
+    } catch (err) {
+      console.error("⚠️ Error parsing profile output:", err);
     }
-
-    console.log("🏁 Final profile text length:", profileText.length);
 
     return {
       statusCode: 200,
