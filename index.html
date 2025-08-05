@@ -14,53 +14,13 @@
 
   <title>ClarityBots® | Where AI and EOS® Converge</title>
 
-  <!-- Fonts, Icons, Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="images/favicon.ico" />
   <link rel="stylesheet" href="styles.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
 
-  <!-- Fade Logic -->
-  <style>
-    .bg-fade {
-      opacity: 0;
-      transition: opacity 1.5s ease-in-out;
-    }
-    .bg-fade.loaded {
-      opacity: 1;
-    }
-
-    /* Navy countdown box styling */
-    #loading-message {
-      display: none;
-      padding: 1rem;
-      text-align: center;
-      background: rgba(20, 34, 51, 0.95); /* brand navy */
-      color: #FFFFFF;
-      border-radius: 8px;
-      margin-top: 1rem;
-      font-weight: 600;
-      font-size: 1rem;
-      animation: pulseFade 1.5s infinite ease-in-out;
-    }
-
-    /* Pulse animation */
-    @keyframes pulseFade {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.75; transform: scale(1.02); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-  </style>
-
-  <!-- Load client configuration -->
   <script src="clientConfig.js"></script>
 </head>
-
 <body class="bg-fade">
   <main>
     <div class="overlay-panel">
@@ -71,31 +31,25 @@
       </header>
 
       <section class="button-container">
-        <a class="button" href="https://chatgpt.com/g/g-687bd0db062c8191912d6ad51220058c-ai-implementer-tm" target="_blank" rel="noopener">
+        <a class="button" href="https://chatgpt.com/g/g-687bd0db062c8191912d6ad51220058c-ai-implementer-tm" target="_blank">
           <i class="fas fa-mountain"></i> ClarityRocks™
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritybots-ids" target="_blank" rel="noopener">
+        <a class="button" href="https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritybots-ids" target="_blank">
           <i class="fas fa-heart"></i> ClaritySolved™
-        </a> 
-        <a class="button" href="https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritybots-smart-scorecard" target="_blank" rel="noopener">
+        </a>
+        <a class="button" href="https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritybots-smart-scorecard" target="_blank">
           <i class="fas fa-chart-line"></i> ClarityScore™
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-claritybots-core-values-clarifier" target="_blank" rel="noopener">
+        <a class="button" href="https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-claritybots-core-values-clarifier" target="_blank">
           <i class="fas fa-heart"></i> ClarityValues™
         </a>
-        <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank" rel="noopener">
+        <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank">
           <i class="fas fa-book-open"></i> ClarityTrax™
         </a>
-        <!-- Sixth button -->
         <a id="meet-author-btn" class="button" href="javascript:void(0);">
           <i class="fas fa-flask"></i> Loading...
         </a>
       </section>
-
-      <!-- Countdown / Loading message -->
-      <div id="loading-message">
-        ⏳ Fetching LinkedIn profile… please wait… <span id="countdown">30</span>s
-      </div>
     </div>
   </main>
 
@@ -104,46 +58,28 @@
     <div>Powered by ClarityBots® • Informed by EOS®</div>
   </footer>
 
-  <!-- Background + Branding Loader -->
   <script type="module">
     import { clients } from './js/clientConfig.js';
     const subdomain = location.hostname.split('.')[0];
     const client = clients[subdomain] || clients.default;
-
-    const heading = document.getElementById('dynamic-heading');
-    if (heading && client.heading) heading.textContent = client.heading;
-
+    document.getElementById('dynamic-heading').textContent = client.heading || '';
     if (client.background) {
       const bg = new Image();
       bg.src = client.background;
       bg.onload = () => {
         document.body.style.backgroundImage = `url('${client.background}')`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundRepeat = 'no-repeat';
-        document.body.style.backgroundAttachment = 'fixed';
         document.body.classList.add('loaded');
       };
     }
   </script>
 
-  <!-- Sixth Button Logic with Countdown -->
   <script>
     window.addEventListener("load", () => {
       const btn = document.getElementById("meet-author-btn");
-      const loadingMessage = document.getElementById("loading-message");
-      const countdownEl = document.getElementById("countdown");
       if (!btn) return;
 
       const cfg = window.clientConfig || {};
-      let displayName = "the Creator";
-      if (cfg?.profile?.staticText) {
-        const firstSentence = cfg.profile.staticText.split(".")[0];
-        const match = firstSentence.match(/^[A-Z][a-z]+(\s[A-Z][a-z]+)?/);
-        if (match) displayName = match[0];
-      } else if (cfg?.heading) {
-        displayName = cfg.heading.replace(/'s$/, "");
-      }
+      let displayName = cfg.heading || "the Creator";
       btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
 
       btn.addEventListener("click", async () => {
@@ -151,61 +87,28 @@
 
         if (cfg?.profile?.source === "linkedin" && cfg?.profile?.linkedInUrl) {
           try {
-            // Show loading box
-            loadingMessage.style.display = "block";
-
-            // Start countdown
-            let secondsLeft = 30;
-            countdownEl.textContent = secondsLeft;
-            const countdownInterval = setInterval(() => {
-              secondsLeft--;
-              countdownEl.textContent = secondsLeft;
-              if (secondsLeft <= 0) clearInterval(countdownInterval);
-            }, 1000);
-
-            // Wait for scrape time
-            await new Promise(resolve => setTimeout(resolve, 30000));
-
-            const res = await fetch(`/.netlify/functions/getLinkedInProfile?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`);
+            const res = await fetch(
+              `/.netlify/functions/fetchLinkedInData?url=${encodeURIComponent(cfg.profile.linkedInUrl)}`
+            );
             if (res.ok) {
               const data = await res.json();
-              if (data?.profileText && !/Profile information not available/i.test(data.profileText)) {
+              if (data?.profileText) {
                 profileText = data.profileText;
               } else {
-                console.warn("⚠️ LinkedIn data unavailable, falling back to static text.");
+                console.warn("LinkedIn data unavailable, using static fallback.");
               }
             } else {
-              console.warn("⚠️ LinkedIn fetch failed:", res.status);
+              console.warn("LinkedIn fetch failed:", res.status);
             }
           } catch (err) {
-            console.error("❌ LinkedIn fetch error:", err);
-          } finally {
-            loadingMessage.style.display = "none";
+            console.error("LinkedIn fetch error:", err);
           }
         }
 
         const prompt = `Here is my profile:\n${profileText}\n\nPlease introduce me to the user in a warm, concise way.`;
-        const chatInput = document.getElementById("chat-input");
-        const sendButton = document.getElementById("send-button");
-
-        if (chatInput && sendButton) {
-          chatInput.value = prompt;
-          sendButton.click();
-        } else {
-          window.open("https://chatgpt.com/?q=" + encodeURIComponent(prompt), "_blank", "noopener");
-        }
+        window.open(`https://chat.openai.com/?q=${encodeURIComponent(prompt)}`, "_blank");
       });
     });
   </script>
-
-  <script nomodule>
-    alert("This site requires a modern browser with JavaScript support.");
-  </script>
-
-  <noscript>
-    <div style="background-color: #f04e23; color: white; padding: 1rem; text-align: center;">
-      JavaScript is required to use this site. Please enable it in your browser settings.
-    </div>
-  </noscript>
 </body>
 </html>
