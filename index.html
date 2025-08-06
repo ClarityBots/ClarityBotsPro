@@ -93,17 +93,14 @@
     <h1>ClarityBots.ai</h1>
     <div id="chatLog"></div>
 
+    <!-- Six dynamic buttons -->
     <div class="button-bar">
-      <button class="chat-button" data-message="What is EOS?">Button 1</button>
-      <button class="chat-button" data-message="Help me define my Rocks">Button 2</button>
-      <button class="chat-button" data-message="Guide me on Scorecard metrics">Button 3</button>
-      <button class="chat-button" data-message="Show me the IDS process">Button 4</button>
-      <button class="chat-button" data-message="Explain Level 10 Meetings">Button 5</button>
-
-      <!-- Sixth button auto-sends without typing -->
-      <button id="btn6" class="chat-button" data-message="Tell me about ClarityBots.ai">
-        Learn About ClarityBots.ai
-      </button>
+      <button class="chat-button"></button>
+      <button class="chat-button"></button>
+      <button class="chat-button"></button>
+      <button class="chat-button"></button>
+      <button class="chat-button"></button>
+      <button class="chat-button"></button>
     </div>
 
     <div>
@@ -112,39 +109,53 @@
     </div>
   </div>
 
-  <script>
-    const API_URL = "/api/chat"; // <-- Change if your ClarityBots API is hosted elsewhere
+  <!-- Import clientConfig.js -->
+  <script type="module">
+    import { clients } from './js/clientConfig.js';
+
+    // Use the detected client from clientConfig.js
+    const activeClient = window.clientConfig || clients.default;
+
+    // Populate button text & messages from defaultPrompts
+    const buttons = document.querySelectorAll(".chat-button");
+    if (Array.isArray(activeClient.defaultPrompts)) {
+      buttons.forEach((button, index) => {
+        const prompt = activeClient.defaultPrompts[index] || `Prompt ${index + 1}`;
+        button.textContent = prompt;
+        button.setAttribute("data-message", prompt);
+      });
+    } else {
+      console.warn("⚠️ No defaultPrompts found for this client:", activeClient);
+    }
+
+    // API URL from clientConfig
+    const API_URL = activeClient.gptUrl;
 
     async function sendMessage(message) {
       const chatLog = document.getElementById("chatLog");
 
-      // Append user message instantly
+      // Append user message
       chatLog.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
       chatLog.scrollTop = chatLog.scrollHeight;
 
       try {
-        // Send to your live API
-        const response = await fetch(API_URL, {
+        const res = await fetch(API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message })
         });
 
-        if (!response.ok) throw new Error("Network response was not ok");
-
-        const data = await response.json();
-
-        // Append AI's response
+        const data = await res.json();
         chatLog.innerHTML += `<div><strong>ClarityBots.ai:</strong> ${data.reply}</div>`;
         chatLog.scrollTop = chatLog.scrollHeight;
 
-      } catch (error) {
-        chatLog.innerHTML += `<div style="color:red;"><strong>Error:</strong> ${error.message}</div>`;
+      } catch (err) {
+        chatLog.innerHTML += `<div style="color:red;"><strong>Error:</strong> ${err.message}</div>`;
       }
     }
 
-    // Handle send button click
-    document.getElementById("sendButton").addEventListener("click", function() {
+    // Send typed messages
+    document.getElementById("sendButton").addEventListener("click", () => {
       const chatInput = document.getElementById("chatInput");
       const message = chatInput.value.trim();
       if (message) {
@@ -153,18 +164,17 @@
       }
     });
 
-    // Handle Enter key
-    document.getElementById("chatInput").addEventListener("keypress", function(e) {
+    document.getElementById("chatInput").addEventListener("keypress", e => {
       if (e.key === "Enter") {
         document.getElementById("sendButton").click();
       }
     });
 
-    // All buttons send their value directly
-    document.querySelectorAll(".chat-button").forEach(button => {
-      button.addEventListener("click", function() {
-        const valueToSend = this.getAttribute("data-message");
-        sendMessage(valueToSend);
+    // Send button messages when clicked
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        const value = button.getAttribute("data-message");
+        sendMessage(value);
       });
     });
   </script>
