@@ -1,132 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>ClarityBots.ai</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    :root {
-      --orange: #FF7900;
-      --red-orange: #F04E23;
-      --navy: #142233;
-      --light-gray: #E5E8EB;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClarityBots Launcher</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="js/clientConfig.js"></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: Inter, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        color: #ffffff;
+        background-color: #142233;
+        background-image: url('');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        text-align: center;
+        padding: 1rem;
+      }
 
-    body {
-      font-family: Arial, sans-serif;
-      background: var(--navy);
-      color: white;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
+      .logo {
+        max-width: 300px;
+        margin-bottom: 1rem;
+      }
 
-    header {
-      padding: 30px 15px;
-    }
+      .heading {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+      }
 
-    header img {
-      max-width: 180px;
-    }
+      .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        max-width: 400px;
+      }
 
-    h1 {
-      margin: 20px 0 10px;
-      color: var(--orange);
-      font-size: 1.8em;
-    }
+      button {
+        padding: 1rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        background-color: var(--brandColor, #ff7900);
+        color: #fff;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+        transition: transform 0.2s;
+      }
 
-    .intro {
-      max-width: 700px;
-      margin: 0 auto;
-      font-size: 1.1em;
-      line-height: 1.5;
-      color: var(--light-gray);
-    }
+      button:hover {
+        transform: scale(1.03);
+      }
+    </style>
+  </head>
+  <body>
+    <img class="logo" id="logo" src="" alt="Company Logo" />
+    <div class="heading" id="heading">Welcome</div>
+    <div class="buttons" id="buttonContainer"></div>
 
-    .button-bar {
-      margin: 30px auto;
-      max-width: 900px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-    }
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const config = window.clientConfig || {};
+        document.body.style.backgroundImage = `url('${config.background}')`;
+        document.documentElement.style.setProperty('--brandColor', config.brandColor || '#ff7900');
 
-    .landing-button {
-      background: var(--orange);
-      color: white;
-      border: none;
-      padding: 14px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
-      min-width: 180px;
-      text-transform: none;
-      font-weight: bold;
-      transition: background 0.2s ease;
-    }
+        document.getElementById("logo").src = config.logo;
+        document.getElementById("logo").alt = config.altText || "Logo";
+        document.getElementById("heading").textContent = config.heading || "Welcome";
 
-    .landing-button:hover {
-      background: var(--red-orange);
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <!-- Company Logo -->
-    <img id="clientLogo" src="images/default_logo.png" alt="Company Logo">
-    <h1 id="clientHeading">ClarityBots</h1>
-    <p class="intro" id="clientIntro">
-      Welcome to ClarityBots — your AI-powered EOS implementation assistant.
-    </p>
-  </header>
+        const prompts = config.defaultPrompts || [];
+        const container = document.getElementById("buttonContainer");
 
-  <!-- Feature Buttons -->
-  <div class="button-bar">
-    <button class="landing-button" data-index="0"></button>
-    <button class="landing-button" data-index="1"></button>
-    <button class="landing-button" data-index="2"></button>
-    <button class="landing-button" data-index="3"></button>
-    <button class="landing-button" data-index="4"></button>
-    <button class="landing-button" data-index="5"></button>
-  </div>
-
-  <!-- Load clientConfig.js first so window.clientConfig is available -->
-  <script src="./js/clientConfig.js"></script>
-
-  <!-- Landing Page Script -->
-  <script>
-    // Ensure clientConfig is loaded
-    const activeClient = window.clientConfig || {};
-
-    // Set logo, heading, and intro
-    document.getElementById('clientLogo').src = activeClient.logo || 'images/default_logo.png';
-    document.getElementById('clientLogo').alt = activeClient.altText || 'Company Logo';
-    document.getElementById('clientHeading').textContent = activeClient.heading || 'ClarityBots';
-    document.getElementById('clientIntro').textContent = activeClient.profile?.staticText || '';
-
-    // Populate landing buttons
-    const buttons = document.querySelectorAll('.landing-button');
-    if (Array.isArray(activeClient.landingButtons)) {
-      buttons.forEach((btn, index) => {
-        btn.textContent = activeClient.landingButtons[index] || `Button ${index + 1}`;
+        prompts.slice(0, 6).forEach((label) => {
+          const button = document.createElement("button");
+          button.textContent = label;
+          button.addEventListener("click", () => {
+            const url = new URL(config.gptUrl);
+            url.searchParams.set("q", label);
+            window.location.href = url.toString();
+          });
+          container.appendChild(button);
+        });
       });
-    } else {
-      console.warn("⚠️ No landingButtons found for this client:", activeClient);
-    }
-
-    // Click handler - send to chat view
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const message = btn.textContent;
-
-        // Store the message so chat page can pick it up
-        sessionStorage.setItem('claritybots_initialMessage', message);
-
-        // Redirect to chat page
-        window.location.href = './chat.html'; // change if your chat file is named differently
-      });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
