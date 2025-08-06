@@ -1,134 +1,172 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="ClarityBots® | AI-enhanced EOS® Tools to Build SMART Rocks, Clarify Vision, and Lead with Traction." />
-  <meta name="theme-color" content="#142233" />
-  <meta property="og:title" content="ClarityBots® | AI Meets EOS®" />
-  <meta property="og:description" content="Build SMART Rocks, Clarify Vision, and Lead with Traction using AI-enhanced EOS® tools." />
-  <meta property="og:image" content="images/social_preview.jpg" />
-  <meta property="og:url" content="https://claritybots.ai/" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <title>ClarityBots® | Where AI and EOS® Converge</title>
-
-  <!-- Fonts, Icons, Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="icon" href="images/favicon.ico" />
-  <link rel="stylesheet" href="styles.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-
-  <!-- Fade Logic -->
+  <meta charset="UTF-8">
+  <title>ClarityBots.ai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    .bg-fade {
-      opacity: 0;
-      transition: opacity 1.5s ease-in-out;
+    :root {
+      --orange: #FF7900;
+      --red-orange: #F04E23;
+      --navy: #142233;
+      --light-gray: #E5E8EB;
     }
-    .bg-fade.loaded {
-      opacity: 1;
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--navy);
+      color: white;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 20px;
+      color: var(--orange);
+    }
+
+    #chatContainer {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    #chatLog {
+      background: white;
+      color: black;
+      padding: 15px;
+      border-radius: 10px;
+      min-height: 300px;
+      text-align: left;
+      overflow-y: auto;
+    }
+
+    .button-bar {
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .chat-button {
+      background: var(--orange);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s ease;
+    }
+
+    .chat-button:hover {
+      background: var(--red-orange);
+    }
+
+    #chatInput {
+      width: 75%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 15px;
+    }
+
+    #sendButton {
+      padding: 10px 15px;
+      background: var(--orange);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-left: 5px;
+    }
+
+    #sendButton:hover {
+      background: var(--red-orange);
     }
   </style>
-
-  <!-- Load client configuration -->
-  <script src="js/clientConfig.js"></script>
 </head>
+<body>
+  <div id="chatContainer">
+    <h1>ClarityBots.ai</h1>
+    <div id="chatLog"></div>
 
-<body class="bg-fade">
-  <main>
-    <div class="overlay-panel">
-      <header>
-        <h1 id="dynamic-heading" class="animate-fadeInDown"></h1>
-        <h2>- ClarityBots® -</h2>
-        <h3>"Where AI and EOS® Converge"</h3>
-      </header>
+    <div class="button-bar">
+      <button class="chat-button" data-message="What is EOS?">Button 1</button>
+      <button class="chat-button" data-message="Help me define my Rocks">Button 2</button>
+      <button class="chat-button" data-message="Guide me on Scorecard metrics">Button 3</button>
+      <button class="chat-button" data-message="Show me the IDS process">Button 4</button>
+      <button class="chat-button" data-message="Explain Level 10 Meetings">Button 5</button>
 
-      <section class="button-container">
-        <a class="button" href="https://chatgpt.com/g/g-687bd0db062c8191912d6ad51220058c-ai-implementer-tm" target="_blank" rel="noopener">
-          <i class="fas fa-mountain"></i> ClarityRocks™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritybots-ids" target="_blank" rel="noopener">
-          <i class="fas fa-heart"></i> ClaritySolved™
-        </a> 
-        <a class="button" href="https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritybots-smart-scorecard" target="_blank" rel="noopener">
-          <i class="fas fa-chart-line"></i> ClarityScore™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-claritybots-core-values-clarifier" target="_blank" rel="noopener">
-          <i class="fas fa-heart"></i> ClarityValues™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank" rel="noopener">
-          <i class="fas fa-book-open"></i> ClarityTrax™
-        </a>
-        <!-- Sixth button -->
-        <a id="meet-author-btn" class="button" href="javascript:void(0);">
-          <i class="fas fa-flask"></i> Loading...
-        </a>
-      </section>
+      <!-- Sixth button auto-sends without typing -->
+      <button id="btn6" class="chat-button" data-message="Tell me about ClarityBots.ai">
+        Learn About ClarityBots.ai
+      </button>
     </div>
-  </main>
 
-  <footer class="footer">
-    <div>&copy; 2025 Business Intuition Incorporated</div>
-    <div>Powered by ClarityBots® • Informed by EOS®</div>
-  </footer>
+    <div>
+      <input id="chatInput" type="text" placeholder="Type your message here..." />
+      <button id="sendButton">Send</button>
+    </div>
+  </div>
 
-  <!-- Background + Branding Loader -->
-  <script type="module">
-    import { clients } from './js/clientConfig.js';
-    const subdomain = location.hostname.split('.')[0];
-    const client = clients[subdomain] || clients.default;
-
-    const heading = document.getElementById('dynamic-heading');
-    if (heading && client.heading) heading.textContent = client.heading;
-
-    if (client.background) {
-      const bg = new Image();
-      bg.src = client.background;
-      bg.onload = () => {
-        document.body.style.backgroundImage = `url('${client.background}')`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundRepeat = 'no-repeat';
-        document.body.style.backgroundAttachment = 'fixed';
-        document.body.classList.add('loaded');
-      };
-    }
-  </script>
-
-  <!-- Sixth Button Logic -->
   <script>
-    window.addEventListener("load", () => {
-      const btn = document.getElementById("meet-author-btn");
-      if (!btn) return;
+    const API_URL = "/api/chat"; // <-- Change if your ClarityBots API is hosted elsewhere
 
-      const cfg = window.clientConfig || {};
-      let displayName = cfg.heading || "the Creator";
-      btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
+    async function sendMessage(message) {
+      const chatLog = document.getElementById("chatLog");
 
-      btn.addEventListener("click", () => {
-        if (cfg.gptUrl) {
-          window.open(cfg.gptUrl, "_blank", "noopener");
-        } else {
-          alert("No GPT profile configured for this client.");
-        }
+      // Append user message instantly
+      chatLog.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
+      chatLog.scrollTop = chatLog.scrollHeight;
+
+      try {
+        // Send to your live API
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const data = await response.json();
+
+        // Append AI's response
+        chatLog.innerHTML += `<div><strong>ClarityBots.ai:</strong> ${data.reply}</div>`;
+        chatLog.scrollTop = chatLog.scrollHeight;
+
+      } catch (error) {
+        chatLog.innerHTML += `<div style="color:red;"><strong>Error:</strong> ${error.message}</div>`;
+      }
+    }
+
+    // Handle send button click
+    document.getElementById("sendButton").addEventListener("click", function() {
+      const chatInput = document.getElementById("chatInput");
+      const message = chatInput.value.trim();
+      if (message) {
+        sendMessage(message);
+        chatInput.value = "";
+      }
+    });
+
+    // Handle Enter key
+    document.getElementById("chatInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        document.getElementById("sendButton").click();
+      }
+    });
+
+    // All buttons send their value directly
+    document.querySelectorAll(".chat-button").forEach(button => {
+      button.addEventListener("click", function() {
+        const valueToSend = this.getAttribute("data-message");
+        sendMessage(valueToSend);
       });
     });
   </script>
-
-  <script nomodule>
-    alert("This site requires a modern browser with JavaScript support.");
-  </script>
-
-  <noscript>
-    <div style="background-color: #f04e23; color: white; padding: 1rem; text-align: center;">
-      JavaScript is required to use this site. Please enable it in your browser settings.
-    </div>
-  </noscript>
 </body>
 </html>

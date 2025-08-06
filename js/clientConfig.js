@@ -17,7 +17,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=alder",
     profile: {
       staticText: `Alder Construction is a leading provider of infrastructure and commercial construction services, known for delivering high-quality projects on time and within budget.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about Alder Construction"
+    ]
   },
   bi: {
     heading: "Business Intuition",
@@ -30,7 +38,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=bi",
     profile: {
       staticText: `Kyle Fowles is a Certified EOS Implementer®, Kolbe Certified Consultant, and Certified Outgrow Advisor. He has facilitated over 250 EOS Session Days, with a 9.5/10 client rating. Kyle helps entrepreneurial leadership teams gain clarity, accountability, and traction so they can grow with confidence.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about Business Intuition"
+    ]
   },
   cop: {
     heading: "COP Construction",
@@ -43,7 +59,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=cop",
     profile: {
       staticText: `COP Construction is a full-service construction contractor specializing in heavy civil and infrastructure projects across the region.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about COP Construction"
+    ]
   },
   eosww: {
     heading: "EOS Worldwide",
@@ -56,7 +80,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=eosww",
     profile: {
       staticText: `EOS Worldwide provides simple, practical tools to help entrepreneurs run their businesses more effectively and achieve their vision.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about EOS Worldwide"
+    ]
   },
   havenlight: {
     heading: "Havenlight",
@@ -69,7 +101,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=havenlight",
     profile: {
       staticText: `Havenlight is a fine art company specializing in faith-inspired artwork, helping people bring meaningful art into their homes and spaces.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about Havenlight"
+    ]
   },
   lumos: {
     heading: "Lumos",
@@ -82,7 +122,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=lumos",
     profile: {
       staticText: `Dan Smith is the founder of Lumos Consulting, specializing in leadership alignment, growth strategy, and operational excellence. He works with executive teams to break through plateaus, align their vision, and reach their highest potential.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about Lumos"
+    ]
   },
   mark: {
     heading: "Mark O'Donnell",
@@ -95,7 +143,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=mark",
     profile: {
       staticText: `Mark O'Donnell is the Visionary and CEO of EOS Worldwide, leading the organization to help millions of entrepreneurs get what they want from their businesses.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about Mark O'Donnell"
+    ]
   },
   ninety: {
     heading: "Ninety.io",
@@ -108,7 +164,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=ninety",
     profile: {
       staticText: `Ninety.io provides cloud-based tools to help organizations implement EOS effectively and run better companies.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about Ninety.io"
+    ]
   },
   overland: {
     heading: "Overland Group",
@@ -121,7 +185,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=overland",
     profile: {
       staticText: `Overland Group is a full-service real estate and construction company offering development, design, and building expertise.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about Overland Group"
+    ]
   },
   remedyww: {
     heading: "Remedy World Wide",
@@ -134,7 +206,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=remedyww",
     profile: {
       staticText: `Remedy World Wide offers innovative healthcare products and solutions for patients and providers worldwide.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about Remedy World Wide"
+    ]
   },
   skyline: {
     heading: "Skyline Electric Company",
@@ -147,7 +227,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=skyline",
     profile: {
       staticText: `Skyline Electric Company specializes in electrical contracting services, providing high-quality solutions for industrial, commercial, and utility clients.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about Skyline Electric"
+    ]
   },
   techplus: {
     heading: "TechPlus",
@@ -160,7 +248,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=techplus",
     profile: {
       staticText: `TechPlus delivers innovative technology solutions to help organizations modernize operations and improve efficiency.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about TechPlus"
+    ]
   },
   vlcm: {
     heading: "VLCM",
@@ -173,7 +269,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=vlcm",
     profile: {
       staticText: `VLCM provides enterprise technology solutions, helping organizations with IT infrastructure, networking, and cybersecurity.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about VLCM"
+    ]
   },
   winward: {
     heading: "Winward Electric",
@@ -186,7 +290,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=winward",
     profile: {
       staticText: `Winward Electric offers professional electrical contracting services for residential, commercial, and industrial clients.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about Winward Electric"
+    ]
   },
   default: {
     heading: "ClarityBots",
@@ -199,7 +311,15 @@ export const clients = {
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=default",
     profile: {
       staticText: `This is a default ClarityBots profile. Please configure your clientConfig.js with the correct client information for your subdomain.`
-    }
+    },
+    defaultPrompts: [
+      "What is EOS?",
+      "Help me define my Rocks",
+      "Guide me on Scorecard metrics",
+      "Show me the IDS process",
+      "Explain Level 10 Meetings",
+      "Tell me about ClarityBots"
+    ]
   }
 };
 
