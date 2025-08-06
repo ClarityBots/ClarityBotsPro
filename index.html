@@ -21,162 +21,96 @@
       text-align: center;
     }
 
+    header {
+      padding: 30px 15px;
+    }
+
+    header img {
+      max-width: 180px;
+    }
+
     h1 {
-      margin-top: 20px;
+      margin: 20px 0 10px;
       color: var(--orange);
+      font-size: 1.8em;
     }
 
-    #chatContainer {
-      max-width: 900px;
+    .intro {
+      max-width: 700px;
       margin: 0 auto;
-      padding: 20px;
-    }
-
-    #chatLog {
-      background: white;
-      color: black;
-      padding: 15px;
-      border-radius: 10px;
-      min-height: 300px;
-      text-align: left;
-      overflow-y: auto;
+      font-size: 1.1em;
+      line-height: 1.5;
+      color: var(--light-gray);
     }
 
     .button-bar {
-      margin-top: 15px;
+      margin: 30px auto;
+      max-width: 900px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
+      gap: 15px;
     }
 
-    .chat-button {
+    .landing-button {
       background: var(--orange);
       color: white;
       border: none;
-      padding: 10px 15px;
+      padding: 14px 20px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 15px;
+      min-width: 180px;
+      text-transform: none;
+      font-weight: bold;
       transition: background 0.2s ease;
     }
 
-    .chat-button:hover {
-      background: var(--red-orange);
-    }
-
-    #chatInput {
-      width: 75%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      margin-top: 15px;
-    }
-
-    #sendButton {
-      padding: 10px 15px;
-      background: var(--orange);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-left: 5px;
-    }
-
-    #sendButton:hover {
+    .landing-button:hover {
       background: var(--red-orange);
     }
   </style>
 </head>
 <body>
-  <div id="chatContainer">
-    <h1>ClarityBots.ai</h1>
-    <div id="chatLog"></div>
+  <header>
+    <!-- Company Logo -->
+    <img id="clientLogo" src="images/default_logo.png" alt="Company Logo">
+    <h1 id="clientHeading">ClarityBots</h1>
+    <p class="intro" id="clientIntro">
+      Welcome to ClarityBots — your AI-powered EOS implementation assistant.
+    </p>
+  </header>
 
-    <!-- Six dynamic buttons -->
-    <div class="button-bar">
-      <button class="chat-button"></button>
-      <button class="chat-button"></button>
-      <button class="chat-button"></button>
-      <button class="chat-button"></button>
-      <button class="chat-button"></button>
-      <button class="chat-button"></button>
-    </div>
-
-    <div>
-      <input id="chatInput" type="text" placeholder="Type your message here..." />
-      <button id="sendButton">Send</button>
-    </div>
+  <!-- Feature Buttons -->
+  <div class="button-bar">
+    <button class="landing-button" data-index="0"></button>
+    <button class="landing-button" data-index="1"></button>
+    <button class="landing-button" data-index="2"></button>
+    <button class="landing-button" data-index="3"></button>
+    <button class="landing-button" data-index="4"></button>
+    <button class="landing-button" data-index="5"></button>
   </div>
 
-  <!-- Import clientConfig.js -->
   <script type="module">
     import { clients } from './js/clientConfig.js';
 
-    // Use the detected client from clientConfig.js
     const activeClient = window.clientConfig || clients.default;
 
-    // Populate button text & messages from defaultPrompts
-    const buttons = document.querySelectorAll(".chat-button");
-    if (Array.isArray(activeClient.defaultPrompts)) {
-      buttons.forEach((button, index) => {
-        const prompt = activeClient.defaultPrompts[index] || `Prompt ${index + 1}`;
-        button.textContent = prompt;
-        button.setAttribute("data-message", prompt);
+    // Set logo, heading, and intro
+    document.getElementById('clientLogo').src = activeClient.logo || 'images/default_logo.png';
+    document.getElementById('clientLogo').alt = activeClient.altText || 'Company Logo';
+    document.getElementById('clientHeading').textContent = activeClient.heading || 'ClarityBots';
+    document.getElementById('clientIntro').textContent = activeClient.profile?.staticText || '';
+
+    // Populate landing buttons
+    const buttons = document.querySelectorAll('.landing-button');
+    if (Array.isArray(activeClient.landingButtons)) {
+      buttons.forEach((btn, index) => {
+        btn.textContent = activeClient.landingButtons[index] || `Button ${index + 1}`;
       });
     } else {
-      console.warn("⚠️ No defaultPrompts found for this client:", activeClient);
+      console.warn("⚠️ No landingButtons found for this client:", activeClient);
     }
-
-    // API URL from clientConfig
-    const API_URL = activeClient.gptUrl;
-
-    async function sendMessage(message) {
-      const chatLog = document.getElementById("chatLog");
-
-      // Append user message
-      chatLog.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
-      chatLog.scrollTop = chatLog.scrollHeight;
-
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message })
-        });
-
-        const data = await res.json();
-        chatLog.innerHTML += `<div><strong>ClarityBots.ai:</strong> ${data.reply}</div>`;
-        chatLog.scrollTop = chatLog.scrollHeight;
-
-      } catch (err) {
-        chatLog.innerHTML += `<div style="color:red;"><strong>Error:</strong> ${err.message}</div>`;
-      }
-    }
-
-    // Send typed messages
-    document.getElementById("sendButton").addEventListener("click", () => {
-      const chatInput = document.getElementById("chatInput");
-      const message = chatInput.value.trim();
-      if (message) {
-        sendMessage(message);
-        chatInput.value = "";
-      }
-    });
-
-    document.getElementById("chatInput").addEventListener("keypress", e => {
-      if (e.key === "Enter") {
-        document.getElementById("sendButton").click();
-      }
-    });
-
-    // Send button messages when clicked
-    buttons.forEach(button => {
-      button.addEventListener("click", () => {
-        const value = button.getAttribute("data-message");
-        sendMessage(value);
-      });
-    });
   </script>
 </body>
 </html>

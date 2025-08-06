@@ -25,6 +25,14 @@ export const clients = {
       "Show me the IDS process",
       "Explain Level 10 Meetings",
       "Tell me about Alder Construction"
+    ],
+    landingButtons: [
+      "ClarityPlatform",
+      "ClarityRocks",
+      "ClarityScore™",
+      "ClaritySolved",
+      "ClarityMeet™",
+      "Meet Alder Construction"
     ]
   },
   bi: {
@@ -46,6 +54,14 @@ export const clients = {
       "Show me the IDS process",
       "Explain Level 10 Meetings",
       "Tell me about Business Intuition"
+    ],
+    landingButtons: [
+      "ClarityPlatform",
+      "ClarityRocks",
+      "ClarityScore™",
+      "ClaritySolved",
+      "ClarityMeet™",
+      "Meet Business Intuition"
     ]
   },
   cop: {
@@ -67,6 +83,14 @@ export const clients = {
       "Show me the IDS process",
       "Explain Level 10 Meetings",
       "Tell me about COP Construction"
+    ],
+    landingButtons: [
+      "ClarityPlatform",
+      "ClarityRocks",
+      "ClarityScore™",
+      "ClaritySolved",
+      "ClarityMeet™",
+      "Meet COP Construction"
     ]
   },
   eosww: {
@@ -88,6 +112,14 @@ export const clients = {
       "Show me the IDS process",
       "Explain Level 10 Meetings",
       "Tell me about EOS Worldwide"
+    ],
+    landingButtons: [
+      "ClarityPlatform",
+      "ClarityRocks",
+      "ClarityScore™",
+      "ClaritySolved",
+      "ClarityMeet™",
+      "Meet EOS Worldwide"
     ]
   },
   havenlight: {
@@ -109,6 +141,14 @@ export const clients = {
       "Show me the IDS process",
       "Explain Level 10 Meetings",
       "Tell me about Havenlight"
+    ],
+    landingButtons: [
+      "ClarityPlatform",
+      "ClarityRocks",
+      "ClarityScore™",
+      "ClaritySolved",
+      "ClarityMeet™",
+      "Meet Havenlight"
     ]
   },
   lumos: {
@@ -121,7 +161,7 @@ export const clients = {
     brandColor: "#A9B7C6",
     gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=lumos",
     profile: {
-      staticText: `Dan Smith is the founder of Lumos Consulting, specializing in leadership alignment, growth strategy, and operational excellence. He works with executive teams to break through plateaus, align their vision, and reach their highest potential.`
+      staticText: `Dan Smith is the founder of Lumos Consulting, specializing in leadership alignment, growth strategy, and operational excellence.`
     },
     defaultPrompts: [
       "What is EOS?",
@@ -130,90 +170,14 @@ export const clients = {
       "Show me the IDS process",
       "Explain Level 10 Meetings",
       "Tell me about Lumos"
-    ]
-  },
-  mark: {
-    heading: "Mark O'Donnell",
-    background: "images/mark_image.png",
-    logo: "images/mark_logo.png",
-    altText: "Mark Logo",
-    preloadImage: true,
-    basePath: "images/",
-    brandColor: "#A9B7C6",
-    gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=mark",
-    profile: {
-      staticText: `Mark O'Donnell is the Visionary and CEO of EOS Worldwide, leading the organization to help millions of entrepreneurs get what they want from their businesses.`
-    },
-    defaultPrompts: [
-      "What is EOS?",
-      "Help me define my Rocks",
-      "Guide me on Scorecard metrics",
-      "Show me the IDS process",
-      "Explain Level 10 Meetings",
-      "Tell me about Mark O'Donnell"
-    ]
-  },
-  ninety: {
-    heading: "Ninety.io",
-    background: "images/ninety_image.webp",
-    logo: "images/ninety_logo.png",
-    altText: "Ninety Logo",
-    preloadImage: true,
-    basePath: "images/",
-    brandColor: "#A9B7C6",
-    gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=ninety",
-    profile: {
-      staticText: `Ninety.io provides cloud-based tools to help organizations implement EOS effectively and run better companies.`
-    },
-    defaultPrompts: [
-      "What is EOS?",
-      "Help me define my Rocks",
-      "Guide me on Scorecard metrics",
-      "Show me the IDS process",
-      "Explain Level 10 Meetings",
-      "Tell me about Ninety.io"
-    ]
-  },
-  overland: {
-    heading: "Overland Group",
-    background: "images/overland_image.png",
-    logo: "images/overland_logo.png",
-    altText: "Overland Logo",
-    preloadImage: true,
-    basePath: "images/",
-    brandColor: "#A9B7C6",
-    gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=overland",
-    profile: {
-      staticText: `Overland Group is a full-service real estate and construction company offering development, design, and building expertise.`
-    },
-    defaultPrompts: [
-      "What is EOS?",
-      "Help me define my Rocks",
-      "Guide me on Scorecard metrics",
-      "Show me the IDS process",
-      "Explain Level 10 Meetings",
-      "Tell me about Overland Group"
-    ]
-  },
-  remedyww: {
-    heading: "Remedy World Wide",
-    background: "images/remedyww_image.jpg",
-    logo: "images/remedyww_logo.png",
-    altText: "Remedy World Wide Logo",
-    preloadImage: true,
-    basePath: "images/",
-    brandColor: "#A9B7C6",
-    gptUrl: "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=remedyww",
-    profile: {
-      staticText: `Remedy World Wide offers innovative healthcare products and solutions for patients and providers worldwide.`
-    },
-    defaultPrompts: [
-      "What is EOS?",
-      "Help me define my Rocks",
-      "Guide me on Scorecard metrics",
-      "Show me the IDS process",
-      "Explain Level 10 Meetings",
-      "Tell me about Remedy World Wide"
+    ],
+    landingButtons: [
+      "ClarityPlatform",
+      "ClarityRocks",
+      "ClarityScore™",
+      "ClaritySolved",
+      "ClarityMeet™",
+      "Meet Lumos"
     ]
   },
   skyline: {
@@ -235,6 +199,14 @@ export const clients = {
       "Show me the IDS process",
       "Explain Level 10 Meetings",
       "Tell me about Skyline Electric"
+    ],
+    landingButtons: [
+      "ClarityPlatform",
+      "ClarityRocks",
+      "ClarityScore™",
+      "ClaritySolved",
+      "ClarityMeet™",
+      "Meet Skyline Electric Company"
     ]
   },
   techplus: {
@@ -256,6 +228,14 @@ export const clients = {
       "Show me the IDS process",
       "Explain Level 10 Meetings",
       "Tell me about TechPlus"
+    ],
+    landingButtons: [
+      "ClarityPlatform",
+      "ClarityRocks",
+      "ClarityScore™",
+      "ClaritySolved",
+      "ClarityMeet™",
+      "Meet TechPlus"
     ]
   },
   vlcm: {
@@ -277,6 +257,14 @@ export const clients = {
       "Show me the IDS process",
       "Explain Level 10 Meetings",
       "Tell me about VLCM"
+    ],
+    landingButtons: [
+      "ClarityPlatform",
+      "ClarityRocks",
+      "ClarityScore™",
+      "ClaritySolved",
+      "ClarityMeet™",
+      "Meet VLCM"
     ]
   },
   winward: {
@@ -298,6 +286,14 @@ export const clients = {
       "Show me the IDS process",
       "Explain Level 10 Meetings",
       "Tell me about Winward Electric"
+    ],
+    landingButtons: [
+      "ClarityPlatform",
+      "ClarityRocks",
+      "ClarityScore™",
+      "ClaritySolved",
+      "ClarityMeet™",
+      "Meet Winward Electric"
     ]
   },
   default: {
@@ -319,6 +315,14 @@ export const clients = {
       "Show me the IDS process",
       "Explain Level 10 Meetings",
       "Tell me about ClarityBots"
+    ],
+    landingButtons: [
+      "ClarityPlatform",
+      "ClarityRocks",
+      "ClarityScore™",
+      "ClaritySolved",
+      "ClarityMeet™",
+      "Meet ClarityBots"
     ]
   }
 };
