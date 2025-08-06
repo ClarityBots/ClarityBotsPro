@@ -91,10 +91,13 @@
     <button class="landing-button" data-index="5"></button>
   </div>
 
-  <script type="module">
-    import { clients } from './js/clientConfig.js';
+  <!-- Load clientConfig.js first so window.clientConfig is available -->
+  <script src="./js/clientConfig.js"></script>
 
-    const activeClient = window.clientConfig || clients.default;
+  <!-- Landing Page Script -->
+  <script>
+    // Ensure clientConfig is loaded
+    const activeClient = window.clientConfig || {};
 
     // Set logo, heading, and intro
     document.getElementById('clientLogo').src = activeClient.logo || 'images/default_logo.png';
@@ -111,6 +114,19 @@
     } else {
       console.warn("⚠️ No landingButtons found for this client:", activeClient);
     }
+
+    // Click handler - send to chat view
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const message = btn.textContent;
+
+        // Store the message so chat page can pick it up
+        sessionStorage.setItem('claritybots_initialMessage', message);
+
+        // Redirect to chat page
+        window.location.href = './chat.html'; // change if your chat file is named differently
+      });
+    });
   </script>
 </body>
 </html>
