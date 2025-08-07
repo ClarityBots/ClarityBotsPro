@@ -5,67 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ClarityBots</title>
   <link rel="stylesheet" href="style.css" />
-  <script type="module" src="js/main.js" defer></script>
+  <script defer src="js/clientConfig.js"></script>
 </head>
 <body>
-  <div class="overlay">
-    <div class="branding">
-      <img id="logo" src="" alt="Company Logo" />
-      <h1 id="heading"></h1>
-      <p id="profile-text"></p>
-    </div>
+  <div id="overlay"></div>
+  <main class="content-container">
+    <img id="logo" src="" alt="Company Logo" class="logo" />
+    <h1 id="heading" class="company-heading">Loading...</h1>
+    <p id="profile-text" class="company-profile">Please wait while we load your experience.</p>
+    <div id="buttons" class="button-container"></div>
+  </main>
 
-    <div id="prompt-buttons" class="buttons-container"></div>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const cfg = window.clientConfig;
 
-    <div class="footer">
-      <button class="launch-button" onclick="launchBot()">Open ClarityMeet™</button>
-      <div id="landing-links" class="link-buttons"></div>
-    </div>
-  </div>
+      // Set background
+      document.body.style.backgroundImage = `url('${cfg.background}')`;
 
-  <script type="module">
-    import { clients } from "./js/clientConfig.js";
+      // Logo
+      const logo = document.getElementById("logo");
+      logo.src = cfg.logo;
+      logo.alt = cfg.altText;
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const companyKey = urlParams.get("q") || "default";
-    const company = clients[companyKey] || clients.default;
+      // Heading
+      document.getElementById("heading").textContent = cfg.heading;
 
-    // Branding and visuals
-    document.body.style.backgroundImage = `url('${company.background}')`;
-    document.getElementById("logo").src = company.logo;
-    document.getElementById("logo").alt = company.altText;
-    document.getElementById("heading").textContent = company.heading;
-    document.getElementById("profile-text").textContent = company.profile.staticText;
+      // Profile Text
+      document.getElementById("profile-text").textContent = cfg.profile.staticText;
 
-    // Prompt buttons
-    const promptButtons = document.getElementById("prompt-buttons");
-    if (Array.isArray(company.defaultPrompts)) {
-      company.defaultPrompts.forEach((prompt) => {
-        const button = document.createElement("button");
-        button.textContent = prompt;
-        button.className = "prompt-button";
-        button.onclick = () =>
-          window.open(`${company.gptUrl}&prompt=${encodeURIComponent(prompt)}`, "_blank");
-        promptButtons.appendChild(button);
-      });
-    }
+      // Clear any existing buttons (for live reloads or fallback prevention)
+      const buttonContainer = document.getElementById("buttons");
+      buttonContainer.innerHTML = "";
 
-    // Landing buttons
-    const landingLinks = document.getElementById("landing-links");
-    if (Array.isArray(company.landingButtons)) {
-      company.landingButtons.forEach((label) => {
+      // Render buttons once
+      cfg.landingButtons.forEach((label) => {
         const button = document.createElement("button");
         button.textContent = label;
-        button.className = "link-button";
-        button.onclick = () => alert(`${label} is coming soon.`);
-        landingLinks.appendChild(button);
+        button.className = "cta-button";
+        button.onclick = () => alert(`You clicked "${label}"`);
+        buttonContainer.appendChild(button);
       });
-    }
-
-    // Global launch function
-    window.launchBot = () => {
-      window.open(company.gptUrl, "_blank");
-    };
+    });
   </script>
 </body>
 </html>
