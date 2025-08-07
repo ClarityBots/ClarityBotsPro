@@ -103,7 +103,7 @@ export const clients = {
     brandColor: "#A9B7C6",
     gptUrl: `${gptBaseUrl}lumos`,
     profile: {
-      staticText: `Arthur Pili, the founder of Lumos Painting Company, offers detailed interior and exterior painting, finishing, and new construction services across Northern Utah. The company has a longstanding reputation, emphasizing quality and customer service with a two-year warranty on all projects.`
+      staticText: `Arthur Pili, the founder of Lumos Painting Company, offers detailed interior and exterior painting, finishing, and new construction services across Northern Utah. His company has a longstanding reputation, emphasizing quality and customer service with a two-year warranty on all projects.`
     },
     landingButtons: [...sharedLandingButtons, "Meet LumosBots"]
   },
