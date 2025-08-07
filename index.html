@@ -5,47 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ClarityBots</title>
   <link rel="stylesheet" href="style.css" />
-  <script defer src="js/clientConfig.js"></script>
 </head>
 <body>
-  <div id="overlay"></div>
-  <main class="content-container">
-    <img id="logo" src="" alt="Company Logo" class="logo" />
-    <h1 id="heading" class="company-heading">Loading...</h1>
-    <p id="profile-text" class="company-profile">Please wait while we load your experience.</p>
+  <div id="overlay">
+    <img id="logo" alt="Company Logo" />
+    <h1 id="heading">Loading...</h1>
+    <p id="description">Please wait while we load your experience.</p>
     <div id="buttons" class="button-container"></div>
-  </main>
+  </div>
 
+  <script src="js/clientConfig.js"></script>
   <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      const cfg = window.clientConfig;
+    document.addEventListener("DOMContentLoaded", function () {
+      const overlay = document.getElementById("overlay");
+      const logo = document.getElementById("logo");
+      const heading = document.getElementById("heading");
+      const description = document.getElementById("description");
+      const buttonsContainer = document.getElementById("buttons");
 
-      // Set background
-      document.body.style.backgroundImage = `url('${cfg.background}')`;
+      const client = window.clientConfig;
+
+      // Background image
+      if (client.background) {
+        document.body.style.backgroundImage = `url(${client.background})`;
+      }
 
       // Logo
-      const logo = document.getElementById("logo");
-      logo.src = cfg.logo;
-      logo.alt = cfg.altText;
+      logo.src = `${client.basePath || ""}${client.logo}`;
+      logo.alt = client.altText || "Client Logo";
 
       // Heading
-      document.getElementById("heading").textContent = cfg.heading;
+      heading.textContent = client.heading || "ClarityBots";
 
-      // Profile Text
-      document.getElementById("profile-text").textContent = cfg.profile.staticText;
+      // Description
+      description.textContent = client.profile?.staticText || "Welcome to ClarityBots.";
 
-      // Clear any existing buttons (for live reloads or fallback prevention)
-      const buttonContainer = document.getElementById("buttons");
-      buttonContainer.innerHTML = "";
-
-      // Render buttons once
-      cfg.landingButtons.forEach((label) => {
-        const button = document.createElement("button");
-        button.textContent = label;
-        button.className = "cta-button";
-        button.onclick = () => alert(`You clicked "${label}"`);
-        buttonContainer.appendChild(button);
-      });
+      // Buttons
+      if (Array.isArray(client.landingButtons)) {
+        client.landingButtons.forEach((label) => {
+          const button = document.createElement("button");
+          button.textContent = label;
+          button.className = "cta-button";
+          button.onclick = () => {
+            const query = encodeURIComponent(label);
+            window.open(`${client.gptUrl}&q=${query}`, "_blank");
+          };
+          buttonsContainer.appendChild(button);
+        });
+      }
     });
   </script>
 </body>
