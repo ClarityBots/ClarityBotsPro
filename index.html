@@ -121,7 +121,8 @@
     import { clients } from './js/clientConfig.js';
 
     const urlParams = new URLSearchParams(window.location.search);
-    const clientName = urlParams.get('company') || sessionStorage.getItem('clientName');
+    const subdomain = window.location.hostname.split('.')[0];
+    const clientName = urlParams.get('company') || sessionStorage.getItem('clientName') || subdomain;
 
     if (!clientName || !clients[clientName]) {
       document.body.innerHTML = `
@@ -134,17 +135,14 @@
     sessionStorage.setItem('clientName', clientName);
     const client = clients[clientName];
 
-    // Apply background
     document.body.style.backgroundImage = `url('${client.background}')`;
     document.getElementById('mainContent').classList.add('fade-in');
 
-    // Load branding
     document.getElementById('logo').src = client.logo;
     document.getElementById('logo').alt = client.altText || "Company Logo";
     document.getElementById('heading').textContent = client.heading || "Welcome";
     document.getElementById('intro-text').textContent = client.profile?.staticText || "";
 
-    // Render buttons
     const buttonContainer = document.getElementById('button-container');
     const buttons = client.landingButtons || [];
 
