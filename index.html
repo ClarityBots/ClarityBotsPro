@@ -2,58 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ClarityBots</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ClarityBots® | Loading...</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
-  <div id="overlay">
-    <img id="logo" alt="Company Logo" />
-    <h1 id="heading">Loading...</h1>
-    <p id="description">Please wait while we load your experience.</p>
-    <div id="buttons" class="button-container"></div>
-  </div>
+<body style="margin: 0; font-family: sans-serif; background-color: #142233; color: white; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh;">
 
-  <script src="js/clientConfig.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const overlay = document.getElementById("overlay");
-      const logo = document.getElementById("logo");
-      const heading = document.getElementById("heading");
-      const description = document.getElementById("description");
-      const buttonsContainer = document.getElementById("buttons");
+  <img id="company-logo" src="" alt="Company Logo" style="max-width: 220px; margin-bottom: 1rem;" />
+  <h1 style="font-size: 2rem; font-weight: bold;">Loading...</h1>
+  <p>Please wait while we load your experience.</p>
 
-      const client = window.clientConfig;
+  <script type="module">
+    import { clients } from './js/clientConfig.js';
 
-      // Background image
-      if (client.background) {
-        document.body.style.backgroundImage = `url(${client.background})`;
-      }
+    // Get clientName from URL or session
+    const urlParams = new URLSearchParams(window.location.search);
+    let clientName = urlParams.get('company') || sessionStorage.getItem('clientName');
 
-      // Logo
-      logo.src = `${client.basePath || ""}${client.logo}`;
-      logo.alt = client.altText || "Client Logo";
+    if (!clientName || !clients[clientName]) {
+      document.body.innerHTML = `
+        <h1 style="color: red;">Error: Invalid or missing company name</h1>
+        <p>Please use a valid ClarityBots link.</p>
+      `;
+      throw new Error("Missing or unknown clientName.");
+    }
 
-      // Heading
-      heading.textContent = client.heading || "ClarityBots";
+    // Save to session
+    sessionStorage.setItem('clientName', clientName);
+    const client = clients[clientName];
 
-      // Description
-      description.textContent = client.profile?.staticText || "Welcome to ClarityBots.";
+    // Update background and logo
+    if (client.background) {
+      document.body.style.backgroundImage = `url('${client.background}')`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center center';
+      document.body.style.backgroundRepeat = 'no-repeat';
+    }
 
-      // Buttons
-      if (Array.isArray(client.landingButtons)) {
-        client.landingButtons.forEach((label) => {
-          const button = document.createElement("button");
-          button.textContent = label;
-          button.className = "cta-button";
-          button.onclick = () => {
-            const query = encodeURIComponent(label);
-            window.open(`${client.gptUrl}&q=${query}`, "_blank");
-          };
-          buttonsContainer.appendChild(button);
-        });
-      }
-    });
+    const logoEl = document.getElementById("company-logo");
+    if (logoEl && client.logo) {
+      logoEl.src = client.logo;
+      logoEl.alt = client.altText || "Company Logo";
+    }
+
+    // Simulate redirect or continue to next step
+    setTimeout(() => {
+      window.location.href = "chat.html"; // Or wherever your next step is
+    }, 1500);
   </script>
+
 </body>
 </html>
