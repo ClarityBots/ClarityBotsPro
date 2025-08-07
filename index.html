@@ -161,13 +161,10 @@
       btn.textContent = label;
       btn.title = tooltips[index] || "";
 
+      // Route to chat.html with topic and company
+      const topic = encodeURIComponent(label.replace(/\s+/g, ""));
       btn.onclick = () => {
-        console.log(`Clicked: ${label}`);
-        if (index === 5) {
-          window.location.href = `chat.html?company=${clientName}`;
-        } else {
-          alert(`"${label}" feature is launching soon.`);
-        }
+        window.location.href = `chat.html?company=${clientName}&topic=${topic}`;
       };
 
       buttonContainer.appendChild(btn);
