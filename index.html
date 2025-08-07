@@ -29,7 +29,7 @@
     }
 
     .content-box {
-      background-color: rgba(0, 0, 0, 0.5); /* ⬅️ local overlay here */
+      background-color: rgba(0, 0, 0, 0.5);
       padding: 2.5rem 2rem;
       border-radius: 16px;
       max-width: 900px;
@@ -61,10 +61,24 @@
     }
 
     .button-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      display: flex;
+      flex-direction: column;
       gap: 1rem;
       margin-top: 1.5rem;
+      width: 100%;
+    }
+
+    @media (min-width: 600px) {
+      .button-grid {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .cta-button {
+        flex: 1 1 calc(33% - 1rem);
+        max-width: 260px;
+      }
     }
 
     .cta-button {
@@ -76,6 +90,7 @@
       font-size: 1rem;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s;
+      width: 100%;
     }
 
     .cta-button:hover {
@@ -119,10 +134,8 @@
     sessionStorage.setItem('clientName', clientName);
     const client = clients[clientName];
 
-    // Apply background image
+    // Apply background
     document.body.style.backgroundImage = `url('${client.background}')`;
-
-    // Reveal content box
     document.getElementById('mainContent').classList.add('fade-in');
 
     // Load branding
@@ -131,7 +144,7 @@
     document.getElementById('heading').textContent = client.heading || "Welcome";
     document.getElementById('intro-text').textContent = client.profile?.staticText || "";
 
-    // Load buttons
+    // Render buttons
     const buttonContainer = document.getElementById('button-container');
     const buttons = client.landingButtons || [];
 
@@ -152,7 +165,6 @@
 
       btn.onclick = () => {
         console.log(`Clicked: ${label}`);
-
         if (index === 5) {
           window.location.href = `chat.html?company=${clientName}`;
         } else {
