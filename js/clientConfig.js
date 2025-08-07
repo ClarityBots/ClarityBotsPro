@@ -94,7 +94,7 @@ export const clients = {
     landingButtons: [...sharedLandingButtons, "Meet HavenBots"]
   },
   lumos: {
-    heading: "Lumos",
+    heading: "Lumos Painting Company",
     background: `${imageBasePath}lumos_image.webp`,
     logo: `${imageBasePath}lumos_logo.png`,
     altText: "Lumos Logo",
@@ -103,7 +103,7 @@ export const clients = {
     brandColor: "#A9B7C6",
     gptUrl: `${gptBaseUrl}lumos`,
     profile: {
-      staticText: `Dan Smith is the founder of Lumos Consulting, specializing in leadership alignment, growth strategy, and operational excellence. He works with executive teams to break through plateaus, align their vision, and reach their highest potential.`
+      staticText: `Arthur Pili is the founder of Lumos Painting Company and offers detailed interior and exterior painting, finishing, and new construction services across Northern Utah. The company has a longstanding reputation, emphasizing quality and customer service with a two-year warranty on all projects.`
     },
     landingButtons: [...sharedLandingButtons, "Meet LumosBots"]
   },
