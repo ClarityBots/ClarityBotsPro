@@ -2,61 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Redirecting to ClarityBot...</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      background-color: #142233;
-      color: white;
-      font-family: Inter, Arial, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-    }
-
-    .message {
-      max-width: 600px;
-    }
-
-    .message h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
-
-    .message p {
-      font-size: 1.1rem;
-      opacity: 0.8;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ClarityBots | Chat</title>
+  <link rel="stylesheet" href="css/chat.css" />
 </head>
 <body>
-  <div class="message">
-    <h1>Taking you to your ClarityBot...</h1>
-    <p>If nothing happens, <a id="manualLink" href="#" target="_blank">click here</a>.</p>
+  <div class="chat-wrapper">
+    <header class="chat-header">
+      <img id="logo" alt="Company Logo" />
+      <h1 id="company-heading">Loading...</h1>
+      <p id="topic-heading"></p>
+    </header>
+
+    <main class="chat-body">
+      <iframe id="gpt-frame" src="" frameborder="0"></iframe>
+    </main>
   </div>
 
-  <script type="module">
-    import { clients } from './js/clientConfig.js';
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const subdomain = window.location.hostname.split('.')[0];
-    const clientName = urlParams.get('company') || sessionStorage.getItem('clientName') || subdomain;
-
-    const client = clients[clientName];
-
-    if (!client || !client.gptUrl) {
-      document.querySelector('.message').innerHTML = `
-        <h1>⚠️ Invalid or missing company</h1>
-        <p>Please check the link and try again.</p>
-      `;
-    } else {
-      // Redirect to GPT URL
-      document.getElementById("manualLink").href = client.gptUrl;
-      window.open(client.gptUrl, "_blank");
-    }
-  </script>
+  <script type="module" src="js/chat.js"></script>
 </body>
 </html>
