@@ -1,64 +1,56 @@
-import { clients } from './clientConfig.js';
+// js/main.js
 
-// Parse subdomain or fallback to URL param ?q=clientKey
-let subdomain;
-const hostname = location.hostname.toLowerCase();
+document.addEventListener("DOMContentLoaded", () => {
+  const config = window.clientConfig;
 
-if (hostname === 'localhost' || hostname.startsWith('127.')) {
-  subdomain = 'bi'; // Local dev default
-} else if (hostname.includes('--')) {
-  subdomain = hostname.split('--')[0];
-} else {
-  subdomain = hostname.split('.')[0];
-}
+  if (!config) {
+    console.error("❌ No client configuration found.");
+    return;
+  }
 
-const urlParams = new URLSearchParams(window.location.search);
-const queryOverride = urlParams.get('q');
-const clientKey = queryOverride || subdomain;
-const company = clients[clientKey] || clients.default;
+  // Set background image
+  if (config.background) {
+    document.body.style.backgroundImage = `url('${config.background}')`;
+  }
 
-console.log(`🎯 Loaded config for: ${clientKey}`);
+  // Set logo image and alt text
+  const logoEl = document.getElementById("logo");
+  if (logoEl && config.logo) {
+    logoEl.src = config.logo;
+    logoEl.alt = config.altText || "Company Logo";
+  }
 
-// Branding & visuals
-document.body.style.backgroundImage = `url('${company.background}')`;
+  // Set heading text
+  const headingEl = document.getElementById("heading");
+  if (headingEl) {
+    headingEl.textContent = config.heading || "ClarityBots";
+  }
 
-const logo = document.getElementById('logo');
-logo.src = company.logo;
-logo.alt = company.altText;
+  // Set profile static text
+  const descriptionEl = document.getElementById("description");
+  if (descriptionEl) {
+    descriptionEl.textContent =
+      config.profile?.staticText || "Welcome to ClarityBots!";
+  }
 
-document.getElementById('heading').textContent = company.heading;
-document.getElementById('profile-text').textContent = company.profile.staticText;
+  // Render buttons
+  const buttonsEl = document.getElementById("buttons");
+  if (buttonsEl && Array.isArray(config.landingButtons)) {
+    buttonsEl.innerHTML = ""; // Clear any existing buttons
 
-// Prompt buttons
-const promptButtonsDiv = document.getElementById('prompt-buttons');
-if (Array.isArray(company.defaultPrompts)) {
-  company.defaultPrompts.forEach((prompt) => {
-    const btn = document.createElement('button');
-    btn.className = 'prompt-button';
-    btn.textContent = prompt;
-    btn.onclick = () => {
-      const url = `${company.gptUrl}&prompt=${encodeURIComponent(prompt)}`;
-      window.open(url, '_blank');
-    };
-    promptButtonsDiv.appendChild(btn);
-  });
-}
+    config.landingButtons.forEach((label) => {
+      const button = document.createElement("a");
+      button.href = "#";
+      button.classList.add("cta-button");
+      button.textContent = label;
+      buttonsEl.appendChild(button);
+    });
+  }
 
-// Landing navigation buttons
-const landingLinksDiv = document.getElementById('landing-links');
-if (Array.isArray(company.landingButtons)) {
-  company.landingButtons.forEach((label) => {
-    const btn = document.createElement('button');
-    btn.className = 'link-button';
-    btn.textContent = label;
-    btn.onclick = () => {
-      alert(`${label} is coming soon.`); // Or route later
-    };
-    landingLinksDiv.appendChild(btn);
-  });
-}
+  // Set theme color (optional)
+  if (config.brandColor) {
+    document.documentElement.style.setProperty("--primary", config.brandColor);
+  }
 
-// Global launchBot function used by HTML
-window.launchBot = () => {
-  window.open(company.gptUrl, '_blank');
-};
+  console.log("✅ Configuration loaded for:", config.heading);
+});
