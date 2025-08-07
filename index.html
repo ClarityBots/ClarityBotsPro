@@ -1,134 +1,71 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="ClarityBots® | AI-enhanced EOS® Tools to Build SMART Rocks, Clarify Vision, and Lead with Traction." />
-  <meta name="theme-color" content="#142233" />
-  <meta property="og:title" content="ClarityBots® | AI Meets EOS®" />
-  <meta property="og:description" content="Build SMART Rocks, Clarify Vision, and Lead with Traction using AI-enhanced EOS® tools." />
-  <meta property="og:image" content="images/social_preview.jpg" />
-  <meta property="og:url" content="https://claritybots.ai/" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <title>ClarityBots® | Where AI and EOS® Converge</title>
-
-  <!-- Fonts, Icons, Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="icon" href="images/favicon.ico" />
-  <link rel="stylesheet" href="styles.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-
-  <!-- Fade Logic -->
-  <style>
-    .bg-fade {
-      opacity: 0;
-      transition: opacity 1.5s ease-in-out;
-    }
-    .bg-fade.loaded {
-      opacity: 1;
-    }
-  </style>
-
-  <!-- Load client configuration -->
-  <script src="js/clientConfig.js"></script>
+  <title>ClarityBots</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="js/main.js" defer></script>
 </head>
-
-<body class="bg-fade">
-  <main>
-    <div class="overlay-panel">
-      <header>
-        <h1 id="dynamic-heading" class="animate-fadeInDown"></h1>
-        <h2>- ClarityBots® -</h2>
-        <h3>"Where AI and EOS® Converge"</h3>
-      </header>
-
-      <section class="button-container">
-        <a class="button" href="https://chatgpt.com/g/g-687bd0db062c8191912d6ad51220058c-ai-implementer-tm" target="_blank" rel="noopener">
-          <i class="fas fa-mountain"></i> ClarityRocks™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritybots-ids" target="_blank" rel="noopener">
-          <i class="fas fa-heart"></i> ClaritySolved™
-        </a> 
-        <a class="button" href="https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritybots-smart-scorecard" target="_blank" rel="noopener">
-          <i class="fas fa-chart-line"></i> ClarityScore™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-claritybots-core-values-clarifier" target="_blank" rel="noopener">
-          <i class="fas fa-heart"></i> ClarityValues™
-        </a>
-        <a class="button" href="https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritybots-traction-by-gino-wickman" target="_blank" rel="noopener">
-          <i class="fas fa-book-open"></i> ClarityTrax™
-        </a>
-        <!-- Sixth button -->
-        <a id="meet-author-btn" class="button" href="javascript:void(0);">
-          <i class="fas fa-flask"></i> Loading...
-        </a>
-      </section>
+<body>
+  <div class="overlay">
+    <div class="branding">
+      <img id="logo" src="" alt="Company Logo" />
+      <h1 id="heading"></h1>
+      <p id="profile-text"></p>
     </div>
-  </main>
 
-  <footer class="footer">
-    <div>&copy; 2025 Business Intuition Incorporated</div>
-    <div>Powered by ClarityBots® • Informed by EOS®</div>
-  </footer>
+    <div id="prompt-buttons" class="buttons-container"></div>
 
-  <!-- Background + Branding Loader -->
+    <div class="footer">
+      <button class="launch-button" onclick="launchBot()">Open ClarityMeet™</button>
+      <div id="landing-links" class="link-buttons"></div>
+    </div>
+  </div>
+
   <script type="module">
-    import { clients } from './js/clientConfig.js';
-    const subdomain = location.hostname.split('.')[0];
-    const client = clients[subdomain] || clients.default;
+    import { clients } from "./js/clientConfig.js";
 
-    const heading = document.getElementById('dynamic-heading');
-    if (heading && client.heading) heading.textContent = client.heading;
+    const urlParams = new URLSearchParams(window.location.search);
+    const companyKey = urlParams.get("q") || "default";
+    const company = clients[companyKey] || clients.default;
 
-    if (client.background) {
-      const bg = new Image();
-      bg.src = client.background;
-      bg.onload = () => {
-        document.body.style.backgroundImage = `url('${client.background}')`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundRepeat = 'no-repeat';
-        document.body.style.backgroundAttachment = 'fixed';
-        document.body.classList.add('loaded');
-      };
-    }
-  </script>
+    // Branding and visuals
+    document.body.style.backgroundImage = `url('${company.background}')`;
+    document.getElementById("logo").src = company.logo;
+    document.getElementById("logo").alt = company.altText;
+    document.getElementById("heading").textContent = company.heading;
+    document.getElementById("profile-text").textContent = company.profile.staticText;
 
-  <!-- Sixth Button Logic -->
-  <script>
-    window.addEventListener("load", () => {
-      const btn = document.getElementById("meet-author-btn");
-      if (!btn) return;
-
-      const cfg = window.clientConfig || {};
-      let displayName = cfg.heading || "the Creator";
-      btn.innerHTML = `<i class="fas fa-flask"></i> Meet ${displayName}`;
-
-      btn.addEventListener("click", () => {
-        if (cfg.gptUrl) {
-          window.open(cfg.gptUrl, "_blank", "noopener");
-        } else {
-          alert("No GPT profile configured for this client.");
-        }
+    // Prompt buttons
+    const promptButtons = document.getElementById("prompt-buttons");
+    if (Array.isArray(company.defaultPrompts)) {
+      company.defaultPrompts.forEach((prompt) => {
+        const button = document.createElement("button");
+        button.textContent = prompt;
+        button.className = "prompt-button";
+        button.onclick = () =>
+          window.open(`${company.gptUrl}&prompt=${encodeURIComponent(prompt)}`, "_blank");
+        promptButtons.appendChild(button);
       });
-    });
-  </script>
+    }
 
-  <script nomodule>
-    alert("This site requires a modern browser with JavaScript support.");
-  </script>
+    // Landing buttons
+    const landingLinks = document.getElementById("landing-links");
+    if (Array.isArray(company.landingButtons)) {
+      company.landingButtons.forEach((label) => {
+        const button = document.createElement("button");
+        button.textContent = label;
+        button.className = "link-button";
+        button.onclick = () => alert(`${label} is coming soon.`);
+        landingLinks.appendChild(button);
+      });
+    }
 
-  <noscript>
-    <div style="background-color: #f04e23; color: white; padding: 1rem; text-align: center;">
-      JavaScript is required to use this site. Please enable it in your browser settings.
-    </div>
-  </noscript>
+    // Global launch function
+    window.launchBot = () => {
+      window.open(company.gptUrl, "_blank");
+    };
+  </script>
 </body>
 </html>

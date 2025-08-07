@@ -1,0 +1,160 @@
+:root {
+  --orange: #ff7900;
+  --red-orange: #f04e23;
+  --navy: #142233;
+  --blue-gray: #445777;
+  --light-gray: #e5e8eb;
+  --peach: #fbedE2;
+  --white: #ffffff;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --gap: 1rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', Arial, sans-serif;
+  background-color: var(--navy);
+  color: var(--white);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.3s ease-in-out;
+}
+
+.overlay {
+  background-color: rgba(20, 34, 51, 0.75); /* semi-transparent overlay */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.branding img {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 1rem;
+  filter: drop-shadow(var(--shadow));
+}
+
+.branding h1 {
+  font-size: 2.25rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+#profile-text {
+  font-size: 1.1rem;
+  color: var(--light-gray);
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+
+.buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
+  margin-bottom: 2rem;
+}
+
+.prompt-button {
+  background-color: var(--red-orange);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.prompt-button:hover {
+  background-color: #ff5e00;
+  transform: scale(1.05);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.launch-button {
+  background-color: var(--orange);
+  color: var(--white);
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.launch-button:hover {
+  background-color: #ffa040;
+  transform: scale(1.05);
+}
+
+.link-buttons {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
+}
+
+.link-button {
+  background-color: var(--blue-gray);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.link-button:hover {
+  background-color: #556b8a;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .branding h1 {
+    font-size: 1.75rem;
+  }
+
+  #profile-text {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .prompt-button,
+  .link-button {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .launch-button {
+    width: 100%;
+    max-width: 320px;
+    font-size: 1.1rem;
+  }
+}
