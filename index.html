@@ -3,52 +3,128 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ClarityBots® | Loading...</title>
+  <title>ClarityBots | Welcome</title>
   <link rel="stylesheet" href="css/style.css" />
-</head>
-<body style="margin: 0; font-family: sans-serif; background-color: #142233; color: white; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh;">
+  <style>
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background-color: #142233;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      padding: 2rem;
+    }
 
-  <img id="company-logo" src="" alt="Company Logo" style="max-width: 220px; margin-bottom: 1rem;" />
-  <h1 style="font-size: 2rem; font-weight: bold;">Loading...</h1>
-  <p>Please wait while we load your experience.</p>
+    #logo {
+      max-width: 240px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      max-width: 600px;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .cta-button {
+      background-color: #f04e23;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .cta-button:hover {
+      background-color: #ff7900;
+    }
+
+    .error {
+      color: red;
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <img id="logo" src="" alt="Company Logo" />
+  <h1 id="heading">Loading...</h1>
+  <p id="intro-text">Please wait while we load your experience.</p>
+  <div class="button-grid" id="button-container"></div>
 
   <script type="module">
     import { clients } from './js/clientConfig.js';
 
-    // Get clientName from URL or session
     const urlParams = new URLSearchParams(window.location.search);
-    let clientName = urlParams.get('company') || sessionStorage.getItem('clientName');
+    const clientName = urlParams.get('company') || sessionStorage.getItem('clientName');
 
     if (!clientName || !clients[clientName]) {
       document.body.innerHTML = `
-        <h1 style="color: red;">Error: Invalid or missing company name</h1>
+        <div class="error">❌ Error: Invalid or missing company name</div>
         <p>Please use a valid ClarityBots link.</p>
       `;
       throw new Error("Missing or unknown clientName.");
     }
 
-    // Save to session
     sessionStorage.setItem('clientName', clientName);
     const client = clients[clientName];
 
-    // Update background and logo
-    if (client.background) {
-      document.body.style.backgroundImage = `url('${client.background}')`;
-      document.body.style.backgroundSize = 'cover';
-      document.body.style.backgroundPosition = 'center center';
-      document.body.style.backgroundRepeat = 'no-repeat';
-    }
+    // Apply branding
+    document.body.style.backgroundImage = `url('${client.background}')`;
 
-    const logoEl = document.getElementById("company-logo");
-    if (logoEl && client.logo) {
-      logoEl.src = client.logo;
-      logoEl.alt = client.altText || "Company Logo";
-    }
+    const logo = document.getElementById('logo');
+    logo.src = client.logo;
+    logo.alt = client.altText || "Company Logo";
 
-    // Simulate redirect or continue to next step
-    setTimeout(() => {
-      window.location.href = "chat.html"; // Or wherever your next step is
-    }, 1500);
+    document.getElementById('heading').textContent = client.heading || "Welcome";
+    document.getElementById('intro-text').textContent = client.profile?.staticText || "";
+
+    // Render buttons
+    const buttonContainer = document.getElementById('button-container');
+    const buttons = client.landingButtons || [];
+
+    buttons.forEach((label, index) => {
+      const btn = document.createElement('button');
+      btn.className = 'cta-button';
+      btn.textContent = label;
+
+      // Button 6 (zero-indexed) = Launch to chat
+      if (index === 5) {
+        btn.onclick = () => {
+          window.location.href = `chat.html?company=${clientName}`;
+        };
+      } else {
+        // Placeholder: You can customize other buttons later
+        btn.onclick = () => {
+          alert(`"${label}" clicked — coming soon.`);
+        };
+      }
+
+      buttonContainer.appendChild(btn);
+    });
   </script>
 
 </body>
