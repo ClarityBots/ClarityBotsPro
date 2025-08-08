@@ -135,39 +135,36 @@
     sessionStorage.setItem('clientName', clientName);
     const client = clients[clientName];
 
+    // Background and Content
     document.body.style.backgroundImage = `url('${client.background}')`;
     document.getElementById('mainContent').classList.add('fade-in');
-
     document.getElementById('logo').src = client.logo;
     document.getElementById('logo').alt = client.altText || "Company Logo";
     document.getElementById('heading').textContent = client.heading || "Welcome";
     document.getElementById('intro-text').textContent = client.profile?.staticText || "";
 
+    // Buttons
     const buttonContainer = document.getElementById('button-container');
-    const buttons = client.landingButtons || [];
+    const labels = client.landingButtons;
+    const links = client.gptLinks;
 
-    const tooltips = [
-      "Define your quarterly priorities with clarity",
-      "Solve your biggest issues with team-wide alignment",
-      "Build and track your Scorecard like a pro",
-      "Clarify and activate your Core Values",
-      "Track progress, milestones, and execution",
-      "Meet your personalized ClarityBot"
-    ];
+    labels.forEach((label, index) => {
+      const button = document.createElement('button');
+      button.className = 'cta-button';
+      button.textContent = label;
 
-    buttons.forEach((label, index) => {
-      const btn = document.createElement('button');
-      btn.className = 'cta-button';
-      btn.textContent = label;
-      btn.title = tooltips[index] || "";
+      const link = links[index];
 
-      // Route to chat.html with topic and company
-      const topic = encodeURIComponent(label.replace(/\s+/g, ""));
-      btn.onclick = () => {
-        window.location.href = `chat.html?company=${clientName}&topic=${topic}`;
+      button.onclick = () => {
+        console.log(`Clicked: ${label}`);
+        if (link && link.startsWith('http')) {
+          window.location.href = link;
+        } else {
+          alert(`"${label}" feature is launching soon.`);
+        }
       };
 
-      buttonContainer.appendChild(btn);
+      buttonContainer.appendChild(button);
     });
   </script>
 

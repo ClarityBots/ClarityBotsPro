@@ -6,21 +6,32 @@ console.log("✅ clientConfig.js is loaded");
 // Constants
 // -------------------------------
 const imageBasePath = "images/";
-const gptBaseUrl = "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=";
+const gptBaseUrl = "https://chatgpt.com/g/";
 
 // -------------------------------
-// Shared landing buttons (all companies inherit)
+// Shared GPT URLs for buttons 1–5
+// -------------------------------
+const sharedGptLinks = {
+  "ClarityRocks™": `${gptBaseUrl}g-687bd0db062c8191912d6ad51220058c-clarityrockstm`,
+  "ClaritySolved™": `${gptBaseUrl}g-6844396598588191bdfdead2be09d6ed-claritysolvedtm`,
+  "ClarityCards™": `${gptBaseUrl}g-682f6f00fb5481918997b663d2d6bdcc-claritycardstm`,
+  "ClarityValues™": `${gptBaseUrl}g-6823a5c5e36c819195d6c280b196c359-clarityvaluestm`,
+  "ClaritySource™": `${gptBaseUrl}g-682b1a17970081919e98326822f047e5-claritysourcetm`,
+};
+
+// -------------------------------
+// Shared button label array
 // -------------------------------
 const sharedLandingButtons = [
   "ClarityRocks™",
   "ClaritySolved™",
   "ClarityCards™",
   "ClarityValues™",
-  "ClarityTrax™"
+  "ClaritySource™"
 ];
 
 // -------------------------------
-// Full client definitions (alphabetized)
+// Full client definitions
 // -------------------------------
 export const clients = {
   alder: {
@@ -29,13 +40,12 @@ export const clients = {
     logo: `${imageBasePath}alder_logo.png`,
     altText: "Alder Construction Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#445777",
-    gptUrl: `${gptBaseUrl}alder`,
     profile: {
-      staticText: `Alder Construction is a leading provider of infrastructure and commercial construction services, known for delivering high-quality projects on time and within budget.`
+      staticText: `Alder Construction delivers infrastructure and commercial projects with a focus on quality, timelines, and budget.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet AlderBots"]
+    landingButtons: [...sharedLandingButtons, "Meet AlderBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   bi: {
     heading: "Business Intuition",
@@ -43,13 +53,12 @@ export const clients = {
     logo: `${imageBasePath}business_intuition_logo.png`,
     altText: "Business Intuition Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#F04E23",
-    gptUrl: `${gptBaseUrl}bi`,
     profile: {
-      staticText: `Kyle Fowles is a Certified EOS Implementer®, Kolbe Certified Consultant, and Certified Outgrow Advisor. He has facilitated over 250 EOS Session Days, with a 9.5/10 client rating. Kyle helps entrepreneurial leadership teams gain clarity, accountability, and traction so they can grow with confidence.`
+      staticText: `Kyle Fowles empowers growth-minded leaders through EOS, Kolbe, and Outgrow frameworks.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet BI Bots"]
+    landingButtons: [...sharedLandingButtons, "Meet BI Bots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   cop: {
     heading: "COP Construction",
@@ -57,13 +66,12 @@ export const clients = {
     logo: `${imageBasePath}cop_logo.png`,
     altText: "COP Construction Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#6C7C90",
-    gptUrl: `${gptBaseUrl}cop`,
     profile: {
-      staticText: `COP Construction is a full-service construction contractor specializing in heavy civil and infrastructure projects across the region.`
+      staticText: `Heavy civil and infrastructure contractor delivering excellence across the Intermountain West.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet COP Bots"]
+    landingButtons: [...sharedLandingButtons, "Meet COP Bots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   eosww: {
     heading: "EOS Worldwide",
@@ -71,13 +79,12 @@ export const clients = {
     logo: `${imageBasePath}eosww_logo.webp`,
     altText: "EOS Worldwide Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#6C7C90",
-    gptUrl: `${gptBaseUrl}eosww`,
     profile: {
-      staticText: `EOS Worldwide provides simple, practical tools to help entrepreneurs run their businesses more effectively and achieve their vision.`
+      staticText: `EOS Worldwide helps entrepreneurs get what they want from their businesses through simple, proven tools.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet EOS Bots"]
+    landingButtons: [...sharedLandingButtons, "Meet EOS Bots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   havenlight: {
     heading: "Havenlight",
@@ -85,13 +92,12 @@ export const clients = {
     logo: `${imageBasePath}havenlight_logo.png`,
     altText: "Havenlight Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}havenlight`,
     profile: {
-      staticText: `Havenlight is a fine art company specializing in faith-inspired artwork, helping people bring meaningful art into their homes and spaces.`
+      staticText: `Fine art that brings inspiration and light to homes, galleries, and sacred spaces.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet HavenBots"]
+    landingButtons: [...sharedLandingButtons, "Meet HavenBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   lumos: {
     heading: "Lumos Painting Company",
@@ -99,13 +105,12 @@ export const clients = {
     logo: `${imageBasePath}lumos_logo.png`,
     altText: "Lumos Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}lumos`,
     profile: {
-      staticText: `Arthur Pili, the founder of Lumos Painting Company, offers detailed interior and exterior painting, finishing, and new construction services across Northern Utah. His company has a longstanding reputation, emphasizing quality and customer service with a two-year warranty on all projects.`
+      staticText: `Founded by Arthur Pili, Lumos Painting delivers quality finishes, warranties, and unmatched attention to detail.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet LumosBots"]
+    landingButtons: [...sharedLandingButtons, "Meet LumosBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   mark: {
     heading: "Mark O'Donnell",
@@ -113,27 +118,27 @@ export const clients = {
     logo: `${imageBasePath}mark_logo.png`,
     altText: "Mark Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}mark`,
     profile: {
-      staticText: `Mark O'Donnell is the Visionary and CEO of EOS Worldwide, leading the organization to help millions of entrepreneurs get what they want from their businesses.`
+      staticText: `Mark is the Visionary of EOS Worldwide, helping millions of leaders run better businesses.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet MarkBots"]
+    landingButtons: [...sharedLandingButtons, "Meet MarkBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
+};
+
   ninety: {
     heading: "Ninety.io",
     background: `${imageBasePath}ninety_image.webp`,
     logo: `${imageBasePath}ninety_logo.png`,
     altText: "Ninety Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}ninety`,
     profile: {
-      staticText: `Ninety.io provides cloud-based tools to help organizations implement EOS effectively and run better companies.`
+      staticText: `Ninety.io equips EOS-run businesses with digital tools for clarity, traction, and team health.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet NinetyBots"]
+    landingButtons: [...sharedLandingButtons, "Meet NinetyBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   overland: {
     heading: "Overland Group",
@@ -141,13 +146,12 @@ export const clients = {
     logo: `${imageBasePath}overland_logo.png`,
     altText: "Overland Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}overland`,
     profile: {
-      staticText: `Overland Group is a full-service real estate and construction company offering development, design, and building expertise.`
+      staticText: `Full-service real estate development, design, and construction firm serving the Mountain West.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet OverlandBots"]
+    landingButtons: [...sharedLandingButtons, "Meet OverlandBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   remedyww: {
     heading: "Remedy World Wide",
@@ -155,13 +159,12 @@ export const clients = {
     logo: `${imageBasePath}remedyww_logo.png`,
     altText: "Remedy World Wide Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}remedyww`,
     profile: {
-      staticText: `Remedy World Wide offers innovative healthcare products and solutions for patients and providers worldwide.`
+      staticText: `Innovative health solutions provider improving outcomes for patients and providers.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet RemedyBots"]
+    landingButtons: [...sharedLandingButtons, "Meet RemedyBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   skyline: {
     heading: "Skyline Electric Company",
@@ -169,13 +172,12 @@ export const clients = {
     logo: `${imageBasePath}skyline_logo.png`,
     altText: "Skyline Electric Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#FBBF24",
-    gptUrl: `${gptBaseUrl}skyline`,
     profile: {
-      staticText: `Skyline Electric Company specializes in electrical contracting services, providing high-quality solutions for industrial, commercial, and utility clients.`
+      staticText: `Electrical contractor trusted by industrial, utility, and commercial partners across the region.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet SkylineBots"]
+    landingButtons: [...sharedLandingButtons, "Meet SkylineBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   techplus: {
     heading: "TechPlus",
@@ -183,13 +185,12 @@ export const clients = {
     logo: `${imageBasePath}techplus_logo.png`,
     altText: "TechPlus Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#FBBF24",
-    gptUrl: `${gptBaseUrl}techplus`,
     profile: {
-      staticText: `TechPlus delivers innovative technology solutions to help organizations modernize operations and improve efficiency.`
+      staticText: `TechPlus provides smart solutions for digital transformation and operational efficiency.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet TechPlusBots"]
+    landingButtons: [...sharedLandingButtons, "Meet TechPlusBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   vlcm: {
     heading: "VLCM",
@@ -197,13 +198,12 @@ export const clients = {
     logo: `${imageBasePath}vlcm_logo.svg`,
     altText: "VLCM Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#28A745",
-    gptUrl: `${gptBaseUrl}vlcm`,
     profile: {
-      staticText: `VLCM provides enterprise technology solutions, helping organizations with IT infrastructure, networking, and cybersecurity.`
+      staticText: `VLCM is a leading IT solutions provider in Utah offering networking, infrastructure, and cybersecurity services.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet VLCMBots"]
+    landingButtons: [...sharedLandingButtons, "Meet VLCMBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   winward: {
     heading: "Winward Electric",
@@ -211,13 +211,12 @@ export const clients = {
     logo: `${imageBasePath}winward_logo.png`,
     altText: "Winward Electric Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#9C27B0",
-    gptUrl: `${gptBaseUrl}winward`,
     profile: {
-      staticText: `Winward Electric offers professional electrical contracting services for residential, commercial, and industrial clients.`
+      staticText: `Electrical solutions for residential, commercial, and industrial customers in the Intermountain West.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet WinwardBots"]
+    landingButtons: [...sharedLandingButtons, "Meet WinwardBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   },
   default: {
     heading: "ClarityBots",
@@ -225,15 +224,15 @@ export const clients = {
     logo: `${imageBasePath}default_logo.png`,
     altText: "ClarityBots Default Logo",
     preloadImage: false,
-    basePath: imageBasePath,
     brandColor: "#FF7900",
-    gptUrl: `${gptBaseUrl}default`,
     profile: {
       staticText: `This is a default ClarityBots profile. Please configure your clientConfig.js with the correct client information for your subdomain.`
     },
-    landingButtons: [...sharedLandingButtons, "Meet ClarityBots"]
+    landingButtons: [...sharedLandingButtons, "Meet ClarityBots"],
+    button6Url: `${gptBaseUrl}g-682b24c7f4d881919884989d08b645ed-claritybots-about-us`
   }
 };
+
 
 // -------------------------------
 // Subdomain detection
@@ -243,9 +242,9 @@ export const clients = {
   let subdomain;
 
   if (hostname === "localhost" || hostname.startsWith("127.")) {
-    subdomain = "bi"; // Local dev default
+    subdomain = "bi"; // Default for local testing
   } else if (hostname.includes("--")) {
-    subdomain = hostname.split("--")[0];
+    subdomain = hostname.split("--")[0]; // Handle Vercel-style preview URLs
   } else {
     subdomain = hostname.split(".")[0];
   }
@@ -253,5 +252,6 @@ export const clients = {
   subdomain = subdomain.toLowerCase();
   console.log("🌐 Detected subdomain:", subdomain);
 
+  // Store config globally for access in other scripts
   window.clientConfig = clients[subdomain] || clients.default;
 })();
