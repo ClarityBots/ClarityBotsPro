@@ -1,4 +1,4 @@
-// js/clients/fullClientList.js
+// clients/fullClientList.js
 
 const imageBasePath = "images/";
 const gptBaseUrl = "https://chatgpt.com/g/";
@@ -14,7 +14,9 @@ const sharedGptLinks = {
   "ClaritySource™": `${gptBaseUrl}g-682b1a17970081919e98326822f047e5-claritysourcetm`,
 };
 
+// -------------------------------
 // Shared button label array
+// -------------------------------
 const sharedLandingButtons = [
   "ClarityRocks™",
   "ClaritySolved™",
@@ -24,7 +26,7 @@ const sharedLandingButtons = [
 ];
 
 // -------------------------------
-// Full Client List (Alphabetical)
+// Full, alphabetized client definitions
 // -------------------------------
 export const defaultClients = {
   alder: {
