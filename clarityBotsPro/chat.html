@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ClarityBots | Chat</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background-color: #142233;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      background-size: cover;
+      background-position: center;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    a {
+      color: #b084f7;
+    }
+  </style>
+</head>
+<body>
+  <h1>Taking you to your ClarityBot…</h1>
+  <p>If nothing happens, <a id="fallback-link" href="#">click here</a>.</p>
+
+  <script type="module">
+    import { clients } from './js/clientConfig.js';
+
+    const params = new URLSearchParams(window.location.search);
+    const company = params.get('company');
+    const topic = params.get('topic');
+
+    if (!company || !clients[company]) {
+      document.body.innerHTML = `
+        <h1 style="color: red;">❌ Error: Invalid or missing company name</h1>
+        <p>Please use a valid ClarityBots link.</p>
+      `;
+      throw new Error("Missing or invalid company");
+    }
+
+    const client = clients[company];
+    document.body.style.backgroundImage = `url('${client.background}')`;
+
+    const fallbackLink = document.getElementById("fallback-link");
+    const gptUrl = client.gptUrl;
+
+    if (gptUrl && topic) {
+      // Redirect with a short delay
+      fallbackLink.href = gptUrl;
+      setTimeout(() => {
+        window.location.href = gptUrl;
+      }, 1000);
+    } else {
+      document.body.innerHTML = `
+        <h1>🤖 ClarityBot not found</h1>
+        <p>Please check your topic or try again from the main page.</p>
+      `;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "claritybots",
+  "version": "2.1.0",
+  "description": "ClarityBots® | AI-enhanced tools with subdomain branding",
+  "main": "index.html",
+  "scripts": {
+    "build:release": "bash ./build-release.sh"
+  },
+  "keywords": [
+    "eos",
+    "claritybots",
+    "rocks",
+    "branding",
+    "ai"
+  ],
+  "author": "Kyle Fowles",
+  "license": "MIT"
+}
