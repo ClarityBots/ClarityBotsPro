@@ -1,257 +1,184 @@
-// js/clientConfig.js
+// js/clientConfig.js — v3.1.2 (shared buttons 1–5, company-aware button 6)
 
-console.log("✅ clientConfig.js is loaded");
+console.log("✅ clientConfig.js loaded (v3.1.2 shared-buttons)");
 
-// -------------------------------
-// Constants
-// -------------------------------
-const imageBasePath = "images/";
-const gptBaseUrl = "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-meet-the-author?q=";
+/** Shared GPT links used by EVERY company for buttons 1–5 */
+const sharedGptLinks = {
+  "ClarityRocks™":  "https://chatgpt.com/g/g-687bd0db062c8191912d6ad51220058c-clarityrockstm",
+  "ClaritySolved™": "https://chatgpt.com/g/g-6844396598588191bdfdead2be09d6ed-claritysolvedtm",
+  "ClarityCards™":  "https://chatgpt.com/g/g-682f6f00fb5481918997b663d2d6bdcc-claritycardstm",
+  "ClarityValues™": "https://chatgpt.com/g/g-6823a5c5e36c819195d6c280b196c359-clarityvaluestm",
+  "ClaritySource™": "https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritysourcetm"
+};
 
-// -------------------------------
-// Shared landing buttons (all companies inherit)
-// -------------------------------
-const sharedLandingButtons = [
+/** One shared definition for the first five buttons */
+const landingButtons = [
   "ClarityRocks™",
   "ClaritySolved™",
   "ClarityCards™",
   "ClarityValues™",
-  "ClarityTrax™"
+  "ClaritySource™"
 ];
 
-// -------------------------------
-// Full client definitions (alphabetized)
-// -------------------------------
-export const clients = {
+/** About-Us base link (button 6) */
+const ABOUT_US = "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-about-us";
+
+/** Alphabetized client definitions (no per-company button arrays) */
+const clients = {
   alder: {
     heading: "Alder Construction",
-    background: `${imageBasePath}alder_image.jpg`,
-    logo: `${imageBasePath}alder_logo.png`,
+    background: "images/alder_image.jpg",
+    logo: "images/alder_logo.png",
     altText: "Alder Construction Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#445777",
-    gptUrl: `${gptBaseUrl}alder`,
-    profile: {
-      staticText: `Alder Construction is a leading provider of infrastructure and commercial construction services, known for delivering high-quality projects on time and within budget.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet AlderBots"]
+    profile: { staticText: "Alder Construction delivers infrastructure and commercial projects with a focus on quality, timelines, and budget." },
+    button6Url: ABOUT_US
   },
   bi: {
     heading: "Business Intuition",
-    background: `${imageBasePath}business_intuition_image.jpg`,
-    logo: `${imageBasePath}business_intuition_logo.png`,
+    background: "images/business_intuition_image.jpg",
+    logo: "images/business_intuition_logo.png",
     altText: "Business Intuition Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#F04E23",
-    gptUrl: `${gptBaseUrl}bi`,
-    profile: {
-      staticText: `Kyle Fowles is a Certified EOS Implementer®, Kolbe Certified Consultant, and Certified Outgrow Advisor. He has facilitated over 250 EOS Session Days, with a 9.5/10 client rating. Kyle helps entrepreneurial leadership teams gain clarity, accountability, and traction so they can grow with confidence.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet BI Bots"]
+    profile: { staticText: "Kyle Fowles empowers growth-minded leaders through EOS, Kolbe, and Outgrow frameworks." },
+    button6Url: ABOUT_US
   },
   cop: {
     heading: "COP Construction",
-    background: `${imageBasePath}cop_image.jpg`,
-    logo: `${imageBasePath}cop_logo.png`,
+    background: "images/cop_image.jpg",
+    logo: "images/cop_logo.png",
     altText: "COP Construction Logo",
     preloadImage: true,
-    basePath: imageBasePath,
     brandColor: "#6C7C90",
-    gptUrl: `${gptBaseUrl}cop`,
-    profile: {
-      staticText: `COP Construction is a full-service construction contractor specializing in heavy civil and infrastructure projects across the region.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet COP Bots"]
-  },
-  eosww: {
-    heading: "EOS Worldwide",
-    background: `${imageBasePath}eosww_image.png`,
-    logo: `${imageBasePath}eosww_logo.webp`,
-    altText: "EOS Worldwide Logo",
-    preloadImage: true,
-    basePath: imageBasePath,
-    brandColor: "#6C7C90",
-    gptUrl: `${gptBaseUrl}eosww`,
-    profile: {
-      staticText: `EOS Worldwide provides simple, practical tools to help entrepreneurs run their businesses more effectively and achieve their vision.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet EOS Bots"]
-  },
-  havenlight: {
-    heading: "Havenlight",
-    background: `${imageBasePath}havenlight_image.jpg`,
-    logo: `${imageBasePath}havenlight_logo.png`,
-    altText: "Havenlight Logo",
-    preloadImage: true,
-    basePath: imageBasePath,
-    brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}havenlight`,
-    profile: {
-      staticText: `Havenlight is a fine art company specializing in faith-inspired artwork, helping people bring meaningful art into their homes and spaces.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet HavenBots"]
-  },
-  lumos: {
-    heading: "Lumos Painting Company",
-    background: `${imageBasePath}lumos_image.webp`,
-    logo: `${imageBasePath}lumos_logo.png`,
-    altText: "Lumos Logo",
-    preloadImage: true,
-    basePath: imageBasePath,
-    brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}lumos`,
-    profile: {
-      staticText: `Arthur Pili, the founder of Lumos Painting Company, offers detailed interior and exterior painting, finishing, and new construction services across Northern Utah. His company has a longstanding reputation, emphasizing quality and customer service with a two-year warranty on all projects.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet LumosBots"]
-  },
-  mark: {
-    heading: "Mark O'Donnell",
-    background: `${imageBasePath}mark_image.png`,
-    logo: `${imageBasePath}mark_logo.png`,
-    altText: "Mark Logo",
-    preloadImage: true,
-    basePath: imageBasePath,
-    brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}mark`,
-    profile: {
-      staticText: `Mark O'Donnell is the Visionary and CEO of EOS Worldwide, leading the organization to help millions of entrepreneurs get what they want from their businesses.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet MarkBots"]
-  },
-  ninety: {
-    heading: "Ninety.io",
-    background: `${imageBasePath}ninety_image.webp`,
-    logo: `${imageBasePath}ninety_logo.png`,
-    altText: "Ninety Logo",
-    preloadImage: true,
-    basePath: imageBasePath,
-    brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}ninety`,
-    profile: {
-      staticText: `Ninety.io provides cloud-based tools to help organizations implement EOS effectively and run better companies.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet NinetyBots"]
-  },
-  overland: {
-    heading: "Overland Group",
-    background: `${imageBasePath}overland_image.png`,
-    logo: `${imageBasePath}overland_logo.png`,
-    altText: "Overland Logo",
-    preloadImage: true,
-    basePath: imageBasePath,
-    brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}overland`,
-    profile: {
-      staticText: `Overland Group is a full-service real estate and construction company offering development, design, and building expertise.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet OverlandBots"]
-  },
-  remedyww: {
-    heading: "Remedy World Wide",
-    background: `${imageBasePath}remedyww_image.jpg`,
-    logo: `${imageBasePath}remedyww_logo.png`,
-    altText: "Remedy World Wide Logo",
-    preloadImage: true,
-    basePath: imageBasePath,
-    brandColor: "#A9B7C6",
-    gptUrl: `${gptBaseUrl}remedyww`,
-    profile: {
-      staticText: `Remedy World Wide offers innovative healthcare products and solutions for patients and providers worldwide.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet RemedyBots"]
-  },
-  skyline: {
-    heading: "Skyline Electric Company",
-    background: `${imageBasePath}skyline_image.png`,
-    logo: `${imageBasePath}skyline_logo.png`,
-    altText: "Skyline Electric Logo",
-    preloadImage: true,
-    basePath: imageBasePath,
-    brandColor: "#FBBF24",
-    gptUrl: `${gptBaseUrl}skyline`,
-    profile: {
-      staticText: `Skyline Electric Company specializes in electrical contracting services, providing high-quality solutions for industrial, commercial, and utility clients.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet SkylineBots"]
-  },
-  techplus: {
-    heading: "TechPlus",
-    background: `${imageBasePath}techplus_image.png`,
-    logo: `${imageBasePath}techplus_logo.png`,
-    altText: "TechPlus Logo",
-    preloadImage: true,
-    basePath: imageBasePath,
-    brandColor: "#FBBF24",
-    gptUrl: `${gptBaseUrl}techplus`,
-    profile: {
-      staticText: `TechPlus delivers innovative technology solutions to help organizations modernize operations and improve efficiency.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet TechPlusBots"]
-  },
-  vlcm: {
-    heading: "VLCM",
-    background: `${imageBasePath}vlcm_image.jpg`,
-    logo: `${imageBasePath}vlcm_logo.svg`,
-    altText: "VLCM Logo",
-    preloadImage: true,
-    basePath: imageBasePath,
-    brandColor: "#28A745",
-    gptUrl: `${gptBaseUrl}vlcm`,
-    profile: {
-      staticText: `VLCM provides enterprise technology solutions, helping organizations with IT infrastructure, networking, and cybersecurity.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet VLCMBots"]
-  },
-  winward: {
-    heading: "Winward Electric",
-    background: `${imageBasePath}winward_image.jpg`,
-    logo: `${imageBasePath}winward_logo.png`,
-    altText: "Winward Electric Logo",
-    preloadImage: true,
-    basePath: imageBasePath,
-    brandColor: "#9C27B0",
-    gptUrl: `${gptBaseUrl}winward`,
-    profile: {
-      staticText: `Winward Electric offers professional electrical contracting services for residential, commercial, and industrial clients.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet WinwardBots"]
+    profile: { staticText: "Heavy civil and infrastructure contractor delivering excellence across the Intermountain West." },
+    button6Url: ABOUT_US
   },
   default: {
     heading: "ClarityBots",
-    background: `${imageBasePath}default_image.jpg`,
-    logo: `${imageBasePath}default_logo.png`,
+    background: "images/default_image.jpg",
+    logo: "images/default_logo.png",
     altText: "ClarityBots Default Logo",
     preloadImage: false,
-    basePath: imageBasePath,
     brandColor: "#FF7900",
-    gptUrl: `${gptBaseUrl}default`,
-    profile: {
-      staticText: `This is a default ClarityBots profile. Please configure your clientConfig.js with the correct client information for your subdomain.`
-    },
-    landingButtons: [...sharedLandingButtons, "Meet ClarityBots"]
+    profile: { staticText: "This is a default ClarityBots profile. Configure your clientConfig.js with the correct client for your subdomain." },
+    button6Url: ABOUT_US
+  },
+  eosww: {
+    heading: "EOS Worldwide",
+    background: "images/eosww_image.png",
+    logo: "images/eosww_logo.webp",
+    altText: "EOS Worldwide Logo",
+    preloadImage: true,
+    brandColor: "#6C7C90",
+    profile: { staticText: "EOS Worldwide helps entrepreneurs get what they want from their businesses through simple, proven tools." },
+    button6Url: ABOUT_US
+  },
+  havenlight: {
+    heading: "Havenlight",
+    background: "images/havenlight_image.jpg",
+    logo: "images/havenlight_logo.png",
+    altText: "Havenlight Logo",
+    preloadImage: true,
+    brandColor: "#A9B7C6",
+    profile: { staticText: "Fine art that brings inspiration and light to homes, galleries, and sacred spaces." },
+    button6Url: ABOUT_US
+  },
+  lumos: {
+    heading: "Lumos Painting Company",
+    background: "images/lumos_image.webp",
+    logo: "images/lumos_logo.png",
+    altText: "Lumos Logo",
+    preloadImage: true,
+    brandColor: "#A9B7C6",
+    profile: { staticText: "Founded by Arthur Pili, Lumos Painting delivers quality finishes, warranties, and unmatched attention to detail." },
+    button6Url: ABOUT_US
+  },
+  mark: {
+    heading: "Mark O'Donnell",
+    background: "images/mark_image.png",
+    logo: "images/mark_logo.png",
+    altText: "Mark Logo",
+    preloadImage: true,
+    brandColor: "#A9B7C6",
+    profile: { staticText: "Mark is the Visionary of EOS Worldwide, helping millions of leaders run better businesses." },
+    button6Url: ABOUT_US
+  },
+  ninety: {
+    heading: "Ninety.io",
+    background: "images/ninety_image.webp",
+    logo: "images/ninety_logo.png",
+    altText: "Ninety Logo",
+    preloadImage: true,
+    brandColor: "#A9B7C6",
+    profile: { staticText: "Ninety.io equips EOS-run businesses with digital tools for clarity, traction, and team health." },
+    button6Url: ABOUT_US
+  },
+  overland: {
+    heading: "Overland Group",
+    background: "images/overland_image.png",
+    logo: "images/overland_logo.png",
+    altText: "Overland Logo",
+    preloadImage: true,
+    brandColor: "#A9B7C6",
+    profile: { staticText: "Full-service real estate development, design, and construction firm serving the Mountain West." },
+    button6Url: ABOUT_US
+  },
+  remedyww: {
+    heading: "Remedy World Wide",
+    background: "images/remedyww_image.jpg",
+    logo: "images/remedyww_logo.png",
+    altText: "Remedy World Wide Logo",
+    preloadImage: true,
+    brandColor: "#A9B7C6",
+    profile: { staticText: "Innovative health solutions provider improving outcomes for patients and providers." },
+    button6Url: ABOUT_US
+  },
+  skyline: {
+    heading: "Skyline Electric Company",
+    background: "images/skyline_image.png",
+    logo: "images/skyline_logo.png",
+    altText: "Skyline Electric Logo",
+    preloadImage: true,
+    brandColor: "#FBBF24",
+    profile: { staticText: "Electrical contractor trusted by industrial, utility, and commercial partners across the region." },
+    button6Url: ABOUT_US
+  },
+  techplus: {
+    heading: "TechPlus",
+    background: "images/techplus_image.png",
+    logo: "images/techplus_logo.png",
+    altText: "TechPlus Logo",
+    preloadImage: true,
+    brandColor: "#FBBF24",
+    profile: { staticText: "TechPlus provides smart solutions for digital transformation and operational efficiency." },
+    button6Url: ABOUT_US
+  },
+  vlcm: {
+    heading: "VLCM",
+    background: "images/vlcm_image.jpg",
+    logo: "images/vlcm_logo.svg",
+    altText: "VLCM Logo",
+    preloadImage: true,
+    brandColor: "#28A745",
+    profile: { staticText: "VLCM is a leading IT solutions provider in Utah offering networking, infrastructure, and cybersecurity services." },
+    button6Url: ABOUT_US
+  },
+  winward: {
+    heading: "Winward Electric",
+    background: "images/winward_image.jpg",
+    logo: "images/winward_logo.png",
+    altText: "Winward Electric Logo",
+    preloadImage: true,
+    brandColor: "#9C27B0",
+    profile: { staticText: "Electrical solutions for residential, commercial, and industrial customers in the Intermountain West." },
+    button6Url: ABOUT_US
   }
 };
 
-// -------------------------------
-// Subdomain detection
-// -------------------------------
-(function () {
-  let hostname = location.hostname.toLowerCase();
-  let subdomain;
-
-  if (hostname === "localhost" || hostname.startsWith("127.")) {
-    subdomain = "bi"; // Local dev default
-  } else if (hostname.includes("--")) {
-    subdomain = hostname.split("--")[0];
-  } else {
-    subdomain = hostname.split(".")[0];
-  }
-
-  subdomain = subdomain.toLowerCase();
-  console.log("🌐 Detected subdomain:", subdomain);
-
-  window.clientConfig = clients[subdomain] || clients.default;
-})();
+// expose globals for non-module scripts
+window.sharedGptLinks = sharedGptLinks;
+window.landingButtons = landingButtons;
+window.ABOUT_US = ABOUT_US;
+window.clients = clients;
