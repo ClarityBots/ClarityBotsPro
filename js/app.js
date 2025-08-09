@@ -1,9 +1,9 @@
-// js/app.js — v3.1.2 (shared buttons 1–5; company-aware possessive button 6)
+// js/app.js — stable routing: shared buttons 1–5; Button 6 is company-aware + possessive
 
 console.log("✅ app.js is loaded");
 
 (function () {
-  // Safety checks
+  // Safety
   if (!window.clients) { console.error("clients not found"); return; }
   if (!window.sharedGptLinks) { console.error("sharedGptLinks not found"); return; }
   if (!window.landingButtons) { console.error("landingButtons not found"); return; }
@@ -17,10 +17,9 @@ console.log("✅ app.js is loaded");
   console.log("🌐 Detected subdomain:", sub || "(none)", "→ company:", companyKey);
   console.log("✅ clientConfig.js is loaded");
 
-  // Optional: preload hero for snappier UX
+  // Optional image preload
   if (client.preloadImage && client.background) {
-    const img = new Image();
-    img.src = client.background;
+    const img = new Image(); img.src = client.background;
   }
 
   // Fill UI
@@ -49,16 +48,12 @@ console.log("✅ app.js is loaded");
     buttonsWrap.appendChild(a);
   });
 
-  // Button 6: company-aware AND possessive → “Meet {CompanyName}’s Bots”
+  // Button 6: “Meet {CompanyName}’s Bots”
   const ABOUT_US = window.ABOUT_US || "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-about-us";
   const btn6 = document.createElement("a");
   btn6.className = "btn";
-
-  // Always add ’s, even if the name ends with s (per your rule)
   const companyName = (client.heading || "Company").trim();
-  const possessiveLabel = `Meet ${companyName}’s Bots`;
-
-  btn6.textContent = possessiveLabel;
+  btn6.textContent = `Meet ${companyName}’s Bots`;
   btn6.href = `${client.button6Url || ABOUT_US}?q=${encodeURIComponent(companyKey)}`;
   btn6.target = "_blank";
   btn6.rel = "noopener";
