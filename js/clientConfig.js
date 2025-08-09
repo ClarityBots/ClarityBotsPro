@@ -177,7 +177,7 @@ const clients = {
   }
 };
 
-// expose globals for non-module scripts
+// Expose globals
 window.sharedGptLinks = sharedGptLinks;
 window.landingButtons = landingButtons;
 window.ABOUT_US = ABOUT_US;

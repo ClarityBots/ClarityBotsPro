@@ -1,14 +1,14 @@
-// js/app.js — v3.1.2 (shared buttons 1–5; company-aware button 6)
+// js/app.js — v3.1.2 (shared buttons 1–5; company-aware possessive button 6)
 
 console.log("✅ app.js is loaded");
 
 (function () {
-  // safety
+  // Safety checks
   if (!window.clients) { console.error("clients not found"); return; }
   if (!window.sharedGptLinks) { console.error("sharedGptLinks not found"); return; }
   if (!window.landingButtons) { console.error("landingButtons not found"); return; }
 
-  // company detection: subdomain first, then ?company= fallback
+  // Company detection: subdomain first, then ?company= fallback
   const sub = (location.hostname.split(".")[0] || "").toLowerCase();
   const urlParamCompany = (new URLSearchParams(location.search).get("company") || "").toLowerCase();
   const companyKey = (sub || urlParamCompany || "default").toLowerCase();
@@ -17,13 +17,13 @@ console.log("✅ app.js is loaded");
   console.log("🌐 Detected subdomain:", sub || "(none)", "→ company:", companyKey);
   console.log("✅ clientConfig.js is loaded");
 
-  // preload hero image for snappier UX (optional)
+  // Optional: preload hero for snappier UX
   if (client.preloadImage && client.background) {
     const img = new Image();
     img.src = client.background;
   }
 
-  // fill UI
+  // Fill UI
   const bg = document.getElementById("background");
   const logo = document.getElementById("logo");
   const heading = document.getElementById("heading");
@@ -49,18 +49,22 @@ console.log("✅ app.js is loaded");
     buttonsWrap.appendChild(a);
   });
 
-  // Button 6: company-aware “Meet …Bots”
+  // Button 6: company-aware AND possessive → “Meet {CompanyName}’s Bots”
   const ABOUT_US = window.ABOUT_US || "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-about-us";
   const btn6 = document.createElement("a");
   btn6.className = "btn";
-  const shortName = (client.heading || "Company").split(",")[0]; // trim after comma if present
-  btn6.textContent = `Meet ${shortName}Bots`;
+
+  // Always add ’s, even if the name ends with s (per your rule)
+  const companyName = (client.heading || "Company").trim();
+  const possessiveLabel = `Meet ${companyName}’s Bots`;
+
+  btn6.textContent = possessiveLabel;
   btn6.href = `${client.button6Url || ABOUT_US}?q=${encodeURIComponent(companyKey)}`;
   btn6.target = "_blank";
   btn6.rel = "noopener";
   buttonsWrap.appendChild(btn6);
 
-  // hide loader
+  // Hide loader
   const loader = document.getElementById("loader");
   if (loader) loader.style.display = "none";
 
