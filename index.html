@@ -2,171 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ClarityBots | Welcome</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <style>
-    :root {
-      --orange: #ff7900;
-      --red-orange: #f04e23;
-      --navy: #142233;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, Arial, sans-serif;
-      background-color: var(--navy);
-      color: white;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      overflow: hidden;
-    }
-
-    .content-box {
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 2.5rem 2rem;
-      border-radius: 16px;
-      max-width: 900px;
-      width: 100%;
-      text-align: center;
-      z-index: 1;
-      backdrop-filter: blur(4px);
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
-      animation: fadeIn 1s ease forwards;
-      opacity: 0;
-    }
-
-    .content-box.fade-in { opacity: 1; }
-
-    #logo {
-      max-width: 240px;
-      margin-bottom: 1.5rem;
-    }
-
-    #heading {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    #intro-text {
-      font-size: 1.1rem;
-      max-width: 700px;
-      margin: 0 auto 2rem auto;
-    }
-
-    .button-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 1.5rem;
-      width: 100%;
-    }
-
-    @media (min-width: 600px) {
-      .button-grid {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      .cta-button {
-        flex: 1 1 calc(33% - 1rem);
-        max-width: 260px;
-      }
-    }
-
-    .cta-button {
-      background-color: var(--red-orange);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.75rem 1.25rem;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
-      width: 100%;
-    }
-
-    .cta-button:hover {
-      background-color: var(--orange);
-      transform: scale(1.04);
-    }
-
-    .error {
-      color: red;
-      font-size: 1.5rem;
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClarityBots</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="js/clientConfig.js"></script>
 </head>
 <body>
+  <div id="app">
+    <header>
+      <img id="companyLogo" alt="Company Logo" />
+      <h1 id="companyHeading"></h1>
+    </header>
 
-  <div class="content-box" id="mainContent">
-    <img id="logo" src="" alt="Company Logo" />
-    <h1 id="heading">Loading...</h1>
-    <p id="intro-text">Please wait while we load your experience.</p>
-    <div class="button-grid" id="button-container"></div>
+    <main>
+      <p id="companyProfile"></p>
+      <div id="buttonsContainer"></div>
+    </main>
   </div>
 
   <script type="module">
-    import { clients } from './js/clientConfig.js';
+    import { clients, sharedGptLinks } from "./js/clientConfig.js";
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const subdomain = window.location.hostname.split('.')[0];
-    const clientName = urlParams.get('company') || sessionStorage.getItem('clientName') || subdomain;
+    // Pull the detected config from clientConfig.js
+    const config = window.clientConfig || clients.default;
 
-    if (!clientName || !clients[clientName]) {
-      document.body.innerHTML = `
-        <div class="error">❌ Error: Invalid or missing company name</div>
-        <p>Please use a valid ClarityBots link.</p>
-      `;
-      throw new Error("Missing or unknown clientName.");
-    }
+    // Set page background and logo
+    document.body.style.backgroundImage = `url('${config.background}')`;
+    const logoEl = document.getElementById("companyLogo");
+    logoEl.src = config.logo;
+    logoEl.alt = config.altText;
 
-    sessionStorage.setItem('clientName', clientName);
-    const client = clients[clientName];
+    // Set heading and profile text
+    document.getElementById("companyHeading").textContent = config.heading;
+    document.getElementById("companyProfile").textContent = config.profile.staticText;
 
-    // Background and Content
-    document.body.style.backgroundImage = `url('${client.background}')`;
-    document.getElementById('mainContent').classList.add('fade-in');
-    document.getElementById('logo').src = client.logo;
-    document.getElementById('logo').alt = client.altText || "Company Logo";
-    document.getElementById('heading').textContent = client.heading || "Welcome";
-    document.getElementById('intro-text').textContent = client.profile?.staticText || "";
+    // Generate buttons
+    const container = document.getElementById("buttonsContainer");
+    config.landingButtons.forEach(label => {
+      const btn = document.createElement("button");
+      btn.textContent = label;
+      btn.classList.add("cta-button");
 
-    // Buttons
-    const buttonContainer = document.getElementById('button-container');
-    const labels = client.landingButtons;
-    const links = client.gptLinks;
+      let url;
+      if (sharedGptLinks[label]) {
+        // Buttons 1–5 from shared links
+        url = sharedGptLinks[label];
+      } else if (label === config.landingButtons[5]) {
+        // Button 6 is always company-specific
+        url = config.button6Url;
+      }
 
-    labels.forEach((label, index) => {
-      const button = document.createElement('button');
-      button.className = 'cta-button';
-      button.textContent = label;
+      btn.addEventListener("click", () => {
+        window.location.href = url;
+      });
 
-      const link = links[index];
-
-      button.onclick = () => {
-        console.log(`Clicked: ${label}`);
-        if (link && link.startsWith('http')) {
-          window.location.href = link;
-        } else {
-          alert(`"${label}" feature is launching soon.`);
-        }
-      };
-
-      buttonContainer.appendChild(button);
+      container.appendChild(btn);
     });
   </script>
-
 </body>
 </html>
