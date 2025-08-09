@@ -4,27 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ClarityBots</title>
-
-  <!-- Styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Loader -->
-  <div id="loader" class="loader" aria-live="polite">Loading...</div>
-
-  <!-- Fullscreen background (set by app.js) -->
+  <!-- Fullscreen background (image set by app.js) -->
   <div id="background" class="background" aria-hidden="true"></div>
 
   <!-- Main panel -->
   <main class="content" role="main">
     <img id="logo" class="logo" src="" alt="Company Logo" />
-
     <h1 id="heading">ClarityBots</h1>
+    <p id="blurb"></p>
 
-    <!-- Give it both an id (for JS) and a class (for CSS) -->
-    <p id="blurb" class="description"></p>
-
-    <!-- Buttons 1–6 are rendered here by app.js -->
+    <!-- Buttons 1–6 rendered by app.js -->
     <div id="buttons" class="buttons"></div>
   </main>
 
