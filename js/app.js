@@ -4,9 +4,9 @@ console.log("✅ app.js is loaded");
 
 (function () {
   // safety
-  if (!window.clients) return console.error("clients not found");
-  if (!window.sharedGptLinks) return console.error("sharedGptLinks not found");
-  if (!window.landingButtons) return console.error("landingButtons not found");
+  if (!window.clients) { console.error("clients not found"); return; }
+  if (!window.sharedGptLinks) { console.error("sharedGptLinks not found"); return; }
+  if (!window.landingButtons) { console.error("landingButtons not found"); return; }
 
   // company detection: subdomain first, then ?company= fallback
   const sub = (location.hostname.split(".")[0] || "").toLowerCase();
@@ -16,6 +16,12 @@ console.log("✅ app.js is loaded");
 
   console.log("🌐 Detected subdomain:", sub || "(none)", "→ company:", companyKey);
   console.log("✅ clientConfig.js is loaded");
+
+  // preload hero image for snappier UX (optional)
+  if (client.preloadImage && client.background) {
+    const img = new Image();
+    img.src = client.background;
+  }
 
   // fill UI
   const bg = document.getElementById("background");
@@ -44,12 +50,12 @@ console.log("✅ app.js is loaded");
   });
 
   // Button 6: company-aware “Meet …Bots”
+  const ABOUT_US = window.ABOUT_US || "https://chatgpt.com/g/g-682b24c7f4d881919884989d08b645ed-claritybots-about-us";
   const btn6 = document.createElement("a");
   btn6.className = "btn";
   const shortName = (client.heading || "Company").split(",")[0]; // trim after comma if present
   btn6.textContent = `Meet ${shortName}Bots`;
-  const aboutBase = client.button6Url || window.ABOUT_US;
-  btn6.href = `${aboutBase}?q=${encodeURIComponent(companyKey)}`;
+  btn6.href = `${client.button6Url || ABOUT_US}?q=${encodeURIComponent(companyKey)}`;
   btn6.target = "_blank";
   btn6.rel = "noopener";
   buttonsWrap.appendChild(btn6);

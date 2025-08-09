@@ -1,6 +1,6 @@
-// js/clientConfig.js — v3.1.2 (shared buttons 1–5, company-aware button 6)
+// js/clientConfig.js — v3.1.2 (shared buttons 1–5; company-aware button 6)
 
-console.log("✅ clientConfig.js loaded (v3.1.2 shared-buttons)");
+console.log("✅ clientConfig.js is loaded (v3.1.2 shared-buttons)");
 
 /** Shared GPT links used by EVERY company for buttons 1–5 */
 const sharedGptLinks = {
@@ -11,7 +11,7 @@ const sharedGptLinks = {
   "ClaritySource™": "https://chatgpt.com/g/g-682b1a17970081919e98326822f047e5-claritysourcetm"
 };
 
-/** One shared definition for the first five buttons */
+/** One shared definition for the first five buttons (order matters) */
 const landingButtons = [
   "ClarityRocks™",
   "ClaritySolved™",
