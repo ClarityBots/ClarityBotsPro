@@ -5,18 +5,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ClarityBots</title>
+  <meta name="description" content="ClarityBots connects teams to focused AI helpers. Pick your bot, get answers fast, and keep projects moving." />
 
   <!-- Theme / tab color -->
   <meta name="theme-color" content="#142233" />
 
-  <!-- Favicons (put these files in /images/) -->
+  <!-- Favicons (add these files in /images/) -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
-  <!-- Optional Windows tile color -->
   <meta name="msapplication-TileColor" content="#142233" />
 
-  <!-- Social share (Open Graph / Twitter) -->
+  <!-- Social share -->
   <meta property="og:title" content="ClarityBots.ai" />
   <meta property="og:description" content="Custom AI Bots that amplify EOS® implementation and leadership team success." />
   <meta property="og:image" content="images/share-preview.png" />
@@ -27,18 +27,26 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Fullscreen background (image set by app.js) -->
+  <!-- Background image (set by app.js) -->
   <div id="background" class="background" aria-hidden="true"></div>
 
   <!-- Main panel -->
-  <main class="content" role="main">
+  <main class="content" role="main" aria-labelledby="heading">
     <img id="logo" class="logo" src="" alt="Company Logo" />
+
     <h1 id="heading">ClarityBots</h1>
+
     <p id="blurb"></p>
 
     <!-- Buttons 1–6 rendered by app.js -->
-    <div id="buttons" class="buttons"></div>
+    <div id="buttons" class="buttons" role="group" aria-label="Available ClarityBots"></div>
   </main>
+
+  <noscript>
+    <p style="color:#fff; text-align:center; padding:12px;">
+      JavaScript is required to load your company’s ClarityBots.
+    </p>
+  </noscript>
 
   <!-- Scripts: config first, then app -->
   <script src="js/clientConfig.js"></script>

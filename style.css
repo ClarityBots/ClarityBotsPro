@@ -1,5 +1,10 @@
-/* v3.3.0 — Bright background, no page-wide film. 
-   Card-only translucency. Centered panel, big logo, orange buttons. */
+/* v3.3.1 — UX polish:
+   - Smooth load animations (logo, text, buttons)
+   - Crisp, bright background (no page overlay)
+   - Centered card with subtle translucency
+   - Orange, tappable buttons (mobile-friendly)
+   - Accessibility & motion preferences respected
+*/
 
 :root{
   --orange:#FF7900;
@@ -8,6 +13,7 @@
   --text:#ffffff;
   --muted:#e0e0e0;
   --shadow:0 10px 30px rgba(0,0,0,.25);
+  --radius:18px;
 }
 
 /* Reset/structure */
@@ -19,82 +25,135 @@ body{
   background:var(--navy);
   min-height:100vh;
   display:flex;
-  align-items:center;
-  justify-content:center;
+  align-items:center;           /* vertical center */
+  justify-content:center;       /* horizontal center */
   text-align:center;
   overflow-x:hidden;
 }
 
-/* --- Hard kill any full-page overlays from older CSS --- */
+/* Kill any leftover page-wide overlays */
 body::before, body::after,
 .background::before, .background::after {
-  content: none !important;
-  display: none !important;
+  content:none !important;
+  display:none !important;
 }
 
-/* Fullscreen background — NO overlay, NO filters */
+/* Fullscreen background — bright & clean */
 .background{
   position:fixed;
   inset:0;
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
+  z-index:-1;
   filter:none !important;
   opacity:1 !important;
-  z-index:-1;
 }
 
-/* Card with the ONLY translucency */
+/* Card — the only translucent layer */
 .content{
   position:relative;
-  max-width:900px;
-  width:min(92vw,900px);
+  width:min(92vw, 900px);
   margin:auto;
   padding:28px 22px;
-  background:rgba(20,34,51,.82);     /* keep the soft dark card */
+  background:rgba(20,34,51,.82);
   border:1px solid rgba(229,232,235,.14);
-  border-radius:18px;
+  border-radius:var(--radius);
   box-shadow:var(--shadow);
-  backdrop-filter:none;               /* no blur so bg stays crisp */
+  backdrop-filter:none; /* keep bg sharp */
+  /* Entrance animation */
+  animation: fadeUp .45s ease-out both;
 }
 
-/* Logo — large, responsive */
+/* Logo — large, responsive, animated in */
 .logo{
-  width:220px;
+  width:220px;                 /* desktop default */
   height:auto;
   margin:6px auto 14px;
   object-fit:contain;
   display:block;
   filter:drop-shadow(0 6px 18px rgba(0,0,0,.35));
+  animation: fadeIn .6s ease-out .08s both;
 }
 
 /* Heading & blurb */
-h1{ margin:8px 0 8px; font-size:clamp(22px,4vw,34px); line-height:1.15; }
-#blurb{ margin:6px auto 18px; max-width:760px; color:var(--muted); font-size:clamp(14px,2.2vw,16px); }
+h1{
+  margin:8px 0 8px;
+  font-size:clamp(22px,4vw,34px);
+  line-height:1.15;
+  animation: fadeIn .5s ease-out .12s both;
+}
+#blurb{
+  margin:6px auto 18px;
+  max-width:760px;
+  color:var(--muted);
+  font-size:clamp(14px,2.2vw,16px);
+  animation: fadeIn .5s ease-out .16s both;
+}
 
-/* Buttons */
-.buttons{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:10px; }
+/* Buttons layout */
+.buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-top:10px;
+}
+
+/* Anchor buttons (rendered by app.js) */
 .btn{
   display:inline-block;
-  padding:12px 16px;
+  padding:12px 18px;
   border-radius:999px;
   text-decoration:none;
   background:linear-gradient(180deg, var(--orange), var(--red-orange));
   color:#fff;
   font-weight:700;
   box-shadow:0 6px 16px rgba(0,0,0,.28);
-  transition:transform .08s ease, box-shadow .2s ease, opacity .2s ease;
+  transition:transform .12s ease, box-shadow .2s ease, opacity .2s ease;
   white-space:nowrap;
+  min-width:148px;           /* easier taps on mobile */
+  line-height:1.1;
+  /* Staggered appearance for first row */
+  animation: fadeIn .5s ease-out .2s both;
 }
 .btn:hover{ transform:translateY(-1px); box-shadow:0 10px 22px rgba(0,0,0,.34); }
 .btn:active{ transform:translateY(0);   box-shadow:0 4px 12px rgba(0,0,0,.24); }
 
+/* Stagger button entrance slightly */
+.buttons .btn:nth-child(2){ animation-delay:.24s; }
+.buttons .btn:nth-child(3){ animation-delay:.28s; }
+.buttons .btn:nth-child(4){ animation-delay:.32s; }
+.buttons .btn:nth-child(5){ animation-delay:.36s; }
+.buttons .btn:nth-child(6){ animation-delay:.40s; }
+
+/* Motion preferences: respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
+}
+
 /* Responsive tweaks */
-@media (max-width:1024px){ .logo{ width:200px; } }
-@media (max-width:768px){ .content{ padding:22px 16px; } .logo{ width:170px; } }
+@media (max-width:1024px){
+  .logo{ width:200px; }
+}
+@media (max-width:768px){
+  .content{ padding:22px 16px; }
+  .logo{ width:170px; }
+  .btn{ min-width:140px; padding:11px 16px; }
+}
 @media (max-width:480px){
   .content{ width:94vw; border-radius:16px; }
   .logo{ width:150px; }
   .buttons{ gap:10px; }
-  .btn{ padding:10px 14px; font-size:.95rem; }
+  .btn{ padding:10px 14px; font-size:.95rem; min-width:132px; }
+}
+
+/* Keyframes */
+@keyframes fadeIn{
+  from{ opacity:0; transform:translateY(0); }
+  to  { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeUp{
+  from{ opacity:0; transform:translateY(10px); }
+  to  { opacity:1; transform:translateY(0); }
 }
