@@ -1,9 +1,9 @@
-/* v3.3.1 — UX polish:
-   - Smooth load animations (logo, text, buttons)
-   - Crisp, bright background (no page overlay)
-   - Centered card with subtle translucency
-   - Orange, tappable buttons (mobile-friendly)
-   - Accessibility & motion preferences respected
+/* ClarityBots v3.3.2 — Stable, complete stylesheet
+   - Bright background (no page-wide overlay)
+   - Centered translucent card
+   - Large, responsive logo
+   - Orange pill buttons with premium hover
+   - Smooth load animations (respects reduced motion)
 */
 
 :root{
@@ -31,7 +31,7 @@ body{
   overflow-x:hidden;
 }
 
-/* Kill any leftover page-wide overlays */
+/* Kill ANY leftover page-wide overlays from older CSS */
 body::before, body::after,
 .background::before, .background::after {
   content:none !important;
@@ -61,8 +61,7 @@ body::before, body::after,
   border-radius:var(--radius);
   box-shadow:var(--shadow);
   backdrop-filter:none; /* keep bg sharp */
-  /* Entrance animation */
-  animation: fadeUp .45s ease-out both;
+  animation: fadeUp .45s ease-out both; /* entrance */
 }
 
 /* Logo — large, responsive, animated in */
@@ -110,15 +109,27 @@ h1{
   color:#fff;
   font-weight:700;
   box-shadow:0 6px 16px rgba(0,0,0,.28);
-  transition:transform .12s ease, box-shadow .2s ease, opacity .2s ease;
+  transition:
+    transform .14s ease,
+    box-shadow .2s ease,
+    filter .14s ease,
+    opacity .2s ease;
   white-space:nowrap;
-  min-width:148px;           /* easier taps on mobile */
+  min-width:148px;            /* easier taps on mobile */
   line-height:1.1;
-  /* Staggered appearance for first row */
-  animation: fadeIn .5s ease-out .2s both;
+  animation: fadeIn .5s ease-out .2s both; /* stagger base */
 }
-.btn:hover{ transform:translateY(-1px); box-shadow:0 10px 22px rgba(0,0,0,.34); }
-.btn:active{ transform:translateY(0);   box-shadow:0 4px 12px rgba(0,0,0,.24); }
+
+/* Premium hover/active feedback */
+.btn:hover{
+  transform:scale(1.05) translateY(-1px);
+  box-shadow:0 12px 28px rgba(0,0,0,.35);
+  filter:brightness(1.07);
+}
+.btn:active{
+  transform:scale(0.98);
+  box-shadow:0 6px 16px rgba(0,0,0,.28);
+}
 
 /* Stagger button entrance slightly */
 .buttons .btn:nth-child(2){ animation-delay:.24s; }
@@ -127,7 +138,7 @@ h1{
 .buttons .btn:nth-child(5){ animation-delay:.36s; }
 .buttons .btn:nth-child(6){ animation-delay:.40s; }
 
-/* Motion preferences: respect reduced motion */
+/* Motion preferences */
 @media (prefers-reduced-motion: reduce){
   *{ animation:none !important; transition:none !important; }
 }
